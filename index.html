@@ -1,0 +1,1496 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Pari Alliance Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#5D5CDE',
+                        danger: '#FF4842',
+                        success: '#4CAF50',
+                        warning: '#FFC107',
+                        dark: {
+                            primary: '#7571F9',
+                            background: '#181818',
+                            surface: '#2c2c2c',
+                            border: '#3e4042'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom styles to complement Tailwind */
+        .transition-height {
+            transition: max-height 0.3s ease;
+            overflow: hidden;
+        }
+        
+        /* Toast notification animation */
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slideOutRight {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+        
+        .toast-enter {
+            animation: slideInRight 0.3s forwards;
+        }
+        
+        .toast-exit {
+            animation: slideOutRight 0.3s forwards;
+        }
+        
+        /* Improved focus styles */
+        .focus-ring:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(93, 92, 222, 0.3);
+        }
+        
+        /* Custom checkbox for tag selection */
+        .tag-checkbox:checked + label {
+            @apply bg-primary text-white border-primary;
+        }
+        
+        /* Prevent zoom on input on mobile devices */
+        input, select, textarea {
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 dark:bg-dark-background dark:text-white min-h-screen">
+    <!-- Loading screen -->
+    <div id="loading-screen" class="fixed inset-0 bg-white dark:bg-dark-background z-50 flex flex-col items-center justify-center">
+        <div class="text-5xl text-primary animate-bounce mb-4">
+            <i class="fas fa-futbol"></i>
+        </div>
+        <h1 class="text-2xl font-bold text-primary mb-2">Pari Alliance Admin</h1>
+        <p class="text-gray-600 dark:text-gray-300">Chargement...</p>
+    </div>
+
+    <!-- Login form -->
+    <div id="login-container" class="fixed inset-0 bg-white dark:bg-dark-background z-40 flex-col items-center justify-center hidden">
+        <div class="max-w-md w-full mx-auto p-6">
+            <div class="text-center mb-8">
+                <div class="text-5xl text-primary mb-4">
+                    <i class="fas fa-futbol"></i>
+                </div>
+                <h1 class="text-2xl font-bold text-primary">Pari Alliance Admin</h1>
+                <p class="text-gray-600 dark:text-gray-300 mt-2">Connectez-vous pour gérer les pronostics</p>
+            </div>
+            
+            <div class="bg-white dark:bg-dark-surface rounded-lg shadow-md p-6">
+                <div class="mb-4">
+                    <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
+                    <input type="email" id="email" class="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-md focus-ring bg-white dark:bg-dark-surface text-base">
+                </div>
+                
+                <div class="mb-6">
+                    <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Mot de passe</label>
+                    <input type="password" id="password" class="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-md focus-ring bg-white dark:bg-dark-surface text-base">
+                </div>
+                
+                <div id="login-error" class="hidden mb-4 text-sm text-danger bg-red-50 dark:bg-red-900/20 p-2 rounded"></div>
+                
+                <button id="login-btn" class="w-full bg-primary text-white rounded-md py-2 font-medium hover:bg-opacity-90 transition focus-ring">
+                    <span id="login-btn-text">Se connecter</span>
+                    <span id="login-btn-loading" class="hidden">
+                        <i class="fas fa-spinner fa-spin"></i> Connexion...
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main application -->
+    <div id="app-container" class="hidden">
+        <!-- Header -->
+        <header class="bg-white dark:bg-dark-surface shadow">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+                <div class="flex items-center">
+                    <div class="text-xl text-primary mr-2">
+                        <i class="fas fa-futbol"></i>
+                    </div>
+                    <h1 class="text-xl font-bold text-primary">Pari Alliance Admin</h1>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-dark-border text-gray-600 dark:text-gray-300">
+                        <i class="fas fa-moon dark:hidden"></i>
+                        <i class="fas fa-sun hidden dark:inline-block"></i>
+                    </button>
+                    
+                    <button id="logout-btn" class="flex items-center text-sm text-gray-600 dark:text-gray-300 hover:text-primary">
+                        <i class="fas fa-sign-out-alt mr-1"></i>
+                        <span class="hidden sm:inline-block">Déconnexion</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main content -->
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <!-- Tabs -->
+            <div class="border-b border-gray-200 dark:border-dark-border mb-6">
+                <ul class="flex -mb-px">
+                    <li class="mr-1">
+                        <button id="tab-all" class="tab-btn inline-block px-4 py-2 font-medium text-sm rounded-t-md border-b-2 border-transparent hover:border-gray-300 dark:hover:border-gray-600 focus:outline-none" data-tab="all">
+                            Tous les pronostics
+                        </button>
+                    </li>
+                    <li class="mr-1">
+                        <button id="tab-safes" class="tab-btn inline-block px-4 py-2 font-medium text-sm rounded-t-md border-b-2 border-transparent hover:border-gray-300 dark:hover:border-gray-600 focus:outline-none" data-tab="safes">
+                            Safes du jour
+                        </button>
+                    </li>
+                    <li class="mr-1">
+                        <button id="tab-exact" class="tab-btn inline-block px-4 py-2 font-medium text-sm rounded-t-md border-b-2 border-transparent hover:border-gray-300 dark:hover:border-gray-600 focus:outline-none" data-tab="exact">
+                            Scores exacts
+                        </button>
+                    </li>
+                    <li class="mr-1">
+                        <button id="tab-ai" class="tab-btn inline-block px-4 py-2 font-medium text-sm rounded-t-md border-b-2 border-transparent hover:border-gray-300 dark:hover:border-gray-600 focus:outline-none" data-tab="ai">
+                            Prédictions IA
+                        </button>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 space-y-4 sm:space-y-0">
+                <div>
+                    <h2 class="text-xl font-bold" id="current-tab-title">Tous les pronostics</h2>
+                    <p class="text-sm text-gray-600 dark:text-gray-400"><span id="forecast-count">0</span> pronostics trouvés</p>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <input type="text" id="search-input" placeholder="Rechercher..." class="pl-9 pr-3 py-2 border border-gray-300 dark:border-dark-border rounded-md focus-ring bg-white dark:bg-dark-surface text-base">
+                        <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    </div>
+                    
+                    <button id="add-forecast-btn" class="bg-primary text-white px-4 py-2 rounded-md font-medium hover:bg-opacity-90 transition focus-ring flex items-center">
+                        <i class="fas fa-plus mr-2"></i>
+                        <span>Ajouter</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="bg-white dark:bg-dark-surface rounded-md shadow-sm p-4 mb-6">
+                <div class="flex flex-col md:flex-row md:items-center md:space-x-4 space-y-4 md:space-y-0">
+                    <div class="flex-1">
+                        <label for="status-filter" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Statut</label>
+                        <select id="status-filter" class="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-md focus-ring bg-white dark:bg-dark-surface text-base">
+                            <option value="all">Tous les statuts</option>
+                            <option value="pending">À venir</option>
+                            <option value="win">Gagné</option>
+                            <option value="loss">Perdu</option>
+                        </select>
+                    </div>
+                    
+                    <div class="flex-1">
+                        <label for="date-filter" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Date</label>
+                        <select id="date-filter" class="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-md focus-ring bg-white dark:bg-dark-surface text-base">
+                            <option value="all">Toutes les dates</option>
+                            <option value="today">Aujourd'hui</option>
+                            <option value="tomorrow">Demain</option>
+                            <option value="upcoming">7 prochains jours</option>
+                            <option value="past">Matchs passés</option>
+                        </select>
+                    </div>
+                    
+                    <div class="flex-1">
+                        <label for="league-filter" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Ligue</label>
+                        <select id="league-filter" class="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-md focus-ring bg-white dark:bg-dark-surface text-base">
+                            <option value="all">Toutes les ligues</option>
+                            <!-- Will be populated from data -->
+                        </select>
+                    </div>
+                    
+                    <div class="self-end">
+                        <button id="reset-filters-btn" class="px-4 py-2 border border-gray-300 dark:border-dark-border rounded-md hover:bg-gray-50 dark:hover:bg-dark-border transition focus-ring bg-white dark:bg-dark-surface text-base">
+                            <i class="fas fa-redo-alt mr-2"></i>
+                            Réinitialiser
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Forecasts table -->
+            <div class="bg-white dark:bg-dark-surface rounded-md shadow-sm overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200 dark:divide-dark-border">
+                        <thead class="bg-gray-50 dark:bg-dark-border/50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Match</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Prédiction</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Date</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Statut</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Type</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Confiance</th>
+                                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="forecasts-table-body" class="divide-y divide-gray-200 dark:divide-dark-border">
+                            <!-- Forecasts will be rendered here -->
+                            <tr>
+                                <td colspan="7" class="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
+                                    <div class="flex flex-col items-center py-6">
+                                        <i class="fas fa-spinner fa-spin text-3xl mb-4 text-primary"></i>
+                                        <p>Chargement des pronostics...</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="empty-state" class="hidden py-8 text-center">
+                    <div class="text-3xl text-gray-300 dark:text-gray-600 mb-4">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">Aucun pronostic trouvé</h3>
+                    <p class="text-gray-500 dark:text-gray-400 mt-2">Ajoutez de nouveaux pronostics ou modifiez vos filtres</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add/Edit Forecast Modal -->
+    <div id="forecast-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
+        <div class="bg-white dark:bg-dark-surface rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-hidden mx-4">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-dark-border">
+                <h2 class="text-lg font-bold" id="modal-title">Ajouter un pronostic</h2>
+                <button id="close-modal-btn" class="text-gray-400 hover:text-gray-500 focus:outline-none">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="overflow-y-auto p-6 max-h-[calc(90vh-160px)]">
+                <form id="forecast-form">
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Type de pronostic</label>
+                        <div class="flex flex-wrap gap-2">
+                            <input type="radio" id="type-safes" name="type" value="safes" class="hidden tag-checkbox" checked>
+                            <label for="type-safes" class="px-3 py-1 border border-gray-300 dark:border-dark-border rounded-full text-sm font-medium cursor-pointer transition-colors">
+                                Safes du jour
+                            </label>
+                            
+                            <input type="radio" id="type-exact" name="type" value="exact" class="hidden tag-checkbox">
+                            <label for="type-exact" class="px-3 py-1 border border-gray-300 dark:border-dark-border rounded-full text-sm font-medium cursor-pointer transition-colors">
+                                Scores exacts
+                            </label>
+                            
+                            <input type="radio" id="type-ai" name="type" value="ai" class="hidden tag-checkbox">
+                            <label for="type-ai" class="px-3 py-1 border border-gray-300 dark:border-dark-border rounded-full text-sm font-medium cursor-pointer transition-colors">
+                                Prédictions IA
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label for="league" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Ligue / Compétition</label>
+                            <input type="text" id="league" name="league" class="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-md focus-ring bg-white dark:bg-dark-surface text-base" required>
+                        </div>
+                        
+                        <div>
+                            <label for="match-date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Date du match</label>
+                            <input type="datetime-local" id="match-date" name="date" class="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-md focus-ring bg-white dark:bg-dark-surface text-base" required>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label for="home-team" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Équipe domicile</label>
+                            <input type="text" id="home-team" name="homeTeam" class="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-md focus-ring bg-white dark:bg-dark-surface text-base" required>
+                        </div>
+                        
+                        <div>
+                            <label for="away-team" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Équipe extérieur</label>
+                            <input type="text" id="away-team" name="awayTeam" class="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-md focus-ring bg-white dark:bg-dark-surface text-base" required>
+                        </div>
+                    </div>
+                    
+                    <!-- Type-specific fields -->
+                    <div id="safes-fields">
+                        <div class="mb-4">
+                            <label for="prediction" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Pronostic</label>
+                            <input type="text" id="prediction" name="prediction" class="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-md focus-ring bg-white dark:bg-dark-surface text-base" placeholder="Ex: 1, 1X, Over 2.5, etc." required>
+                        </div>
+                    </div>
+                    
+                    <div id="exact-fields" class="hidden">
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label for="home-score" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Score domicile</label>
+                                <input type="number" id="home-score" name="homeScore" min="0" class="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-md focus-ring bg-white dark:bg-dark-surface text-base">
+                            </div>
+                            
+                            <div>
+                                <label for="away-score" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Score extérieur</label>
+                                <input type="number" id="away-score" name="awayScore" min="0" class="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-md focus-ring bg-white dark:bg-dark-surface text-base">
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="score-options" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Options de score (séparées par des virgules)</label>
+                            <input type="text" id="score-options" name="scoreOptions" class="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-md focus-ring bg-white dark:bg-dark-surface text-base" placeholder="Ex: 1-0, 2-0, 2-1">
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Si laissé vide, le score principal sera utilisé</p>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="primary-option" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Option principale</label>
+                            <input type="text" id="primary-option" name="primaryOption" class="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-md focus-ring bg-white dark:bg-dark-surface text-base" placeholder="Ex: 2-1">
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Si laissé vide, le score principal sera utilisé</p>
+                        </div>
+                    </div>
+                    
+                    <div id="ai-fields" class="hidden">
+                        <div class="mb-4">
+                            <label for="ai-prediction" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Prédiction IA</label>
+                            <input type="text" id="ai-prediction" name="aiPrediction" class="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-md focus-ring bg-white dark:bg-dark-surface text-base" placeholder="Ex: Victoire équipe domicile">
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="analysis" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Analyse</label>
+                            <textarea id="analysis" name="analysis" rows="3" class="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-md focus-ring bg-white dark:bg-dark-surface text-base"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="confidence" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Confiance (%)</label>
+                        <div class="flex items-center">
+                            <input type="range" id="confidence" name="confidence" min="50" max="100" value="75" class="w-full mr-3 focus-ring accent-primary">
+                            <span id="confidence-value" class="w-10 text-right text-sm font-medium">75%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Statut</label>
+                            <select id="status" name="status" class="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-md focus-ring bg-white dark:bg-dark-surface text-base">
+                                <option value="pending">À venir</option>
+                                <option value="win">Gagné</option>
+                                <option value="loss">Perdu</option>
+                            </select>
+                        </div>
+                        
+                        <div id="result-fields" class="hidden">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label for="home-score-result" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Résultat domicile</label>
+                                    <input type="number" id="home-score-result" name="homeScoreResult" min="0" class="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-md focus-ring bg-white dark:bg-dark-surface text-base">
+                                </div>
+                                
+                                <div>
+                                    <label for="away-score-result" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Résultat extérieur</label>
+                                    <input type="number" id="away-score-result" name="awayScoreResult" min="0" class="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-md focus-ring bg-white dark:bg-dark-surface text-base">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <input type="hidden" id="forecast-id" name="id">
+                </form>
+            </div>
+            
+            <div class="px-6 py-4 border-t border-gray-200 dark:border-dark-border flex justify-end space-x-3">
+                <button id="delete-forecast-btn" class="px-4 py-2 bg-danger bg-opacity-10 text-danger rounded-md font-medium hover:bg-opacity-20 transition focus-ring hidden">
+                    <i class="fas fa-trash-alt mr-2"></i>
+                    Supprimer
+                </button>
+                <button id="cancel-btn" class="px-4 py-2 border border-gray-300 dark:border-dark-border rounded-md hover:bg-gray-50 dark:hover:bg-dark-border transition focus-ring bg-white dark:bg-dark-surface text-base">
+                    Annuler
+                </button>
+                <button id="save-forecast-btn" class="px-4 py-2 bg-primary text-white rounded-md font-medium hover:bg-opacity-90 transition focus-ring">
+                    <span id="save-btn-text">Enregistrer</span>
+                    <span id="save-btn-loading" class="hidden">
+                        <i class="fas fa-spinner fa-spin"></i>
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
+        <div class="bg-white dark:bg-dark-surface rounded-lg shadow-xl max-w-md w-full mx-4 p-6">
+            <div class="text-center mb-6">
+                <div class="text-3xl text-danger mb-4">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h2 class="text-xl font-bold mb-2">Confirmation de suppression</h2>
+                <p class="text-gray-600 dark:text-gray-400">Êtes-vous sûr de vouloir supprimer ce pronostic ? Cette action est irréversible.</p>
+            </div>
+            
+            <div class="flex justify-end space-x-3">
+                <button id="delete-cancel-btn" class="px-4 py-2 border border-gray-300 dark:border-dark-border rounded-md hover:bg-gray-50 dark:hover:bg-dark-border transition focus-ring bg-white dark:bg-dark-surface text-base">
+                    Annuler
+                </button>
+                <button id="delete-confirm-btn" class="px-4 py-2 bg-danger text-white rounded-md font-medium hover:bg-opacity-90 transition focus-ring">
+                    <span id="delete-btn-text">Supprimer</span>
+                    <span id="delete-btn-loading" class="hidden">
+                        <i class="fas fa-spinner fa-spin"></i>
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast notification -->
+    <div id="toast" class="fixed bottom-4 right-4 bg-white dark:bg-dark-surface shadow-lg rounded-md p-4 max-w-xs w-full flex items-start hidden">
+        <div id="toast-icon" class="mr-3 text-lg">
+            <i class="fas fa-check-circle text-success"></i>
+        </div>
+        <div class="flex-1">
+            <h3 id="toast-title" class="font-medium text-gray-900 dark:text-white">Succès</h3>
+            <p id="toast-message" class="text-sm text-gray-600 dark:text-gray-400">Opération réalisée avec succès.</p>
+        </div>
+        <button id="toast-close" class="text-gray-400 hover:text-gray-500">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <!-- Firebase scripts -->
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.3/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.7.3/firebase-auth.js";
+        import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, orderBy, addDoc, onSnapshot, where, deleteDoc, serverTimestamp, updateDoc, Timestamp } from "https://www.gstatic.com/firebasejs/11.7.3/firebase-firestore.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDTPLxUiA8lj82kqc6CyCPLQDITc0CtLUE",
+            authDomain: "ichat-betai.firebaseapp.com",
+            databaseURL: "https://ichat-betai-default-rtdb.firebaseio.com",
+            projectId: "ichat-betai",
+            storageBucket: "ichat-betai.appspot.com",
+            messagingSenderId: "168337722600",
+            appId: "1:168337722600:web:beb331f83cc4778c5b4d5d",
+            measurementId: "G-STXPSZN7X8"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Global variables
+        let currentUser = null;
+        let allForecasts = [];
+        let filteredForecasts = [];
+        let currentTab = 'all';
+        let forecasts = [];
+        let currentForecastId = null;
+        let forecastsUnsubscribe = null;
+        let leaguesList = [];
+
+        // DOM Elements
+        const loadingScreen = document.getElementById('loading-screen');
+        const loginContainer = document.getElementById('login-container');
+        const appContainer = document.getElementById('app-container');
+        const forecastsTableBody = document.getElementById('forecasts-table-body');
+        const emptyState = document.getElementById('empty-state');
+        const forecastCountEl = document.getElementById('forecast-count');
+        const forecastModal = document.getElementById('forecast-modal');
+        const deleteModal = document.getElementById('delete-modal');
+        const toast = document.getElementById('toast');
+        const currentTabTitle = document.getElementById('current-tab-title');
+
+        // --------- Authentication ---------
+        
+        // Authentication state change listener
+        onAuthStateChanged(auth, (user) => {
+            currentUser = user;
+            
+            if (user) {
+                // User is signed in
+                console.log("User is signed in:", user.email);
+                showApp();
+                loadForecasts();
+            } else {
+                // User is signed out
+                console.log("User is signed out");
+                showLogin();
+                
+                // Unsubscribe from forecasts listener if active
+                if (forecastsUnsubscribe) {
+                    forecastsUnsubscribe();
+                    forecastsUnsubscribe = null;
+                }
+            }
+            
+            // Hide loading screen after auth state is determined
+            setTimeout(() => {
+                loadingScreen.style.display = 'none';
+            }, 500);
+        });
+        
+        // Login function
+        async function loginUser(email, password) {
+            try {
+                setLoginLoading(true);
+                await signInWithEmailAndPassword(auth, email, password);
+                // Auth state change listener will handle the redirect
+            } catch (error) {
+                console.error("Login error:", error);
+                const errorMessage = getAuthErrorMessage(error);
+                showLoginError(errorMessage);
+                setLoginLoading(false);
+            }
+        }
+        
+        // Logout function
+        async function logoutUser() {
+            try {
+                await signOut(auth);
+                // Auth state change listener will handle the redirect
+            } catch (error) {
+                console.error("Logout error:", error);
+                showToast('Erreur', 'Erreur lors de la déconnexion', 'error');
+            }
+        }
+        
+        // Show login page
+        function showLogin() {
+            loginContainer.style.display = 'flex';
+            appContainer.classList.add('hidden');
+        }
+        
+        // Show app page
+        function showApp() {
+            loginContainer.style.display = 'none';
+            appContainer.classList.remove('hidden');
+        }
+        
+        // Set login button loading state
+        function setLoginLoading(isLoading) {
+            const loginBtn = document.getElementById('login-btn');
+            const loginBtnText = document.getElementById('login-btn-text');
+            const loginBtnLoading = document.getElementById('login-btn-loading');
+            
+            if (isLoading) {
+                loginBtn.disabled = true;
+                loginBtnText.classList.add('hidden');
+                loginBtnLoading.classList.remove('hidden');
+            } else {
+                loginBtn.disabled = false;
+                loginBtnText.classList.remove('hidden');
+                loginBtnLoading.classList.add('hidden');
+            }
+        }
+        
+        // Show login error
+        function showLoginError(message) {
+            const errorEl = document.getElementById('login-error');
+            errorEl.textContent = message;
+            errorEl.classList.remove('hidden');
+        }
+        
+        // Get auth error message
+        function getAuthErrorMessage(error) {
+            switch (error.code) {
+                case 'auth/invalid-email':
+                    return 'Adresse email invalide.';
+                case 'auth/user-disabled':
+                    return 'Ce compte utilisateur a été désactivé.';
+                case 'auth/user-not-found':
+                    return 'Aucun compte ne correspond à cette adresse email.';
+                case 'auth/wrong-password':
+                    return 'Mot de passe incorrect.';
+                case 'auth/too-many-requests':
+                    return 'Trop de tentatives de connexion. Veuillez réessayer plus tard.';
+                default:
+                    return `Erreur de connexion: ${error.message}`;
+            }
+        }
+
+        // --------- Forecasts Management ---------
+        
+        // Load forecasts from Firestore
+        async function loadForecasts() {
+            if (forecastsUnsubscribe) {
+                forecastsUnsubscribe();
+            }
+            
+            try {
+                const forecastsRef = collection(db, "forecasts");
+                const q = query(forecastsRef, orderBy("date", "desc"));
+                
+                // Real-time listener
+                forecastsUnsubscribe = onSnapshot(q, (snapshot) => {
+                    allForecasts = snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        ...doc.data(),
+                        // Convert Firestore timestamp to JS Date
+                        date: doc.data().date ? doc.data().date.toDate() : new Date()
+                    }));
+                    
+                    // Extract and update leagues list
+                    updateLeaguesList();
+                    
+                    // Apply current filters
+                    applyFilters();
+                }, (error) => {
+                    console.error("Error loading forecasts:", error);
+                    showToast('Erreur', 'Erreur lors du chargement des pronostics', 'error');
+                });
+            } catch (error) {
+                console.error("Error setting up forecasts listener:", error);
+                showToast('Erreur', 'Erreur lors du chargement des pronostics', 'error');
+            }
+        }
+        
+        // Update leagues dropdown from available data
+        function updateLeaguesList() {
+            const leagueFilter = document.getElementById('league-filter');
+            const uniqueLeagues = [...new Set(allForecasts.map(forecast => forecast.league))].filter(Boolean);
+            uniqueLeagues.sort();
+            
+            // Save current selection
+            const currentValue = leagueFilter.value;
+            
+            // Clear options except the first one
+            while (leagueFilter.options.length > 1) {
+                leagueFilter.options.remove(1);
+            }
+            
+            // Add leagues
+            uniqueLeagues.forEach(league => {
+                const option = document.createElement('option');
+                option.value = league;
+                option.textContent = league;
+                leagueFilter.appendChild(option);
+            });
+            
+            // Restore selection if it still exists
+            if (uniqueLeagues.includes(currentValue)) {
+                leagueFilter.value = currentValue;
+            }
+            
+            // Update the leagues list for reference
+            leaguesList = uniqueLeagues;
+        }
+        
+        // Apply filters to forecasts
+        function applyFilters() {
+            const searchQuery = document.getElementById('search-input').value.toLowerCase();
+            const statusFilter = document.getElementById('status-filter').value;
+            const dateFilter = document.getElementById('date-filter').value;
+            const leagueFilter = document.getElementById('league-filter').value;
+            
+            // First filter by tab (type)
+            filteredForecasts = allForecasts.filter(forecast => {
+                if (currentTab === 'all') return true;
+                return forecast.type === currentTab;
+            });
+            
+            // Then apply search filter
+            if (searchQuery) {
+                filteredForecasts = filteredForecasts.filter(forecast => {
+                    const homeTeam = forecast.homeTeam?.toLowerCase() || '';
+                    const awayTeam = forecast.awayTeam?.toLowerCase() || '';
+                    const league = forecast.league?.toLowerCase() || '';
+                    const prediction = forecast.prediction?.toLowerCase() || '';
+                    
+                    return homeTeam.includes(searchQuery) || 
+                           awayTeam.includes(searchQuery) || 
+                           league.includes(searchQuery) ||
+                           prediction.includes(searchQuery);
+                });
+            }
+            
+            // Apply status filter
+            if (statusFilter !== 'all') {
+                filteredForecasts = filteredForecasts.filter(forecast => forecast.status === statusFilter);
+            }
+            
+            // Apply league filter
+            if (leagueFilter !== 'all') {
+                filteredForecasts = filteredForecasts.filter(forecast => forecast.league === leagueFilter);
+            }
+            
+            // Apply date filter
+            if (dateFilter !== 'all') {
+                const now = new Date();
+                const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                const tomorrow = new Date(today);
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                const nextWeek = new Date(today);
+                nextWeek.setDate(nextWeek.getDate() + 7);
+                
+                filteredForecasts = filteredForecasts.filter(forecast => {
+                    const forecastDate = new Date(forecast.date);
+                    const forecastDay = new Date(forecastDate.getFullYear(), forecastDate.getMonth(), forecastDate.getDate());
+                    
+                    if (dateFilter === 'today') {
+                        return forecastDay.getTime() === today.getTime();
+                    } else if (dateFilter === 'tomorrow') {
+                        return forecastDay.getTime() === tomorrow.getTime();
+                    } else if (dateFilter === 'upcoming') {
+                        return forecastDay >= today && forecastDay <= nextWeek;
+                    } else if (dateFilter === 'past') {
+                        return forecastDay < today;
+                    }
+                    return true;
+                });
+            }
+            
+            // Update UI
+            updateForecastsList();
+        }
+        
+        // Update forecasts table with filtered data
+        function updateForecastsList() {
+            forecastsTableBody.innerHTML = '';
+            forecastCountEl.textContent = filteredForecasts.length;
+            
+            if (filteredForecasts.length === 0) {
+                forecastsTableBody.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+            
+            emptyState.classList.add('hidden');
+            
+            filteredForecasts.forEach(forecast => {
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50 dark:hover:bg-dark-border/30';
+                
+                // Format date
+                const date = new Date(forecast.date);
+                const formattedDate = new Intl.DateTimeFormat('fr-FR', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                }).format(date);
+                
+                // Get prediction based on forecast type
+                let predictionText = '';
+                if (forecast.type === 'safes') {
+                    predictionText = forecast.prediction || '';
+                } else if (forecast.type === 'exact') {
+                    predictionText = forecast.primaryOption || `${forecast.homeScore || 0}-${forecast.awayScore || 0}`;
+                } else if (forecast.type === 'ai') {
+                    predictionText = forecast.prediction || '';
+                }
+                
+                // Get status class
+                let statusClass = '';
+                let statusText = '';
+                
+                switch (forecast.status) {
+                    case 'win':
+                        statusClass = 'bg-success/10 text-success';
+                        statusText = 'Gagné';
+                        break;
+                    case 'loss':
+                        statusClass = 'bg-danger/10 text-danger';
+                        statusText = 'Perdu';
+                        break;
+                    default:
+                        statusClass = 'bg-warning/10 text-warning';
+                        statusText = 'À venir';
+                }
+                
+                // Get type class and label
+                let typeClass = '';
+                let typeText = '';
+                
+                switch (forecast.type) {
+                    case 'safes':
+                        typeClass = 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300';
+                        typeText = 'Safe';
+                        break;
+                    case 'exact':
+                        typeClass = 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300';
+                        typeText = 'Exact';
+                        break;
+                    case 'ai':
+                        typeClass = 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300';
+                        typeText = 'IA';
+                        break;
+                }
+                
+                // Create table row
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="font-medium">${forecast.homeTeam} vs ${forecast.awayTeam}</div>
+                        <div class="text-sm text-gray-500 dark:text-gray-400">${forecast.league}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="font-medium">${predictionText}</div>
+                        ${forecast.status !== 'pending' ? `<div class="text-sm text-gray-500 dark:text-gray-400">Résultat: ${forecast.homeScoreResult || 0} - ${forecast.awayScoreResult || 0}</div>` : ''}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-gray-500 dark:text-gray-400">${formattedDate}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 py-1 text-xs font-medium rounded-full ${statusClass}">${statusText}</span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 py-1 text-xs font-medium rounded-full ${typeClass}">${typeText}</span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <div class="w-16 h-2 bg-gray-200 dark:bg-dark-border rounded-full overflow-hidden mr-2">
+                                <div class="h-full bg-primary" style="width: ${forecast.confidence || 75}%"></div>
+                            </div>
+                            <span class="text-sm">${forecast.confidence || 75}%</span>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right">
+                        <button class="text-primary hover:text-primary/80 edit-btn p-1 mr-2" data-id="${forecast.id}">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="text-danger hover:text-danger/80 delete-btn p-1" data-id="${forecast.id}">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </td>
+                `;
+                
+                // Add event listeners
+                const editBtn = row.querySelector('.edit-btn');
+                const deleteBtn = row.querySelector('.delete-btn');
+                
+                editBtn.addEventListener('click', () => {
+                    editForecast(forecast.id);
+                });
+                
+                deleteBtn.addEventListener('click', () => {
+                    showDeleteConfirmation(forecast.id);
+                });
+                
+                forecastsTableBody.appendChild(row);
+            });
+        }
+        
+        // Add new forecast
+        async function addForecast(forecastData) {
+            try {
+                setSaveLoading(true);
+                
+                // Set required fields based on type
+                const type = forecastData.type;
+                const data = {
+                    type: type,
+                    league: forecastData.league,
+                    homeTeam: forecastData.homeTeam,
+                    awayTeam: forecastData.awayTeam,
+                    confidence: parseInt(forecastData.confidence) || 75,
+                    status: forecastData.status,
+                    date: Timestamp.fromDate(new Date(forecastData.date))
+                };
+                
+                // Add type-specific fields
+                if (type === 'safes') {
+                    data.prediction = forecastData.prediction;
+                } else if (type === 'exact') {
+                    data.homeScore = parseInt(forecastData.homeScore) || 0;
+                    data.awayScore = parseInt(forecastData.awayScore) || 0;
+                    
+                    // Handle score options
+                    if (forecastData.scoreOptions && forecastData.scoreOptions.trim()) {
+                        data.scoreOptions = forecastData.scoreOptions
+                            .split(',')
+                            .map(option => option.trim())
+                            .filter(option => option);
+                    }
+                    
+                    // Handle primary option
+                    if (forecastData.primaryOption && forecastData.primaryOption.trim()) {
+                        data.primaryOption = forecastData.primaryOption.trim();
+                    }
+                } else if (type === 'ai') {
+                    data.prediction = forecastData.aiPrediction;
+                    data.analysis = forecastData.analysis;
+                }
+                
+                // Add result fields if status is not pending
+                if (forecastData.status !== 'pending') {
+                    data.homeScoreResult = parseInt(forecastData.homeScoreResult) || 0;
+                    data.awayScoreResult = parseInt(forecastData.awayScoreResult) || 0;
+                }
+                
+                // Add forecast to Firestore
+                const forecastsRef = collection(db, 'forecasts');
+                await addDoc(forecastsRef, data);
+                
+                showToast('Succès', 'Pronostic ajouté avec succès', 'success');
+                closeModal();
+            } catch (error) {
+                console.error('Error adding forecast:', error);
+                showToast('Erreur', 'Erreur lors de l\'ajout du pronostic', 'error');
+            } finally {
+                setSaveLoading(false);
+            }
+        }
+        
+        // Update existing forecast
+        async function updateForecast(id, forecastData) {
+            try {
+                setSaveLoading(true);
+                
+                // Set required fields based on type
+                const type = forecastData.type;
+                const data = {
+                    type: type,
+                    league: forecastData.league,
+                    homeTeam: forecastData.homeTeam,
+                    awayTeam: forecastData.awayTeam,
+                    confidence: parseInt(forecastData.confidence) || 75,
+                    status: forecastData.status,
+                    date: Timestamp.fromDate(new Date(forecastData.date))
+                };
+                
+                // Add type-specific fields
+                if (type === 'safes') {
+                    data.prediction = forecastData.prediction;
+                } else if (type === 'exact') {
+                    data.homeScore = parseInt(forecastData.homeScore) || 0;
+                    data.awayScore = parseInt(forecastData.awayScore) || 0;
+                    
+                    // Handle score options
+                    if (forecastData.scoreOptions && forecastData.scoreOptions.trim()) {
+                        data.scoreOptions = forecastData.scoreOptions
+                            .split(',')
+                            .map(option => option.trim())
+                            .filter(option => option);
+                    }
+                    
+                    // Handle primary option
+                    if (forecastData.primaryOption && forecastData.primaryOption.trim()) {
+                        data.primaryOption = forecastData.primaryOption.trim();
+                    }
+                } else if (type === 'ai') {
+                    data.prediction = forecastData.aiPrediction;
+                    data.analysis = forecastData.analysis;
+                }
+                
+                // Add result fields if status is not pending
+                if (forecastData.status !== 'pending') {
+                    data.homeScoreResult = parseInt(forecastData.homeScoreResult) || 0;
+                    data.awayScoreResult = parseInt(forecastData.awayScoreResult) || 0;
+                }
+                
+                // Update forecast in Firestore
+                const forecastRef = doc(db, 'forecasts', id);
+                await updateDoc(forecastRef, data);
+                
+                showToast('Succès', 'Pronostic mis à jour avec succès', 'success');
+                closeModal();
+            } catch (error) {
+                console.error('Error updating forecast:', error);
+                showToast('Erreur', 'Erreur lors de la mise à jour du pronostic', 'error');
+            } finally {
+                setSaveLoading(false);
+            }
+        }
+        
+        // Delete forecast
+        async function deleteForecast(id) {
+            try {
+                setDeleteLoading(true);
+                
+                // Delete forecast from Firestore
+                const forecastRef = doc(db, 'forecasts', id);
+                await deleteDoc(forecastRef);
+                
+                showToast('Succès', 'Pronostic supprimé avec succès', 'success');
+                closeDeleteModal();
+            } catch (error) {
+                console.error('Error deleting forecast:', error);
+                showToast('Erreur', 'Erreur lors de la suppression du pronostic', 'error');
+            } finally {
+                setDeleteLoading(false);
+            }
+        }
+        
+        // Edit existing forecast
+        function editForecast(id) {
+            currentForecastId = id;
+            const forecast = allForecasts.find(f => f.id === id);
+            
+            if (!forecast) {
+                showToast('Erreur', 'Pronostic introuvable', 'error');
+                return;
+            }
+            
+            // Set modal title
+            document.getElementById('modal-title').textContent = 'Modifier un pronostic';
+            
+            // Show delete button
+            document.getElementById('delete-forecast-btn').classList.remove('hidden');
+            
+            // Set forecast type
+            document.getElementById(`type-${forecast.type}`).checked = true;
+            toggleTypeFields(forecast.type);
+            
+            // Set common fields
+            document.getElementById('forecast-id').value = id;
+            document.getElementById('league').value = forecast.league || '';
+            document.getElementById('home-team').value = forecast.homeTeam || '';
+            document.getElementById('away-team').value = forecast.awayTeam || '';
+            document.getElementById('confidence').value = forecast.confidence || 75;
+            document.getElementById('confidence-value').textContent = `${forecast.confidence || 75}%`;
+            document.getElementById('status').value = forecast.status || 'pending';
+            
+            // Set date (convert to local datetime format)
+            const date = new Date(forecast.date);
+            const localDate = new Date(date.getTime() - (date.getTimezoneOffset() * 60000))
+                .toISOString()
+                .slice(0, 16);
+            document.getElementById('match-date').value = localDate;
+            
+            // Set type-specific fields
+            if (forecast.type === 'safes') {
+                document.getElementById('prediction').value = forecast.prediction || '';
+            } else if (forecast.type === 'exact') {
+                document.getElementById('home-score').value = forecast.homeScore || 0;
+                document.getElementById('away-score').value = forecast.awayScore || 0;
+                
+                // Set score options
+                if (forecast.scoreOptions && Array.isArray(forecast.scoreOptions)) {
+                    document.getElementById('score-options').value = forecast.scoreOptions.join(', ');
+                } else {
+                    document.getElementById('score-options').value = '';
+                }
+                
+                // Set primary option
+                document.getElementById('primary-option').value = forecast.primaryOption || '';
+            } else if (forecast.type === 'ai') {
+                document.getElementById('ai-prediction').value = forecast.prediction || '';
+                document.getElementById('analysis').value = forecast.analysis || '';
+            }
+            
+            // Set result fields
+            if (forecast.status !== 'pending') {
+                document.getElementById('result-fields').classList.remove('hidden');
+                document.getElementById('home-score-result').value = forecast.homeScoreResult || 0;
+                document.getElementById('away-score-result').value = forecast.awayScoreResult || 0;
+            } else {
+                document.getElementById('result-fields').classList.add('hidden');
+            }
+            
+            // Show modal
+            openModal();
+        }
+        
+        // Show delete confirmation modal
+        function showDeleteConfirmation(id) {
+            currentForecastId = id;
+            deleteModal.classList.remove('hidden');
+        }
+
+        // --------- UI Functions ---------
+        
+        // Open modal for adding new forecast
+        function openAddModal() {
+            // Reset form
+            document.getElementById('forecast-form').reset();
+            
+            // Set default values
+            document.getElementById('type-safes').checked = true;
+            document.getElementById('forecast-id').value = '';
+            document.getElementById('confidence').value = 75;
+            document.getElementById('confidence-value').textContent = '75%';
+            document.getElementById('status').value = 'pending';
+            document.getElementById('result-fields').classList.add('hidden');
+            
+            // Set default date to now
+            const now = new Date();
+            const localDate = new Date(now.getTime() - (now.getTimezoneOffset() * 60000))
+                .toISOString()
+                .slice(0, 16);
+            document.getElementById('match-date').value = localDate;
+            
+            // Show safes fields by default
+            toggleTypeFields('safes');
+            
+            // Set modal title
+            document.getElementById('modal-title').textContent = 'Ajouter un pronostic';
+            
+            // Hide delete button
+            document.getElementById('delete-forecast-btn').classList.add('hidden');
+            
+            // Show modal
+            openModal();
+        }
+        
+        // Open modal
+        function openModal() {
+            forecastModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // Close modal
+        function closeModal() {
+            forecastModal.classList.add('hidden');
+            document.body.style.overflow = '';
+            currentForecastId = null;
+        }
+        
+        // Close delete modal
+        function closeDeleteModal() {
+            deleteModal.classList.add('hidden');
+            currentForecastId = null;
+        }
+        
+        // Toggle type-specific fields
+        function toggleTypeFields(type) {
+            const safesFields = document.getElementById('safes-fields');
+            const exactFields = document.getElementById('exact-fields');
+            const aiFields = document.getElementById('ai-fields');
+            
+            safesFields.classList.add('hidden');
+            exactFields.classList.add('hidden');
+            aiFields.classList.add('hidden');
+            
+            if (type === 'safes') {
+                safesFields.classList.remove('hidden');
+            } else if (type === 'exact') {
+                exactFields.classList.remove('hidden');
+            } else if (type === 'ai') {
+                aiFields.classList.remove('hidden');
+            }
+        }
+        
+        // Toggle result fields based on status
+        function toggleResultFields(status) {
+            const resultFields = document.getElementById('result-fields');
+            
+            if (status === 'pending') {
+                resultFields.classList.add('hidden');
+            } else {
+                resultFields.classList.remove('hidden');
+            }
+        }
+        
+        // Set save button loading state
+        function setSaveLoading(isLoading) {
+            const saveBtn = document.getElementById('save-forecast-btn');
+            const saveBtnText = document.getElementById('save-btn-text');
+            const saveBtnLoading = document.getElementById('save-btn-loading');
+            
+            if (isLoading) {
+                saveBtn.disabled = true;
+                saveBtnText.classList.add('hidden');
+                saveBtnLoading.classList.remove('hidden');
+            } else {
+                saveBtn.disabled = false;
+                saveBtnText.classList.remove('hidden');
+                saveBtnLoading.classList.add('hidden');
+            }
+        }
+        
+        // Set delete button loading state
+        function setDeleteLoading(isLoading) {
+            const deleteBtn = document.getElementById('delete-confirm-btn');
+            const deleteBtnText = document.getElementById('delete-btn-text');
+            const deleteBtnLoading = document.getElementById('delete-btn-loading');
+            
+            if (isLoading) {
+                deleteBtn.disabled = true;
+                deleteBtnText.classList.add('hidden');
+                deleteBtnLoading.classList.remove('hidden');
+            } else {
+                deleteBtn.disabled = false;
+                deleteBtnText.classList.remove('hidden');
+                deleteBtnLoading.classList.add('hidden');
+            }
+        }
+        
+        // Show toast notification
+        function showToast(title, message, type = 'success') {
+            const toastEl = document.getElementById('toast');
+            const titleEl = document.getElementById('toast-title');
+            const messageEl = document.getElementById('toast-message');
+            const iconEl = document.getElementById('toast-icon');
+            
+            // Set content
+            titleEl.textContent = title;
+            messageEl.textContent = message;
+            
+            // Set icon and color based on type
+            let iconClass = 'fa-check-circle text-success';
+            if (type === 'error') {
+                iconClass = 'fa-exclamation-circle text-danger';
+            } else if (type === 'warning') {
+                iconClass = 'fa-exclamation-triangle text-warning';
+            } else if (type === 'info') {
+                iconClass = 'fa-info-circle text-primary';
+            }
+            
+            iconEl.innerHTML = `<i class="fas ${iconClass}"></i>`;
+            
+            // Show toast with animation
+            toastEl.classList.remove('toast-exit');
+            toastEl.classList.add('toast-enter');
+            toastEl.classList.remove('hidden');
+            
+            // Hide after 3 seconds
+            clearTimeout(window.toastTimeout);
+            window.toastTimeout = setTimeout(() => {
+                toastEl.classList.remove('toast-enter');
+                toastEl.classList.add('toast-exit');
+                
+                setTimeout(() => {
+                    toastEl.classList.add('hidden');
+                    toastEl.classList.remove('toast-exit');
+                }, 300);
+            }, 3000);
+        }
+        
+        // Switch to tab
+        function switchTab(tabId) {
+            // Update current tab
+            currentTab = tabId;
+            
+            // Update tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                if (btn.dataset.tab === tabId) {
+                    btn.classList.add('text-primary', 'border-primary');
+                } else {
+                    btn.classList.remove('text-primary', 'border-primary');
+                }
+            });
+            
+            // Update tab title
+            const titles = {
+                'all': 'Tous les pronostics',
+                'safes': 'Safes du jour',
+                'exact': 'Scores exacts',
+                'ai': 'Prédictions IA'
+            };
+            currentTabTitle.textContent = titles[tabId] || 'Pronostics';
+            
+            // Apply filters
+            applyFilters();
+        }
+        
+        // Reset filters
+        function resetFilters() {
+            document.getElementById('search-input').value = '';
+            document.getElementById('status-filter').value = 'all';
+            document.getElementById('date-filter').value = 'all';
+            document.getElementById('league-filter').value = 'all';
+            
+            applyFilters();
+        }
+        
+        // Get form data
+        function getFormData() {
+            const form = document.getElementById('forecast-form');
+            const formData = new FormData(form);
+            const data = {};
+            
+            // Get radio button value for type
+            data.type = document.querySelector('input[name="type"]:checked').value;
+            
+            // Get other form data
+            for (const [key, value] of formData.entries()) {
+                if (key !== 'type') {
+                    data[key] = value;
+                }
+            }
+            
+            // If type is 'ai', get the prediction from ai-prediction field
+            if (data.type === 'ai') {
+                data.aiPrediction = formData.get('aiPrediction');
+            }
+            
+            return data;
+        }
+        
+        // Form validation
+        function validateForm(data) {
+            // Basic validation
+            if (!data.league || !data.homeTeam || !data.awayTeam || !data.date) {
+                showToast('Erreur', 'Veuillez remplir tous les champs obligatoires', 'error');
+                return false;
+            }
+            
+            // Type-specific validation
+            if (data.type === 'safes' && !data.prediction) {
+                showToast('Erreur', 'Veuillez saisir une prédiction', 'error');
+                return false;
+            }
+            
+            if (data.type === 'exact' && (data.homeScore === undefined || data.awayScore === undefined)) {
+                showToast('Erreur', 'Veuillez saisir les scores', 'error');
+                return false;
+            }
+            
+            if (data.type === 'ai' && !data.aiPrediction) {
+                showToast('Erreur', 'Veuillez saisir une prédiction IA', 'error');
+                return false;
+            }
+            
+            // Result validation if status is not pending
+            if (data.status !== 'pending' && (data.homeScoreResult === undefined || data.awayScoreResult === undefined)) {
+                showToast('Erreur', 'Veuillez saisir les scores du résultat', 'error');
+                return false;
+            }
+            
+            return true;
+        }
+        
+        // Toggle dark mode
+        function toggleDarkMode() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('darkMode', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('darkMode', 'dark');
+            }
+        }
+        
+        // Set initial dark mode
+        function setInitialDarkMode() {
+            const savedTheme = localStorage.getItem('darkMode');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        }
+        
+        // Listen for dark mode changes
+        function setupDarkModeListener() {
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+                const savedTheme = localStorage.getItem('darkMode');
+                if (!savedTheme) {
+                    if (e.matches) {
+                        document.documentElement.classList.add('dark');
+                    } else {
+                        document.documentElement.classList.remove('dark');
+                    }
+                }
+            });
+        }
+
+        // --------- Event Listeners ---------
+        
+        // Login form submission
+        document.getElementById('login-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            
+            if (!email || !password) {
+                showLoginError('Veuillez remplir tous les champs.');
+                return;
+            }
+            
+            loginUser(email, password);
+        });
+        
+        // Login input keypress
+        document.getElementById('password').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                document.getElementById('login-btn').click();
+            }
+        });
+        
+        // Logout button
+        document.getElementById('logout-btn').addEventListener('click', logoutUser);
+        
+        // Tab switching
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+        });
+        
+        // Search input
+        document.getElementById('search-input').addEventListener('input', () => {
+            applyFilters();
+        });
+        
+        // Filter changes
+        document.getElementById('status-filter').addEventListener('change', applyFilters);
+        document.getElementById('date-filter').addEventListener('change', applyFilters);
+        document.getElementById('league-filter').addEventListener('change', applyFilters);
+        
+        // Reset filters button
+        document.getElementById('reset-filters-btn').addEventListener('click', resetFilters);
+        
+        // Add forecast button
+        document.getElementById('add-forecast-btn').addEventListener('click', openAddModal);
+        
+        // Close modal button
+        document.getElementById('close-modal-btn').addEventListener('click', closeModal);
+        document.getElementById('cancel-btn').addEventListener('click', closeModal);
+        
+        // Type radio buttons
+        document.querySelectorAll('input[name="type"]').forEach(radio => {
+            radio.addEventListener('change', () => toggleTypeFields(radio.value));
+        });
+        
+        // Status dropdown
+        document.getElementById('status').addEventListener('change', (e) => {
+            toggleResultFields(e.target.value);
+        });
+        
+        // Confidence slider
+        document.getElementById('confidence').addEventListener('input', (e) => {
+            document.getElementById('confidence-value').textContent = `${e.target.value}%`;
+        });
+        
+        // Save forecast button
+        document.getElementById('save-forecast-btn').addEventListener('click', async () => {
+            const data = getFormData();
+            
+            if (!validateForm(data)) return;
+            
+            if (currentForecastId) {
+                await updateForecast(currentForecastId, data);
+            } else {
+                await addForecast(data);
+            }
+        });
+        
+        // Delete forecast button in modal
+        document.getElementById('delete-forecast-btn').addEventListener('click', () => {
+            showDeleteConfirmation(currentForecastId);
+        });
+        
+        // Delete confirmation buttons
+        document.getElementById('delete-cancel-btn').addEventListener('click', closeDeleteModal);
+        document.getElementById('delete-confirm-btn').addEventListener('click', () => {
+            if (currentForecastId) {
+                deleteForecast(currentForecastId);
+            }
+        });
+        
+        // Toast close button
+        document.getElementById('toast-close').addEventListener('click', () => {
+            document.getElementById('toast').classList.add('hidden');
+            clearTimeout(window.toastTimeout);
+        });
+        
+        // Dark mode toggle
+        document.getElementById('theme-toggle').addEventListener('click', toggleDarkMode);
+        
+        // Initialization
+        setInitialDarkMode();
+        setupDarkModeListener();
+        switchTab('all');
+    </script>
+</body>
+</html>
