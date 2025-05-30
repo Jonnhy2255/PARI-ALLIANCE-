@@ -7389,18 +7389,169 @@
             try {
                 const messagesContainer = document.getElementById('chat-messages');
                 if (!messagesContainer) return;
-                
+
                 messagesContainer.innerHTML = `
                     <div style="text-align: center; padding: 20px;">
                         <i class="fas fa-spinner fa-spin" style="font-size: 30px; color: var(--primary-color);"></i>
                         <div style="margin-top: 10px; font-weight: bold;">Chargement des messages...</div>
                     </div>
                 `;
-                
+
                 if (chatUnsubscribers[groupId]) {
                     chatUnsubscribers[groupId]();
                     delete chatUnsubscribers[groupId];
                 }
+
+                const messagesRef = collection(db, "groups", groupId, "messages");
+                const q = query(messagesRef, orderBy("createdAt", "asc"));
+
+                // Track processed message IDs to prevent duplicates
+                const processedMessageIds = new Set();
+
+                chatUnsubscribers[groupId] = onSnapshot(q, (snapshot) => {
+                    if (currentGroupId !== groupId) return;
+
+                    // Handle multiple updates, only rebuild UI for large changes
+                    if (snapshot.docChanges().length > 10 || messagesContainer.children.length <= 1) {
+                        // Full rebuild
+                        messagesContainer.innerHTML = '';
+                        processedMessageIds.clear(); // Reset processed IDs
+
+                        if (snapshot.empty) {
+                            messagesContainer.innerHTML = `
+                                <div style="text-align: center; padding: 20px; color: var(--inactive-text);">
+                                    <i class="fas fa-comments" style="font-size: 30px; margin-bottom: 10px;"></i>
+                                    <div>Aucun message. Soyez le premier à écrire !</div>
+                                </div>
+                            `;
+                            return;
+                        }
+
+                        // Process all messages in batch to prevent race conditions
+                        const processAllMessages = async () => {
+                            let lastDate = null;
+
+                            for (const doc of snapshot.docs) {
+                                const messageData = doc.data();
+                                const messageId = doc.id;
+
+                                // Skip if already processed
+                                if (processedMessageIds.has(messageId)) continue;
+                                processedMessageIds.add(messageId);
+
+                                // Check if we need to add a date separator
+                                if (messageData.createdAt) {
+                                    const messageDate = messageData.createdAt.toDate();
+                                    const messageDay = new Date(messageDate.getFullYear(), messageDate.getMonth(), messageDate.getDate());
+
+                                    if (!lastDate || messageDay.getTime() !== lastDate.getTime()) {
+                                        const dateSeparator = createDateSeparator(messageDate);
+                                        messagesContainer.appendChild(dateSeparator);
+                                        lastDate = messageDay;
+                                    }
+                                }
+
+                                const messageElement = await createMessageElement(messageId, messageData);
+                                messagesContainer.appendChild(messageElement);
+                            }
+
+                            // Check if we need to add restricted message
+                            if (currentGroupData.allowPublicMessages === false) {
+                                checkSendPermissions();
+                            }
+
+                            scrollToBottom();
+                        };
+
+                        processAllMessages();
+
+                    } else {
+                        // Handle individual changes sequentially to avoid race conditions
+                        const processChanges = async () => {
+                            let needsScroll = false;
+
+                            for (const change of snapshot.docChanges()) {
+                                const messageData = change.doc.data();
+                                const messageId = change.doc.id;
+
+                                if (change.type === "added") {
+                                    // Double check to prevent duplicates
+                                    if (processedMessageIds.has(messageId) || 
+                                        document.querySelector(`[data-id="${messageId}"]`)) {
+                                        continue;
+                                    }
+
+                                    processedMessageIds.add(messageId);
+
+                                    // Check if we need to add a date separator
+                                    if (messageData.createdAt) {
+                                        const messageDate = messageData.createdAt.toDate();
+                                        const messageDay = new Date(messageDate.getFullYear(), messageDate.getMonth(), messageDate.getDate());
+
+                                        // Check if we need a new separator
+                                        const dateSeparators = Array.from(messagesContainer.querySelectorAll('.date-separator'));
+                                        let needsNewSeparator = true;
+
+                                        if (dateSeparators.length > 0) {
+                                            const lastSeparator = dateSeparators[dateSeparators.length - 1];
+                                            const lastSeparatorDate = new Date(lastSeparator.getAttribute('data-date'));
+                                            if (lastSeparatorDate && messageDay.getTime() === lastSeparatorDate.getTime()) {
+                                                needsNewSeparator = false;
+                                            }
+                                        }
+
+                                        if (needsNewSeparator) {
+                                            const dateSeparator = createDateSeparator(messageDate);
+                                            messagesContainer.appendChild(dateSeparator);
+                                        }
+                                    }
+
+                                    const messageElement = await createMessageElement(messageId, messageData);
+                                    messagesContainer.appendChild(messageElement);
+                                    needsScroll = true;
+
+                                } else if (change.type === "modified") {
+                                    const existingMessage = document.querySelector(`[data-id="${messageId}"]`);
+                                    if (existingMessage) {
+                                        const newMessage = await createMessageElement(messageId, messageData);
+                                        existingMessage.parentNode.replaceChild(newMessage, existingMessage);
+                                    }
+                                } else if (change.type === "removed") {
+                                    const existingMessage = document.querySelector(`[data-id="${messageId}"]`);
+                                    if (existingMessage) {
+                                        existingMessage.parentNode.removeChild(existingMessage);
+                                        processedMessageIds.delete(messageId);
+                                    }
+                                }
+                            }
+
+                            if (needsScroll) {
+                                scrollToBottom();
+                            }
+                        };
+
+                        processChanges();
+                    }
+
+                    // Remove loading indicator if it exists
+                    const loadingIndicator = messagesContainer.querySelector('.loading-indicator');
+                    if (loadingIndicator) {
+                        loadingIndicator.remove();
+                    }
+                });
+
+            } catch (error) {
+                const messagesContainer = document.getElementById('chat-messages');
+                if (messagesContainer) {
+                    messagesContainer.innerHTML = `
+                        <div style="text-align: center; padding: 20px; color: var(--danger-color);">
+                            <i class="fas fa-exclamation-triangle" style="font-size: 30px; margin-bottom: 10px;"></i>
+                            <div>Erreur lors du chargement des messages</div>
+                        </div>
+                    `;
+                }
+            }
+        }
                 
                 const messagesRef = collection(db, "groups", groupId, "messages");
                 const q = query(messagesRef, orderBy("createdAt", "asc"));
