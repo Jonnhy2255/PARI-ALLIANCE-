@@ -4011,7 +4011,7 @@
         const db = getFirestore(app);
 
         // Admin configuration
-        const ADMIN_EMAILS = ['billionsjonnhy@gmail.com', 'louis210bn@gmail.com'];
+        const ADMIN_EMAILS = ['billionsjonnhy@gmail.com', 'louiskbn05@gmail.com'];
 
         // Lightning payment configuration
         const BLINK_API_KEY = "blink_GfLbFm7LuO6kWCee61eDGbHreslJIAj9WvkJ5INk3NfmuG8LewqYmwCmeu5i1P9D";
@@ -6714,18 +6714,5 @@
         // Initialize the app
         initApp();
     </script>
-    <script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function() {
-      navigator.serviceWorker.register('service-worker.js')
-        .then(function(registration) {
-          console.log('ServiceWorker enregistré avec succès :', registration.scope);
-        })
-        .catch(function(error) {
-          console.log('Échec de l’enregistrement du ServiceWorker :', error);
-        });
-    });
-  }
-</script>
 </body>
 </html>
