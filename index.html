@@ -2285,7 +2285,7 @@
             justify-content: space-between;
             margin-top: 20px;
             padding: 0 15px;
-            gap: 10px;
+            gap: 15px;
         }
         
         .social-button {
@@ -2294,15 +2294,16 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 15px 10px;
-            border-radius: 10px;
-            background-color: var(--secondary-color);
+            padding: 20px 10px;
+            border-radius: 15px;
             text-align: center;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             cursor: pointer;
+            color: white;
             font-weight: bold;
-            font-size: 14px;
+            font-size: 16px;
+            text-decoration: none;
         }
         
         .social-button:active {
@@ -2315,15 +2316,20 @@
         }
         
         .social-button.whatsapp {
-            color: var(--social-whatsapp);
+            background-color: var(--social-whatsapp);
         }
         
         .social-button.telegram {
-            color: var(--social-telegram);
+            background-color: var(--social-telegram);
         }
         
         .social-button.youtube {
-            color: var(--social-youtube);
+            background-color: var(--social-youtube);
+        }
+
+        .social-button .social-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
         }
 
         .about-dialog {
@@ -3156,7 +3162,8 @@
             background-color: rgba(0, 0, 0, 0.8);
         }
 
-        .fab {
+        /* Corriger les boutons flottants - renommer la classe .fab en .floating-action-button */
+        .floating-action-button {
             position: fixed;
             bottom: 80px;
             right: 20px;
@@ -3175,16 +3182,16 @@
             transition: all 0.3s ease;
         }
 
-        .fab:hover {
+        .floating-action-button:hover {
             transform: scale(1.1);
         }
 
-        .fab:active {
+        .floating-action-button:active {
             transform: scale(0.95);
         }
         
         @media (max-height: 640px) {
-            .fab {
+            .floating-action-button {
                 bottom: 70px;
             }
         }
@@ -3689,15 +3696,18 @@
                     <div class="section-title">Nous rejoindre</div>
                     
                     <div class="social-buttons">
-                        <div class="social-button whatsapp" id="whatsapp-btn">
+                        <a href="https://chat.whatsapp.com/J9vK3bCr3zxFpT9GYXRdoE" target="_blank" rel="noopener noreferrer" class="social-button whatsapp">
+                            <i class="fab fa-whatsapp social-icon"></i>
                             WhatsApp
-                        </div>
-                        <div class="social-button telegram" id="telegram-btn">
+                        </a>
+                        <a href="https://t.me/parialliance" target="_blank" rel="noopener noreferrer" class="social-button telegram">
+                            <i class="fab fa-telegram social-icon"></i>
                             Telegram
-                        </div>
-                        <div class="social-button youtube" id="youtube-btn">
+                        </a>
+                        <a href="https://www.youtube.com/@PariAlliance" target="_blank" rel="noopener noreferrer" class="social-button youtube">
+                            <i class="fab fa-youtube social-icon"></i>
                             YouTube
-                        </div>
+                        </a>
                     </div>
                     
                     <button id="logout-btn" class="button">Se déconnecter</button>
@@ -3972,10 +3982,8 @@
             <div class="video-close" id="video-close">
                 <i class="fas fa-times"></i>
             </div>
-            <video class="video-player" id="video-player" controls>
-                <source src="" type="video/mp4">
-                Votre navigateur ne supporte pas la lecture vidéo.
-            </video>
+            <iframe class="video-player" id="video-player" frameborder="0" allowfullscreen>
+            </iframe>
         </div>
     </div>
 
@@ -4914,11 +4922,11 @@
             const videoModal = document.getElementById('video-modal');
             const videoPlayer = document.getElementById('video-player');
             
-            // Simulate video URLs (replace with actual video URLs)
+            // URLs YouTube démo pour les tutoriels
             const videoUrls = {
-                'free-sats': 'https://example.com/free-sats-tutorial.mp4',
-                'buy-plan': 'https://example.com/buy-plan-tutorial.mp4',
-                'understand-predictions': 'https://example.com/understand-predictions-tutorial.mp4'
+                'free-sats': 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+                'buy-plan': 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+                'understand-predictions': 'https://www.youtube.com/embed/dQw4w9WgXcQ'
             };
             
             if (videoUrls[videoType]) {
@@ -4942,7 +4950,6 @@
             const videoPlayer = document.getElementById('video-player');
             
             videoModal.classList.remove('active');
-            videoPlayer.pause();
             videoPlayer.src = '';
         }
         
@@ -5187,18 +5194,6 @@
                 }
             });
             
-            document.getElementById('whatsapp-btn').addEventListener('click', function() {
-                openSocialLink('whatsapp');
-            });
-            
-            document.getElementById('telegram-btn').addEventListener('click', function() {
-                openSocialLink('telegram');
-            });
-            
-            document.getElementById('youtube-btn').addEventListener('click', function() {
-                openSocialLink('youtube');
-            });
-            
             const touchableElements = document.querySelectorAll('.menu-button, .back-button, .search-button, .events-button, .info-button, .search-close');
             touchableElements.forEach(element => {
                 element.addEventListener('touchstart', createRippleEffect);
@@ -5366,29 +5361,6 @@
         function filterEvents(query) {
             // Implement events filtering logic here
             // This would filter the displayed events based on the search query
-        }
-        
-        function openSocialLink(platform) {
-            let url = '';
-            
-            switch(platform) {
-                case 'whatsapp':
-                    url = 'https://wa.me/';
-                    showNotification('Ouverture de WhatsApp', 'info');
-                    break;
-                case 'telegram':
-                    url = 'https://t.me/';
-                    showNotification('Ouverture de Telegram', 'info');
-                    break;
-                case 'youtube':
-                    url = 'https://www.youtube.com/';
-                    showNotification('Ouverture de YouTube', 'info');
-                    break;
-                default:
-                    return;
-            }
-            
-            window.open(url, '_blank', 'noopener,noreferrer');
         }
         
         function showTermsDialog() {
@@ -5606,7 +5578,7 @@
                     listElement.innerHTML = `
                         <div class="no-forecasts">
                             <i class="fas fa-calendar-day"></i>
-                            <div class="empty-state-title">Pas de pronostics aujourd'hui</div>
+                            <div class="empty-state-title">Aucune prédiction fiable pour cette section</div>
                             <div class="empty-state-text">Aucun pronostic disponible pour aujourd'hui (${getCurrentDateString()})</div>
                         </div>
                     `;
@@ -5632,7 +5604,7 @@
                 listElement.innerHTML = `
                     <div class="no-forecasts">
                         <i class="fas fa-exclamation-circle"></i>
-                        <div class="empty-state-title">Erreur</div>
+                        <div class="empty-state-title">Aucune prédiction fiable pour cette section</div>
                         <div class="empty-state-text">Impossible de charger les pronostics depuis GitHub</div>
                     </div>
                 `;
@@ -5657,7 +5629,7 @@
                 listElement.innerHTML = `
                     <div class="no-forecasts">
                         <i class="fas fa-futbol"></i>
-                        <div class="empty-state-title">Aucun pronostic</div>
+                        <div class="empty-state-title">Aucune prédiction fiable pour cette section</div>
                         <div class="empty-state-text">Aucun pronostic disponible pour cette catégorie</div>
                     </div>
                 `;
@@ -6507,6 +6479,7 @@
             }
             
             onAuthStateChanged(auth, async (user) => {
+                // Masquer l'animation de vérification immédiatement
                 document.getElementById('verify-animation').style.display = 'none';
                 
                 if (user) {
@@ -6714,5 +6687,18 @@
         // Initialize the app
         initApp();
     </script>
+    <script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(function(registration) {
+          console.log('ServiceWorker enregistré avec succès :', registration.scope);
+        })
+        .catch(function(error) {
+          console.log('Échec de l’enregistrement du ServiceWorker :', error);
+        });
+    });
+  }
+</script>
 </body>
 </html>
