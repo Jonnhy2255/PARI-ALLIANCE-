@@ -98,6 +98,8 @@
             --plan-active-border: var(--primary-color);
             --premium-badge-bg: #FFD700;
             --premium-badge-text: #000000;
+            --history-date-bg: rgba(93, 92, 222, 0.1);
+            --history-date-text: var(--primary-color);
         }
         
         /* Thème vert */
@@ -114,6 +116,8 @@
             --new-badge-bg: #4CAF50;
             --image-message-bg: rgba(76, 175, 80, 0.1);
             --selected-message-border: rgba(76, 175, 80, 0.7);
+            --history-date-bg: rgba(76, 175, 80, 0.1);
+            --history-date-text: #4CAF50;
         }
         
         /* Thème rouge */
@@ -130,6 +134,8 @@
             --new-badge-bg: #F44336;
             --image-message-bg: rgba(244, 67, 54, 0.1);
             --selected-message-border: rgba(244, 67, 54, 0.7);
+            --history-date-bg: rgba(244, 67, 54, 0.1);
+            --history-date-text: #F44336;
         }
         
         /* Thème orange */
@@ -146,6 +152,8 @@
             --new-badge-bg: #FF9800;
             --image-message-bg: rgba(255, 152, 0, 0.1);
             --selected-message-border: rgba(255, 152, 0, 0.7);
+            --history-date-bg: rgba(255, 152, 0, 0.1);
+            --history-date-text: #FF9800;
         }
 
         /* Nouveau thème rouge-rose */
@@ -162,6 +170,8 @@
             --new-badge-bg: linear-gradient(135deg, #F44336, #E91E63);
             --image-message-bg: rgba(233, 30, 99, 0.1);
             --selected-message-border: rgba(233, 30, 99, 0.7);
+            --history-date-bg: rgba(233, 30, 99, 0.1);
+            --history-date-text: #E91E63;
         }
 
         /* Nouveau thème vert-jaune */
@@ -178,6 +188,8 @@
             --new-badge-bg: linear-gradient(135deg, #4CAF50, #CDDC39);
             --image-message-bg: rgba(139, 195, 74, 0.1);
             --selected-message-border: rgba(139, 195, 74, 0.7);
+            --history-date-bg: rgba(139, 195, 74, 0.1);
+            --history-date-text: #8BC34A;
         }
 
         /* Nouveau thème bleu-violet */
@@ -194,6 +206,8 @@
             --new-badge-bg: linear-gradient(135deg, #2196F3, #9C27B0);
             --image-message-bg: rgba(103, 58, 183, 0.1);
             --selected-message-border: rgba(103, 58, 183, 0.7);
+            --history-date-bg: rgba(103, 58, 183, 0.1);
+            --history-date-text: #673AB7;
         }
 
         /* Nouveau thème orange-doré */
@@ -210,6 +224,8 @@
             --new-badge-bg: linear-gradient(135deg, #FF9800, #FFC107);
             --image-message-bg: rgba(255, 143, 0, 0.1);
             --selected-message-border: rgba(255, 143, 0, 0.7);
+            --history-date-bg: rgba(255, 143, 0, 0.1);
+            --history-date-text: #FF8F00;
         }
         
         .dark {
@@ -277,6 +293,7 @@
             --theme-selector-border: #444;
             --user-item-bg: #222222;
             --plan-active-bg: rgba(93, 92, 222, 0.15);
+            --history-date-bg: rgba(93, 92, 222, 0.15);
         }
         
         * {
@@ -3162,6 +3179,70 @@
             background-color: rgba(0, 0, 0, 0.8);
         }
 
+        /* History Section Styles */
+        .history-section {
+            padding: 0;
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .history-date-header {
+            background-color: var(--history-date-bg);
+            color: var(--history-date-text);
+            padding: 12px 20px;
+            margin: 0 15px 15px;
+            border-radius: 10px;
+            font-weight: bold;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .history-category-section {
+            margin-bottom: 25px;
+        }
+
+        .history-category-title {
+            background-color: var(--secondary-color);
+            padding: 10px 20px;
+            margin: 0 15px 10px;
+            border-radius: 8px;
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        .history-forecasts-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 0 15px;
+        }
+
+        .history-forecast-item {
+            background-color: var(--secondary-color);
+            border-radius: 10px;
+            padding: 15px;
+            border-left: 4px solid var(--primary-color);
+            opacity: 0.9;
+            transform: scale(0.98);
+        }
+
+        .history-forecast-item .forecast-status.win {
+            background-color: var(--forecast-win-bg);
+            color: var(--success-color);
+        }
+
+        .history-forecast-item .forecast-status.loss {
+            background-color: var(--forecast-loss-bg);
+            color: var(--danger-color);
+        }
+
+        .history-forecast-item .forecast-status.pending {
+            background-color: var(--forecast-pending-bg);
+            color: var(--text-color);
+        }
+
         /* Corriger les boutons flottants - renommer la classe .fab en .floating-action-button */
         .floating-action-button {
             position: fixed;
@@ -3315,9 +3396,9 @@
             <div class="side-menu-title">Pari Alliance</div>
         </div>
         <div class="side-menu-content">
-            <div class="side-menu-item" id="menu-profile">
-                <i class="fas fa-user"></i>
-                <div class="side-menu-text">Profil</div>
+            <div class="side-menu-item" id="menu-history">
+                <i class="fas fa-history"></i>
+                <div class="side-menu-text">Historique</div>
             </div>
             <div class="side-menu-item" id="menu-subscription">
                 <i class="fas fa-crown"></i>
@@ -3482,6 +3563,15 @@
 
             <div class="ai-forecasts-content" id="safes-content">
                 <div class="ai-forecasts-list" id="safes-list">
+                </div>
+            </div>
+        </div>
+
+        <!-- Nouvelle Section Historique -->
+        <div id="history-section" class="section">
+            <div style="height: 100%; overflow-y: auto; padding: 10px 0;">
+                <div id="history-content">
+                    <!-- L'historique sera chargé ici -->
                 </div>
             </div>
         </div>
@@ -3817,7 +3907,8 @@
                     <strong>Plan Gratuit :</strong><br>
                     • Pronostics simples quotidiens<br>
                     • Accès aux événements et notifications<br>
-                    • Personnalisation de l'interface<br><br>
+                    • Personnalisation de l'interface<br>
+                    • Historique des 2 derniers jours<br><br>
                     
                     <strong>Plans Premium :</strong><br>
                     • Prédictions IA avancées<br>
@@ -3995,6 +4086,10 @@
         <div class="nav-item" data-section="ai-forecasts" style="flex: 1;">
             <i class="nav-icon fas fa-brain"></i>
             <span>Prédictions IA</span>
+        </div>
+        <div class="nav-item" data-section="profile" style="flex: 1;">
+            <i class="nav-icon fas fa-user"></i>
+            <span>Profil</span>
         </div>
     </div>
 
@@ -4359,10 +4454,32 @@
             
             try {
                 if (currentUserData.currentPlan && currentUserData.currentPlan !== 'free') {
-                    const expiryDate = currentUserData.planExpiryDate?.toDate ? currentUserData.planExpiryDate.toDate() : new Date(currentUserData.planExpiryDate);
+                    // Améliorer la gestion des dates d'expiration
+                    let expiryDate;
+                    if (currentUserData.planExpiryDate) {
+                        if (currentUserData.planExpiryDate.toDate) {
+                            // Firestore Timestamp
+                            expiryDate = currentUserData.planExpiryDate.toDate();
+                        } else if (currentUserData.planExpiryDate instanceof Date) {
+                            // JavaScript Date
+                            expiryDate = currentUserData.planExpiryDate;
+                        } else if (typeof currentUserData.planExpiryDate === 'string') {
+                            // String ISO
+                            expiryDate = new Date(currentUserData.planExpiryDate);
+                        } else {
+                            // Fallback: considérer comme expiré
+                            expiryDate = new Date(0);
+                        }
+                    } else {
+                        // Pas de date d'expiration définie, considérer comme expiré
+                        expiryDate = new Date(0);
+                    }
+                    
                     const now = new Date();
                     
-                    if (now > expiryDate) {
+                    addDebugLog(`Vérification expiration: maintenant=${now.toISOString()}, expiration=${expiryDate.toISOString()}`, 'info');
+                    
+                    if (now >= expiryDate) {
                         addDebugLog(`Abonnement expiré depuis ${expiryDate.toLocaleString('fr-FR')}`, 'warning');
                         
                         // Remove from Premium collection
@@ -4392,11 +4509,18 @@
                         
                         await loadUserSubscriptionData();
                         updateBadges();
+                        
+                        return true; // Abonnement expiré
+                    } else {
+                        addDebugLog(`Abonnement encore valide jusqu'au ${expiryDate.toLocaleString('fr-FR')}`, 'success');
+                        return false; // Abonnement encore valide
                     }
                 }
             } catch (error) {
                 handleFirestoreError(error, 'vérification de l\'expiration de l\'abonnement');
             }
+            
+            return false;
         }
 
         // Function to check if user has premium access
@@ -4515,36 +4639,42 @@
             return new Date().toISOString().slice(0, 10);
         }
 
-        // Function to get forecast file URL for today with new dynamic approach
-        function getForecastFileUrl() {
-            const today = getCurrentDateString();
-            return `https://raw.githubusercontent.com/Jonnhy2255/Pronosoftbot/main/prédiction-${today}-analyse-ia.json`;
+        // Function to get previous date string
+        function getDateString(daysAgo = 0) {
+            const date = new Date();
+            date.setDate(date.getDate() - daysAgo);
+            return date.toISOString().slice(0, 10);
         }
 
-        // Function to fetch forecasts from GitHub with new structure
-        async function fetchForecastsFromGitHub() {
-            const fileUrl = getForecastFileUrl();
+        // Function to get forecast file URL for a specific date
+        function getForecastFileUrl(dateString) {
+            return `https://raw.githubusercontent.com/Jonnhy2255/Pronosoftbot/main/prédiction-${dateString}-analyse-ia.json`;
+        }
+
+        // Function to fetch forecasts from GitHub for a specific date
+        async function fetchForecastsFromGitHub(dateString) {
+            const fileUrl = getForecastFileUrl(dateString);
             
             try {
-                addDebugLog(`Récupération des pronostics depuis: ${fileUrl}`, 'info');
+                addDebugLog(`Récupération des pronostics pour ${dateString}: ${fileUrl}`, 'info');
                 
                 const response = await fetch(fileUrl);
                 
                 if (!response.ok) {
                     if (response.status === 404) {
-                        addDebugLog(`Fichier de pronostics non trouvé pour aujourd'hui (${getCurrentDateString()})`, 'warning');
+                        addDebugLog(`Fichier de pronostics non trouvé pour ${dateString}`, 'warning');
                         return null;
                     }
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 
                 const data = await response.json();
-                addDebugLog(`Pronostics récupérés avec succès - Structure: ${Object.keys(data).join(', ')}`, 'success');
+                addDebugLog(`Pronostics récupérés avec succès pour ${dateString}`, 'success');
                 
                 return data;
             } catch (error) {
-                addDebugLog(`Erreur lors de la récupération des pronostics: ${error.message}`, 'error');
-                throw error;
+                addDebugLog(`Erreur lors de la récupération des pronostics pour ${dateString}: ${error.message}`, 'error');
+                return null;
             }
         }
 
@@ -4790,9 +4920,11 @@
                 isOnline = true;
                 
                 setTimeout(() => {
-                    if (isLoggedIn && (currentSection === 'ai-forecasts' || currentSection === 'forecasts')) {
+                    if (isLoggedIn && (currentSection === 'ai-forecasts' || currentSection === 'forecasts' || currentSection === 'history')) {
                         if (currentSection === 'ai-forecasts') {
                             loadForecastsData(currentForecastTab);
+                        } else if (currentSection === 'history') {
+                            loadHistoryData();
                         } else {
                             loadForecastsData('simple');
                         }
@@ -4841,6 +4973,9 @@
                     userSatsBalance = userData.satsBalance || 0;
                     currentPlanType = userData.currentPlan || 'free';
                     
+                    // Update currentUserData with fresh data
+                    currentUserData = { ...currentUserData, ...userData };
+                    
                     // Check if subscription has expired
                     await checkSubscriptionExpiry();
                     
@@ -4875,7 +5010,12 @@
                     currentPlanNameElement.textContent = planNames[currentPlanType] || 'Plan Premium';
                     
                     if (currentUserData?.planExpiryDate) {
-                        const expiryDate = currentUserData.planExpiryDate.toDate ? currentUserData.planExpiryDate.toDate() : new Date(currentUserData.planExpiryDate);
+                        let expiryDate;
+                        if (currentUserData.planExpiryDate.toDate) {
+                            expiryDate = currentUserData.planExpiryDate.toDate();
+                        } else {
+                            expiryDate = new Date(currentUserData.planExpiryDate);
+                        }
                         planExpiryInfoElement.textContent = `Expire le ${expiryDate.toLocaleDateString('fr-FR')} à minuit`;
                     } else {
                         planExpiryInfoElement.textContent = 'Plan actif';
@@ -4999,10 +5139,10 @@
                 document.getElementById('side-menu-overlay').classList.remove('active');
             });
             
-            document.getElementById('menu-profile').addEventListener('click', function() {
+            document.getElementById('menu-history').addEventListener('click', function() {
                 document.getElementById('side-menu').classList.remove('active');
                 document.getElementById('side-menu-overlay').classList.remove('active');
-                showProfileSection();
+                showHistorySection();
             });
 
             document.getElementById('menu-subscription').addEventListener('click', function() {
@@ -5077,6 +5217,8 @@
                             } else {
                                 showPremiumRequiredModal();
                             }
+                        } else if (section === 'profile') {
+                            showProfileSection();
                         }
                         
                         break;
@@ -5321,6 +5463,8 @@
                     searchInput.placeholder = 'Rechercher un événement...';
                 } else if (currentSearchContext === 'forecasts') {
                     searchInput.placeholder = 'Rechercher un pronostic...';
+                } else if (currentSearchContext === 'history') {
+                    searchInput.placeholder = 'Rechercher dans l\'historique...';
                 }
             }
         }
@@ -5350,6 +5494,8 @@
                 filterEvents(query);
             } else if (currentSearchContext === 'forecasts') {
                 filterForecasts(query);
+            } else if (currentSearchContext === 'history') {
+                filterHistory(query);
             }
         }
 
@@ -5361,6 +5507,11 @@
         function filterEvents(query) {
             // Implement events filtering logic here
             // This would filter the displayed events based on the search query
+        }
+
+        function filterHistory(query) {
+            // Implement history filtering logic here
+            // This would filter the displayed historical forecasts based on the search query
         }
         
         function showTermsDialog() {
@@ -5437,6 +5588,197 @@
             document.querySelector('.content').classList.add('no-bottom-nav');
             
             history.pushState({ page: 'tutorials' }, '');
+        }
+
+        function showHistorySection() {
+            hideSearchBar();
+            
+            currentSection = 'history';
+            
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            document.getElementById('history-section').classList.add('active');
+            
+            document.getElementById('header-title').textContent = 'Historique';
+            
+            document.getElementById('header-menu-button').style.display = 'none';
+            document.getElementById('header-back-button').style.display = 'block';
+            
+            document.getElementById('header-action').innerHTML = `
+                <div class="search-button" id="search-button">
+                    <i class="fas fa-search"></i>
+                </div>
+            `;
+            
+            document.getElementById('search-button').addEventListener('click', toggleSearchBar);
+            
+            document.getElementById('header-back-button').addEventListener('click', function() {
+                showForecastsSection();
+            });
+
+            document.getElementById('bottom-nav').style.display = 'none';
+            document.querySelector('.content').classList.add('no-bottom-nav');
+            
+            loadHistoryData();
+            
+            history.pushState({ page: 'history' }, '');
+        }
+
+        async function loadHistoryData() {
+            const historyContent = document.getElementById('history-content');
+            
+            historyContent.innerHTML = `
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 200px;">
+                    <i class="fas fa-spinner fa-spin" style="font-size: 30px; color: var(--primary-color);"></i>
+                    <div style="margin-top: 10px; font-weight: bold;">Chargement de l'historique...</div>
+                </div>
+            `;
+
+            try {
+                // Charger seulement les données d'hier et d'avant-hier (pas d'aujourd'hui)
+                const yesterday = getDateString(1);
+                const dayBeforeYesterday = getDateString(2);
+                
+                // Fetch data for yesterday and day before yesterday
+                const [yesterdayData, dayBeforeYesterdayData] = await Promise.all([
+                    fetchForecastsFromGitHub(yesterday),
+                    fetchForecastsFromGitHub(dayBeforeYesterday)
+                ]);
+
+                // Process the data
+                const yesterdayProcessed = processForecastData(yesterdayData);
+                const dayBeforeYesterdayProcessed = processForecastData(dayBeforeYesterdayData);
+
+                // Display the history
+                displayHistoryData(yesterdayProcessed, dayBeforeYesterdayProcessed);
+
+            } catch (error) {
+                addDebugLog(`Erreur chargement historique: ${error.message}`, 'error');
+                historyContent.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <div class="empty-state-title">Erreur de chargement</div>
+                        <div class="empty-state-text">Impossible de charger l'historique des pronostics</div>
+                    </div>
+                `;
+            }
+        }
+
+        function displayHistoryData(yesterdayData, dayBeforeYesterdayData) {
+            const historyContent = document.getElementById('history-content');
+            historyContent.innerHTML = '';
+
+            const yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
+            
+            const dayBeforeYesterday = new Date();
+            dayBeforeYesterday.setDate(dayBeforeYesterday.getDate() - 2);
+
+            // Display yesterday's data
+            if (yesterdayData && Object.values(yesterdayData).some(arr => arr.length > 0)) {
+                historyContent.appendChild(createHistoryDateSection(yesterday, yesterdayData));
+            }
+
+            // Display day before yesterday's data
+            if (dayBeforeYesterdayData && Object.values(dayBeforeYesterdayData).some(arr => arr.length > 0)) {
+                historyContent.appendChild(createHistoryDateSection(dayBeforeYesterday, dayBeforeYesterdayData));
+            }
+
+            // If no data available
+            if (historyContent.children.length === 0) {
+                historyContent.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-history"></i>
+                        <div class="empty-state-title">Aucun historique</div>
+                        <div class="empty-state-text">L'historique des pronostics des 2 derniers jours apparaîtra ici</div>
+                    </div>
+                `;
+            }
+        }
+
+        function createHistoryDateSection(date, data) {
+            const section = document.createElement('div');
+            
+            const dateHeader = document.createElement('div');
+            dateHeader.className = 'history-date-header';
+            dateHeader.textContent = date.toLocaleDateString('fr-FR', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+            section.appendChild(dateHeader);
+
+            // Display each category
+            const categories = [
+                { key: 'simple', title: 'Pronostics Simples' },
+                { key: 'combines', title: 'Combinés IA' },
+                { key: 'sures', title: 'Combinés Sûrs' },
+                { key: 'safes', title: 'Pronostics Safes' }
+            ];
+
+            categories.forEach(category => {
+                if (data[category.key] && data[category.key].length > 0) {
+                    const categorySection = document.createElement('div');
+                    categorySection.className = 'history-category-section';
+
+                    const categoryTitle = document.createElement('div');
+                    categoryTitle.className = 'history-category-title';
+                    categoryTitle.textContent = `${category.title} (${data[category.key].length})`;
+                    categorySection.appendChild(categoryTitle);
+
+                    const forecastsList = document.createElement('div');
+                    forecastsList.className = 'history-forecasts-list';
+
+                    data[category.key].forEach(forecast => {
+                        const historyItem = createHistoryForecastElement(forecast, category.key);
+                        forecastsList.appendChild(historyItem);
+                    });
+
+                    categorySection.appendChild(forecastsList);
+                    section.appendChild(categorySection);
+                }
+            });
+
+            return section;
+        }
+
+        function createHistoryForecastElement(forecastData, type) {
+            const element = document.createElement('div');
+            element.className = 'history-forecast-item';
+
+            let content = '';
+            
+            if (type === 'combines' || type === 'sures') {
+                content = `
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <div style="font-weight: bold;">${forecastData.name || 'Combiné'}</div>
+                        <div class="forecast-status pending">À venir</div>
+                    </div>
+                    <div style="font-size: 12px; opacity: 0.8;">
+                        ${forecastData.matches ? forecastData.matches.length : 0} matchs • Confiance: ${forecastData.confidence || 'N/A'}%
+                    </div>
+                    ${forecastData.estimated_odds ? `<div style="font-size: 12px; margin-top: 4px;">Cote estimée: ${forecastData.estimated_odds}</div>` : ''}
+                `;
+            } else {
+                content = `
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <div style="font-weight: bold;">${forecastData.HomeTeam || 'Équipe 1'} vs ${forecastData.AwayTeam || 'Équipe 2'}</div>
+                        <div class="forecast-status pending">À venir</div>
+                    </div>
+                    <div style="font-size: 12px; opacity: 0.8;">
+                        ${forecastData.prediction || 'N/A'} • Confiance: ${forecastData.confidence || 'N/A'}%
+                    </div>
+                    <div style="font-size: 11px; margin-top: 4px; opacity: 0.6;">
+                        ${forecastData.league || 'Compétition'} • ${forecastData.country || 'Pays'}
+                    </div>
+                `;
+            }
+
+            element.innerHTML = content;
+            return element;
         }
         
         function switchAIForecastTab(tabId) {
@@ -5572,7 +5914,7 @@
             
             try {
                 // Fetch forecasts from GitHub
-                const githubData = await fetchForecastsFromGitHub();
+                const githubData = await fetchForecastsFromGitHub(getCurrentDateString());
                 
                 if (!githubData) {
                     listElement.innerHTML = `
@@ -5900,6 +6242,51 @@
             
             loadForecastsData('simple');
         }
+
+        function showProfileSection() {
+            hideSearchBar();
+            
+            document.querySelectorAll('.nav-item').forEach(item => {
+                if (item.getAttribute('data-section') === 'profile') {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+            
+            document.getElementById('header-menu-button').style.display = 'block';
+            document.getElementById('header-back-button').style.display = 'none';
+            
+            currentSection = 'profile';
+            
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            document.getElementById('profile-section').classList.add('active');
+            
+            document.getElementById('header-title').textContent = 'Profil';
+            
+            document.getElementById('header-action').innerHTML = `
+                <div class="events-button" id="events-button">
+                    <i class="fas fa-bell"></i>
+                    <div class="notification-dot" id="events-notification-dot"></div>
+                </div>
+            `;
+            
+            if (hasNewEvents) {
+                document.getElementById('events-notification-dot').classList.add('active');
+            }
+            
+            document.getElementById('events-button').addEventListener('click', function() {
+                showEventsSection();
+                updateLastViewedEventTimestamp();
+                hideEventNotificationDot();
+            });
+
+            document.getElementById('bottom-nav').style.display = 'flex';
+            document.querySelector('.content').classList.remove('no-bottom-nav');
+        }
         
         function showEventsSection() {
             hideSearchBar();
@@ -5947,34 +6334,6 @@
             listenToEvents();
             
             history.pushState({ page: 'events' }, '');
-        }
-        
-        function showProfileSection() {
-            hideSearchBar();
-            
-            currentSection = 'profile';
-            
-            document.querySelectorAll('.section').forEach(section => {
-                section.classList.remove('active');
-            });
-            
-            document.getElementById('profile-section').classList.add('active');
-            
-            document.getElementById('header-title').textContent = 'Profil';
-            
-            document.getElementById('header-menu-button').style.display = 'none';
-            document.getElementById('header-back-button').style.display = 'block';
-            
-            document.getElementById('header-action').innerHTML = '';
-            
-            document.getElementById('header-back-button').addEventListener('click', function() {
-                showForecastsSection();
-            });
-
-            document.getElementById('bottom-nav').style.display = 'none';
-            document.querySelector('.content').classList.add('no-bottom-nav');
-            
-            history.pushState({ page: 'profile' }, '');
         }
 
         function listenToEvents() {
@@ -6190,7 +6549,6 @@
             }
             
             document.getElementById('save-display-name-btn').disabled = true;
-            
             try {
                 const userRef = doc(db, "Users", currentUser.uid);
                 await updateDoc(userRef, {
@@ -6438,7 +6796,6 @@
         }
 
         function updateAdminStatus() {
-            // Mettre à jour l'interface pour refléter le statut d'admin
             updateProfileInfo();
         }
         
@@ -6688,17 +7045,17 @@
         initApp();
     </script>
     <script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function() {
-      navigator.serviceWorker.register('service-worker.js')
-        .then(function(registration) {
-          console.log('ServiceWorker enregistré avec succès :', registration.scope);
-        })
-        .catch(function(error) {
-          console.log('Échec de l’enregistrement du ServiceWorker :', error);
-        });
-    });
-  }
-</script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('service-worker.js')
+                    .then(function(registration) {
+                        console.log('ServiceWorker enregistré avec succès :', registration.scope);
+                    })
+                    .catch(function(error) {
+                        console.log('Échec de l'enregistrement du ServiceWorker :', error);
+                    });
+            });
+        }
+    </script>
 </body>
-</html>
+</html> 
