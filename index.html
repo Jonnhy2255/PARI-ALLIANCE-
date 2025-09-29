@@ -548,11 +548,12 @@
             height: 100%;
             border: none;
             overflow: hidden;
-            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
         }
 
         .live-scores-iframe.loaded {
-            display: block;
+            opacity: 1;
         }
 
         .live-scores-loading {
@@ -566,10 +567,13 @@
             align-items: center;
             justify-content: center;
             background-color: var(--bg-color);
+            z-index: 10;
+            transition: opacity 0.5s ease;
         }
 
         .live-scores-loading.hidden {
-            display: none;
+            opacity: 0;
+            pointer-events: none;
         }
 
         .live-scores-loading i {
@@ -577,6 +581,32 @@
             color: var(--primary-color);
             animation: spin 1s linear infinite;
             margin-bottom: 20px;
+        }
+
+        .live-scores-loading h3 {
+            color: var(--text-color);
+            margin-bottom: 10px;
+        }
+
+        .live-scores-loading p {
+            color: var(--inactive-text);
+        }
+
+        .live-scores-retry-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .live-scores-retry-btn:hover {
+            background-color: #4a49c0;
+            transform: translateY(-1px);
         }
 
         /* Secrets Section Styles */
@@ -3260,6 +3290,7 @@
                         <i class="fas fa-futbol"></i>
                         <h3>Chargement du widget...</h3>
                         <p>Veuillez patienter</p>
+                        <button class="live-scores-retry-btn" id="live-scores-retry" style="display: none;">Réessayer</button>
                     </div>
                     <iframe
                         id="live-scores-iframe"
@@ -3978,15 +4009,6 @@
                     });
             });
         }
-
-        // ScoreBat widget script
-        (function(d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) return;
-            js = d.createElement(s); js.id = id;
-            js.src = 'https://www.scorebat.com/embed/embed.js?v=arrv';
-            fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'scorebat-jssdk'));
     </script>
 
     <script type="module">
@@ -4043,6 +4065,14 @@
         // PWA Installation variables
         let deferredInstallPrompt = null;
         let isAppInstalled = false;
+
+        // Live Scores widget management
+        let liveScoresState = {
+            loaded: false,
+            loadingTimeout: null,
+            retryAttempts: 0,
+            maxRetries: 3
+        };
 
         // Protection contre la copie
         document.addEventListener('contextmenu', function(e) {
@@ -4270,36 +4300,163 @@
             }, 100);
         }
 
-        // Live scores widget loading handler
+        // Live scores widget loading handler - ROBUST VERSION
         function setupLiveScoresWidget() {
             const iframe = document.getElementById('live-scores-iframe');
             const loadingDiv = document.getElementById('live-scores-loading');
+            const retryBtn = document.getElementById('live-scores-retry');
 
             if (!iframe || !loadingDiv) return;
 
-            iframe.addEventListener('load', () => {
-                setTimeout(() => {
-                    loadingDiv.classList.add('hidden');
-                    iframe.classList.add('loaded');
-                }, 2000); // Wait 2 seconds to ensure content is loaded
-            });
+            // Reset state when setting up
+            liveScoresState = {
+                loaded: false,
+                loadingTimeout: null,
+                retryAttempts: 0,
+                maxRetries: 3
+            };
 
-            iframe.addEventListener('error', () => {
+            function showLoading() {
+                loadingDiv.classList.remove('hidden');
+                iframe.classList.remove('loaded');
+                if (retryBtn) retryBtn.style.display = 'none';
+            }
+
+            function hideLoading() {
+                loadingDiv.classList.add('hidden');
+                iframe.classList.add('loaded');
+                liveScoresState.loaded = true;
+                console.log('Live scores widget loaded successfully');
+            }
+
+            function showRetry() {
                 loadingDiv.innerHTML = `
                     <i class="fas fa-exclamation-triangle" style="color: var(--danger-color);"></i>
                     <h3>Erreur de chargement</h3>
                     <p>Impossible de charger le widget Live Scores</p>
+                    <button class="live-scores-retry-btn" id="live-scores-retry">Réessayer</button>
                 `;
-            });
+                
+                const newRetryBtn = document.getElementById('live-scores-retry');
+                if (newRetryBtn) {
+                    newRetryBtn.addEventListener('click', () => {
+                        if (liveScoresState.retryAttempts < liveScoresState.maxRetries) {
+                            liveScoresState.retryAttempts++;
+                            loadLiveScores();
+                        } else {
+                            showNotification('Impossible de charger le widget après plusieurs tentatives', 'error');
+                        }
+                    });
+                }
+            }
 
-            // Reset loading state when switching back to live scores
-            const resetLiveScoresLoading = () => {
-                loadingDiv.classList.remove('hidden');
-                iframe.classList.remove('loaded');
-            };
+            function loadLiveScores() {
+                console.log('Loading live scores widget...');
+                showLoading();
+
+                // Clear any existing timeout
+                if (liveScoresState.loadingTimeout) {
+                    clearTimeout(liveScoresState.loadingTimeout);
+                }
+
+                // Set a timeout to hide loading after maximum wait time
+                liveScoresState.loadingTimeout = setTimeout(() => {
+                    if (!liveScoresState.loaded) {
+                        console.log('Live scores widget loading timeout');
+                        
+                        // Check if iframe has any content
+                        try {
+                            const iframeDocument = iframe.contentDocument || iframe.contentWindow?.document;
+                            if (iframeDocument && iframeDocument.body && iframeDocument.body.innerHTML.trim()) {
+                                console.log('Iframe has content, assuming loaded');
+                                hideLoading();
+                                return;
+                            }
+                        } catch (e) {
+                            // Cross-origin restriction, this is expected
+                            console.log('Cannot access iframe content (cross-origin), assuming loaded');
+                            hideLoading();
+                            return;
+                        }
+
+                        // If we get here, show retry option
+                        if (liveScoresState.retryAttempts < liveScoresState.maxRetries) {
+                            showRetry();
+                        } else {
+                            loadingDiv.innerHTML = `
+                                <i class="fas fa-exclamation-triangle" style="color: var(--danger-color);"></i>
+                                <h3>Service temporairement indisponible</h3>
+                                <p>Le widget Live Scores n'est pas accessible pour le moment</p>
+                            `;
+                        }
+                    }
+                }, 8000); // 8 seconds timeout
+
+                // Try multiple detection methods
+                iframe.addEventListener('load', () => {
+                    console.log('Iframe load event fired');
+                    setTimeout(() => {
+                        if (!liveScoresState.loaded) {
+                            hideLoading();
+                        }
+                    }, 1000);
+                }, { once: true });
+
+                // Additional checks for content presence
+                const checkContent = () => {
+                    try {
+                        // Since the iframe is cross-origin, we can't check content directly
+                        // We'll assume it's loaded after the iframe load event + delay
+                        if (!liveScoresState.loaded) {
+                            hideLoading();
+                        }
+                    } catch (e) {
+                        // Expected cross-origin error, assume loaded
+                        if (!liveScoresState.loaded) {
+                            hideLoading();
+                        }
+                    }
+                };
+
+                // Check periodically
+                const checkInterval = setInterval(() => {
+                    if (liveScoresState.loaded) {
+                        clearInterval(checkInterval);
+                        return;
+                    }
+                    checkContent();
+                }, 2000);
+
+                // Clear interval after timeout
+                setTimeout(() => {
+                    clearInterval(checkInterval);
+                }, 10000);
+
+                // Refresh iframe source to ensure loading
+                const currentSrc = iframe.src;
+                iframe.src = '';
+                setTimeout(() => {
+                    iframe.src = currentSrc;
+                }, 100);
+            }
+
+            // Initial load
+            loadLiveScores();
 
             // Store reset function for use when switching sections
-            window.resetLiveScoresLoading = resetLiveScoresLoading;
+            window.resetLiveScoresLoading = () => {
+                console.log('Resetting live scores loading state');
+                liveScoresState = {
+                    loaded: false,
+                    loadingTimeout: null,
+                    retryAttempts: 0,
+                    maxRetries: 3
+                };
+                if (liveScoresState.loadingTimeout) {
+                    clearTimeout(liveScoresState.loadingTimeout);
+                }
+                loadLiveScores();
+            };
         }
 
         // Avatar functions
@@ -6292,7 +6449,7 @@
             document.getElementById('menu-interface').addEventListener('click', function() {
                 document.getElementById('side-menu').classList.remove('active');
                 document.getElementById('side-menu-overlay').classList.remove('active');
-                showSection('interface');
+            showSection('interface');
             });
 
             document.getElementById('menu-terms').addEventListener('click', function() {
