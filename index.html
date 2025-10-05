@@ -4701,29 +4701,48 @@
         }
 
         // PWA Installation functions
-        function initializePWA() {
-            if (window.matchMedia('(display-mode: standalone)').matches) {
-                isAppInstalled = true;
-                return;
-            }
+function initializePWA() {
+    console.log('Initialisation PWA...');
+    
+    // Vérifier si déjà installé
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+        console.log('PWA déjà installée (standalone mode)');
+        isAppInstalled = true;
+        return;
+    }
 
-            if (window.navigator.standalone === true) {
-                isAppInstalled = true;
-                return;
-            }
+    if (window.navigator.standalone === true) {
+        console.log('PWA déjà installée (iOS standalone)');
+        isAppInstalled = true;
+        return;
+    }
 
-            window.addEventListener('beforeinstallprompt', (event) => {
-                event.preventDefault();
-                deferredInstallPrompt = event;
-            });
+    // Écouter l'événement beforeinstallprompt
+    window.addEventListener('beforeinstallprompt', (event) => {
+        console.log('Événement beforeinstallprompt détecté - PWA installable');
+        event.preventDefault();
+        deferredInstallPrompt = event;
+        
+        // Optionnel : montrer une indication que l'app est installable
+        console.log('Application prête à être installée');
+    });
 
-            window.addEventListener('appinstalled', () => {
-                console.log('PWA was installed');
-                isAppInstalled = true;
-                deferredInstallPrompt = null;
-                showNotification('Application installée avec succès !', 'success');
-            });
-        }
+    // Écouter l'installation réussie
+    window.addEventListener('appinstalled', () => {
+        console.log('PWA installée avec succès');
+        isAppInstalled = true;
+        deferredInstallPrompt = null;
+        showNotification('Application installée avec succès !', 'success');
+    });
+
+    // Vérifier le support PWA
+    if ('serviceWorker' in navigator && 'PushManager' in window) {
+        console.log('Support PWA complet détecté');
+    } else {
+        console.log('Support PWA limité');
+    }
+}
+
 
         async function installApp() {
             if (isAppInstalled || window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
@@ -7311,17 +7330,59 @@
 
     </script>
     <script>
+// Service Worker inline
+const serviceWorkerCode = `
+self.addEventListener('install', (event) => {
+  console.log('Service Worker: Installed');
+  event.waitUntil(
+    caches.open('king-pronos-v1').then((cache) => {
+      return cache.addAll([
+        '/',
+        '/manifest.json'
+      ]);
+    })
+  );
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', (event) => {
+  console.log('Service Worker: Activated');
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cacheName) => {
+          if (cacheName !== 'king-pronos-v1') {
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    })
+  );
+  self.clients.claim();
+});
+
+self.addEventListener('fetch', (event) => {
+  event.respondWith(
+    caches.match(event.request).then((response) => {
+      return response || fetch(event.request);
+    })
+  );
+});
+`;
+
+// Enregistrement du Service Worker
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/service-worker.js')
-      .then(registration => {
-        console.log('✅ Service Worker enregistré avec succès :', registration.scope);
-      })
-      .catch(error => {
-        console.log('❌ Échec de l’enregistrement du Service Worker :', error);
-      });
-  });
+  const blob = new Blob([serviceWorkerCode], { type: 'application/javascript' });
+  const swUrl = URL.createObjectURL(blob);
+  
+  navigator.serviceWorker.register(swUrl)
+    .then((registration) => {
+      console.log('Service Worker enregistré:', registration);
+    })
+    .catch((error) => {
+      console.log('Erreur Service Worker:', error);
+    });
 }
-   </script>
+</script>
 </body>
 </html>
