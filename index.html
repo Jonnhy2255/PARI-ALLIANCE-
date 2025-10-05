@@ -8,7 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="manifest" href="manifest.json">
     <!-- Icône pour iOS -->
-<link rel="apple-touch-icon" href="/iconios-192.png">
+<link rel="apple-touch-icon" href="/iconios-192x192.png">
 
 <!-- Web App installable (Standalone) -->
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -146,7 +146,7 @@
             --admin-section-bg: rgba(93, 92, 222, 0.1);
             --admin-section-border: var(--primary-color);
         }
-        
+
         /* Thème vert */
         .theme-green {
             --primary-color: #4CAF50;
@@ -168,7 +168,7 @@
             --prediction-highlight-text: #4CAF50;
             --table-header-bg: #4CAF50;
         }
-        
+
         /* Thème rouge */
         .theme-red {
             --primary-color: #F44336;
@@ -190,7 +190,7 @@
             --prediction-highlight-text: #F44336;
             --table-header-bg: #F44336;
         }
-        
+
         /* Thème orange */
         .theme-orange {
             --primary-color: #FF9800;
@@ -276,7 +276,7 @@
             --prediction-highlight-text: #FF5722;
             --table-header-bg: #FF5722;
         }
-        
+
         .dark {
             --bg-color: #181818;
             --text-color: #ffffff;
@@ -475,7 +475,7 @@
             border-radius: 50%;
             display: none;
         }
-        
+
         .notification-dot.active {
             display: block;
         }
@@ -497,7 +497,7 @@
             height: 100%;
             overflow: hidden;
         }
-        
+
         .section.active {
             display: flex;
             flex-direction: column;
@@ -1888,25 +1888,25 @@
             display: flex;
             flex-direction: column;
         }
-        
+
         .side-menu.active {
             left: 0;
         }
-        
+
         .side-menu-header {
             display: flex;
             align-items: center;
             padding: 20px 15px;
             border-bottom: none;
         }
-        
+
         .side-menu-title {
             font-size: 20px;
             font-weight: bold;
             color: var(--primary-color);
             margin-left: 15px;
         }
-        
+
         .side-menu-close {
             font-size: 20px;
             color: var(--text-color);
@@ -1914,12 +1914,12 @@
             padding: 5px;
             border-radius: 50%;
         }
-        
+
         .side-menu-content {
             flex: 1;
             overflow-y: auto;
         }
-        
+
         .side-menu-item {
             padding: 15px 20px;
             display: flex;
@@ -1928,21 +1928,21 @@
             transition: background-color 0.3s ease;
             position: relative;
         }
-        
+
         .side-menu-item:hover {
             background-color: var(--side-menu-hover);
         }
-        
+
         .side-menu-item.active {
             background-color: var(--side-menu-active);
         }
-        
+
         .side-menu-item i {
             font-size: 20px;
             width: 30px;
             color: var(--primary-color);
         }
-        
+
         .side-menu-text {
             margin-left: 15px;
             font-weight: 500;
@@ -1957,13 +1957,13 @@
             font-weight: bold;
             margin-left: auto;
         }
-        
+
         .side-menu-footer {
             margin-top: auto;
             border-top: 1px solid var(--border-color);
             padding-top: 10px;
         }
-        
+
         .side-menu-overlay {
             position: fixed;
             top: 0;
@@ -1974,7 +1974,7 @@
             z-index: 999;
             display: none;
         }
-        
+
         .side-menu-overlay.active {
             display: block;
         }
@@ -2115,31 +2115,31 @@
             flex-direction: column;
             overflow-y: auto;
         }
-        
+
         .auth-header {
             padding: 40px 0 20px;
             text-align: center;
         }
-        
+
         .auth-logo {
             font-size: 50px;
             color: var(--primary-color);
             margin-bottom: 15px;
             animation: float 3s ease-in-out infinite;
         }
-        
+
         @keyframes float {
             0%, 100% { transform: translateY(0px); }
             50% { transform: translateY(-10px); }
         }
-        
+
         .auth-title {
             font-size: 24px;
             font-weight: bold;
             margin-bottom: 10px;
             color: var(--primary-color);
         }
-        
+
         .auth-subtitle {
             font-size: 16px;
             color: var(--text-color);
@@ -2148,13 +2148,13 @@
             padding: 0 20px;
             text-align: center;
         }
-        
+
         .auth-tabs {
             display: flex;
             margin-bottom: 20px;
             border-bottom: none;
         }
-        
+
         .auth-tab {
             flex: 1;
             text-align: center;
@@ -2167,11 +2167,11 @@
             text-decoration: none;
             border-bottom: none;
         }
-        
+
         .auth-tab.active {
             color: var(--primary-color);
         }
-        
+
         .auth-tab.active::after {
             content: '';
             position: absolute;
@@ -2183,18 +2183,18 @@
             border-radius: 3px 3px 0 0;
             animation: slideIn 0.3s ease;
         }
-        
+
         @keyframes slideIn {
             from { transform: scaleX(0); }
             to { transform: scaleX(1); }
         }
-        
+
         .auth-form {
             padding: 20px;
             display: none;
             animation: fadeUp 0.5s ease;
         }
-        
+
         @keyframes fadeUp {
             from { 
                 opacity: 0;
@@ -2205,23 +2205,23 @@
                 transform: translateY(0);
             }
         }
-        
+
         .auth-form.active {
             display: block;
         }
-        
+
         .form-group {
             margin-bottom: 20px;
             position: relative;
         }
-        
+
         .form-label {
             display: block;
             margin-bottom: 8px;
             font-weight: 500;
             font-size: 14px;
         }
-        
+
         .form-input {
             width: 100%;
             padding: 15px;
@@ -2233,16 +2233,16 @@
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
             outline: none;
         }
-        
+
         .form-input:focus {
             border-color: var(--primary-color);
             box-shadow: 0 0 0 3px rgba(93, 92, 222, 0.25);
         }
-        
+
         .form-input::placeholder {
             color: var(--input-placeholder);
         }
-        
+
         .form-error {
             color: var(--danger-color);
             font-size: 13px;
@@ -2250,32 +2250,32 @@
             display: none;
             animation: shakeX 0.75s ease;
         }
-        
+
         @keyframes shakeX {
             0%, 100% { transform: translateX(0); }
             10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
             20%, 40%, 60%, 80% { transform: translateX(4px); }
         }
-        
+
         .form-footer {
             margin-top: 30px;
             text-align: center;
         }
-        
+
         .form-footer-text {
             margin-top: 15px;
             font-size: 14px;
             color: var(--text-color);
             opacity: 0.8;
         }
-        
+
         .form-link {
             color: var(--link-color);
             text-decoration: none;
             font-weight: bold;
             transition: color 0.2s;
         }
-        
+
         .form-link:hover {
             text-decoration: underline;
         }
@@ -2295,12 +2295,12 @@
             position: relative;
             overflow: hidden;
         }
-        
+
         .button:active {
             transform: scale(0.98);
             opacity: 0.9;
         }
-        
+
         .button:hover {
             background-color: #4a49c0;
         }
@@ -2310,12 +2310,12 @@
             color: var(--inactive-text);
             cursor: not-allowed;
         }
-        
+
         .button.danger {
             background-color: var(--danger-color);
             color: white;
         }
-        
+
         .button.danger:hover {
             background-color: #e53935;
         }
@@ -2334,17 +2334,17 @@
             from { opacity: 0; }
             to { opacity: 1; }
         }
-          
+
         .log-message.info {
             background: #d1ecf1;
             color: #0c5460;
         }
-          
+
         .log-message.success {
             background: #d4edda;
             color: #155724;
         }
-          
+
         .log-message.error {
             background: #f8d7da;
             color: #721c24;
@@ -2361,16 +2361,16 @@
             animation: spin 0.8s linear infinite;
             vertical-align: middle;
         }
-        
+
         .button.loading {
             pointer-events: none;
             opacity: 0.8;
         }
-        
+
         .button.loading .btn-text {
             visibility: hidden;
         }
-        
+
         .button.loading .btn-loader {
             position: absolute;
             top: 50%;
@@ -2393,7 +2393,7 @@
             justify-content: center;
             z-index: 999;
         }
-        
+
         .loading-spinner-main {
             font-size: 60px;
             color: var(--primary-color);
@@ -2401,12 +2401,12 @@
             margin-bottom: 20px;
             text-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
-        
+
         @keyframes pulse {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.1); }
         }
-        
+
         @keyframes bounce {
             0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
             40% { transform: translateY(-20px); }
@@ -2473,7 +2473,7 @@
             padding: 20px;
             border-bottom: none;
         }
-        
+
         .profile-pic {
             width: 80px;
             height: 80px;
@@ -2494,25 +2494,25 @@
         .profile-pic:hover {
             transform: scale(1.05);
         }
-        
+
         .profile-pic img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             pointer-events: none;
         }
-        
+
         .profile-pic i {
             font-size: 32px;
             color: var(--primary-color);
         }
-        
+
         .profile-info {
             display: flex;
             flex-direction: column;
             flex: 1;
         }
-        
+
         .profile-name {
             font-weight: bold;
             font-size: 20px;
@@ -2520,13 +2520,13 @@
             display: flex;
             align-items: center;
         }
-        
+
         .profile-email {
             color: #6b7280;
             font-size: 16px;
             margin-bottom: 5px;
         }
-        
+
         .profile-status {
             color: #6b7280;
         }
@@ -2544,7 +2544,7 @@
             padding: 0 15px;
             gap: 15px;
         }
-        
+
         .social-button {
             flex: 1;
             display: flex;
@@ -2562,24 +2562,24 @@
             font-size: 16px;
             text-decoration: none;
         }
-        
+
         .social-button:active {
             transform: scale(0.98);
         }
-        
+
         .social-button:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0,0,0,0.15);
         }
-        
+
         .social-button.whatsapp {
             background-color: var(--social-whatsapp);
         }
-        
+
         .social-button.telegram {
             background-color: var(--social-telegram);
         }
-        
+
         .social-button.youtube {
             background-color: var(--social-youtube);
         }
@@ -2851,7 +2851,7 @@
             z-index: 90;
             display: none;
         }
-        
+
         .overlay.active {
             display: block;
         }
@@ -2870,30 +2870,30 @@
             z-index: 150;
             display: none;
         }
-        
+
         .confirmation-dialog.active {
             display: block;
         }
-        
+
         .confirmation-title {
             font-weight: bold;
             font-size: 18px;
             margin-bottom: 15px;
             text-align: center;
         }
-        
+
         .confirmation-text {
             margin-bottom: 20px;
             text-align: center;
             line-height: 1.4;
         }
-        
+
         .confirmation-buttons {
             display: flex;
             justify-content: space-between;
             gap: 10px;
         }
-        
+
         .confirmation-button {
             padding: 10px 15px;
             border-radius: 6px;
@@ -2902,17 +2902,17 @@
             flex: 1;
             text-align: center;
         }
-        
+
         .confirmation-cancel {
             background-color: var(--secondary-color);
             color: var(--text-color);
         }
-        
+
         .confirmation-confirm {
             background-color: var(--primary-color);
             color: white;
         }
-        
+
         .confirmation-delete {
             background-color: var(--danger-color);
             color: white;
@@ -2927,7 +2927,7 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             position: relative;
         }
-        
+
         .admin-notification-header {
             color: var(--text-color);
             padding: 0 0 10px;
@@ -2938,22 +2938,22 @@
             border-bottom: none;
             margin-bottom: 10px;
         }
-        
+
         .admin-notification-title {
             display: flex;
             align-items: center;
         }
-        
+
         .admin-notification-title i {
             margin-right: 8px;
             color: var(--primary-color);
         }
-        
+
         .admin-notification-content {
             padding: 5px 0;
             line-height: 1.4;
         }
-        
+
         .admin-notification-footer {
             padding: 5px 0 0;
             font-size: 12px;
@@ -2986,7 +2986,7 @@
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
         }
-        
+
         .interface-title {
             font-weight: bold;
             margin-bottom: 15px;
@@ -3007,14 +3007,14 @@
             margin-bottom: 15px;
             line-height: 1.4;
         }
-        
+
         .theme-selector {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 12px;
             margin: 15px 0;
         }
-        
+
         .theme-option {
             width: 100%;
             height: 70px;
@@ -3029,18 +3029,18 @@
             align-items: center;
             justify-content: center;
         }
-        
+
         .theme-option:hover {
             transform: scale(1.05);
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
-        
+
         .theme-option.active {
             border-color: var(--primary-color);
             box-shadow: 0 0 0 3px rgba(var(--primary-color), 0.3);
             transform: scale(1.1);
         }
-        
+
         .theme-option.active:before {
             content: '\f00c';
             font-family: 'Font Awesome 5 Free';
@@ -3054,19 +3054,19 @@
             text-shadow: 0 0 5px rgba(0,0,0,0.7);
             z-index: 3;
         }
-        
+
         .theme-option.theme-blue {
             background: linear-gradient(135deg, #5D5CDE, #4a49c0);
         }
-        
+
         .theme-option.theme-green {
             background: linear-gradient(135deg, #4CAF50, #388E3C);
         }
-        
+
         .theme-option.theme-red {
             background: linear-gradient(135deg, #F44336, #d32f2f);
         }
-        
+
         .theme-option.theme-orange {
             background: linear-gradient(135deg, #FF9800, #f57c00);
         }
@@ -3102,7 +3102,7 @@
         .theme-option.theme-deep-orange {
             background: linear-gradient(135deg, #FF5722, #D84315);
         }
-        
+
         .theme-label {
             margin-top: 8px;
             font-size: 10px;
@@ -3121,7 +3121,7 @@
             border-bottom: none;
             cursor: pointer;
         }
-        
+
         .setting-icon {
             width: 36px;
             height: 36px;
@@ -3132,13 +3132,13 @@
             justify-content: center;
             margin-right: 15px;
         }
-        
+
         .setting-row {
             display: flex;
             align-items: center;
             flex: 1;
         }
-        
+
         .setting-label {
             font-weight: 500;
         }
@@ -3149,13 +3149,13 @@
             width: 50px;
             height: 26px;
         }
-        
+
         .switch input {
             opacity: 0;
             width: 0;
             height: 0;
         }
-        
+
         .slider {
             position: absolute;
             cursor: pointer;
@@ -3167,7 +3167,7 @@
             transition: .4s;
             border-radius: 34px;
         }
-        
+
         .slider:before {
             position: absolute;
             content: "";
@@ -3179,11 +3179,11 @@
             transition: .4s;
             border-radius: 50%;
         }
-        
+
         input:checked + .slider {
             background-color: var(--primary-color);
         }
-        
+
         input:checked + .slider:before {
             transform: translateX(24px);
         }
@@ -3456,25 +3456,25 @@
             <h1 class="auth-title">KING PRONOS</h1>
             <p class="auth-subtitle">Pronostics sportifs avancés</p>
         </div>
-        
+
         <div class="auth-tabs">
             <div class="auth-tab active" id="login-tab">Connexion</div>
             <div class="auth-tab" id="register-tab">Inscription</div>
         </div>
-        
+
         <div id="login-form" class="auth-form active">
             <div class="form-group">
                 <label class="form-label">Email</label>
                 <input type="email" class="form-input" id="login-email" placeholder="Votre email">
                 <div id="login-email-error" class="form-error">Veuillez entrer un email valide</div>
             </div>
-            
+
             <div class="form-group">
                 <label class="form-label">Mot de passe</label>
                 <input type="password" class="form-input" id="login-password" placeholder="Votre mot de passe">
                 <div id="login-password-error" class="form-error">Le mot de passe est obligatoire</div>
             </div>
-            
+
             <div id="login-log" class="log-message" style="display:none;"></div>
 
             <div class="form-footer">
@@ -3487,26 +3487,26 @@
                 </p>
             </div>
         </div>
-        
+
         <div id="register-form" class="auth-form">
             <div class="form-group">
                 <label class="form-label">Email</label>
                 <input type="email" class="form-input" id="register-email" placeholder="Votre adresse email">
                 <div id="register-email-error" class="form-error">Veuillez entrer un email valide</div>
             </div>
-            
+
             <div class="form-group">
                 <label class="form-label">Mot de passe</label>
                 <input type="password" class="form-input" id="register-password" placeholder="Créez un mot de passe sécurisé">
                 <div id="register-password-error" class="form-error">Le mot de passe doit contenir au moins 6 caractères</div>
             </div>
-            
+
             <div class="form-group">
                 <label class="form-label">Confirmer le mot de passe</label>
                 <input type="password" class="form-input" id="register-confirm-password" placeholder="Confirmez votre mot de passe">
                 <div id="register-confirm-password-error" class="form-error">Les mots de passe ne correspondent pas</div>
             </div>
-            
+
             <div id="register-log" class="log-message" style="display:none;"></div>
 
             <div class="form-footer">
@@ -3570,7 +3570,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="side-menu-overlay" id="side-menu-overlay"></div>
 
     <!-- Avatar Viewer Modal -->
@@ -4067,12 +4067,12 @@
                         <div class="profile-status">En ligne</div>
                     </div>
                 </div>
-                
+
                 <div class="section-title">Paramètres</div>
-                
+
                 <div class="settings-container">
                     <div class="section-title">Nous rejoindre</div>
-                    
+
                     <div class="social-buttons">
                         <a href="https://whatsapp.com/channel/0029Vb6eoNkATRSqdUT76Y3Y" target="_blank" rel="noopener noreferrer" class="social-button whatsapp">
                             <i class="fab fa-whatsapp social-icon"></i>
@@ -4087,7 +4087,7 @@
                             YouTube
                         </a>
                     </div>
-                    
+
                     <button id="logout-btn" class="button">Se déconnecter</button>
                     <button id="delete-account-btn" class="button danger" style="margin-top: 15px;">Supprimer mon compte</button>
                 </div>
@@ -4155,7 +4155,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="interface-section">
                     <div class="interface-title">
                         <i class="fas fa-moon"></i>
@@ -4422,7 +4422,7 @@
                         <li><strong>Installation :</strong> Progressive Web App (PWA)</li>
                         <li><strong>Stockage :</strong> Cloud sécurisé Firebase</li>
                     </ul>
-                    
+
                     <p><strong>© 2025 KING PRONOS</strong> - Tous droits réservés. Application développée avec passion pour la communauté sportive francophone.</p>
                 </div>
             </div>
@@ -4448,7 +4448,7 @@
         <!-- Fixed header section with teams -->
         <div class="forecast-info-section">
             <div class="league-info" id="detail-league">Ligue 1 • Journée 16</div>
-            
+
             <div class="detail-teams">
                 <div class="detail-team">
                     <div class="detail-team-logo" id="detail-home-logo">
@@ -4456,13 +4456,13 @@
                     </div>
                     <div class="detail-team-name" id="detail-home-team">Équipe Domicile</div>
                 </div>
-                
+
                 <div class="detail-prediction">
                     <div class="detail-prediction-value" id="detail-prediction" style="display: none;">1X</div>
                     <div class="detail-forecast-status status-pending" id="detail-status">65%</div>
                     <div class="detail-forecast-time" id="detail-time">29.06.2025 10:30</div>
                 </div>
-                
+
                 <div class="detail-team">
                     <div class="detail-team-logo" id="detail-away-logo">
                         <i class="fas fa-futbol"></i>
@@ -4721,16 +4721,16 @@
         function getCouponFromStorage(type) {
             const storedData = localStorage.getItem(`kingpronos_${type}_coupon`);
             if (!storedData) return null;
-            
+
             try {
                 const couponData = JSON.parse(storedData);
-                
+
                 // Check if coupon has expired
                 if (Date.now() > couponData.expires) {
                     localStorage.removeItem(`kingpronos_${type}_coupon`);
                     return null;
                 }
-                
+
                 return couponData;
             } catch (error) {
                 console.error('Error parsing coupon data:', error);
@@ -4810,14 +4810,14 @@
             document.body.appendChild(textArea);
             textArea.focus();
             textArea.select();
-            
+
             try {
                 document.execCommand('copy');
                 showNotification(`Code ${text} copié !`, 'success');
             } catch (err) {
                 showNotification('Impossible de copier le code', 'error');
             }
-            
+
             document.body.removeChild(textArea);
         }
 
@@ -4893,7 +4893,7 @@
                 const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
                 const isEdge = /Edg/.test(navigator.userAgent);
                 const isOpera = /OPR/.test(navigator.userAgent);
-                
+
                 if (!isChrome && !isEdge && !isOpera) {
                     showNotification('Veuillez utiliser Chrome comme navigateur pour installer l\'application', 'error');
                 } else {
@@ -4905,16 +4905,16 @@
             try {
                 const result = await deferredInstallPrompt.prompt();
                 console.log('User response to install prompt:', result);
-                
+
                 if (result.outcome === 'accepted') {
                     console.log('User accepted the install prompt');
                 } else {
                     console.log('User dismissed the install prompt');
                     showNotification('Installation annulée', 'info');
                 }
-                
+
                 deferredInstallPrompt = null;
-                
+
             } catch (error) {
                 console.error('Error during installation:', error);
                 showNotification('Veuillez utiliser Chrome comme navigateur pour installer l\'application', 'error');
@@ -4924,7 +4924,7 @@
         // Initialize dark mode detection
         function initializeDarkMode() {
             const savedPreference = localStorage.getItem('kingPronosDarkMode');
-            
+
             if (savedPreference === 'true') {
                 document.documentElement.classList.add('dark');
             } else if (savedPreference === 'false') {
@@ -4954,17 +4954,17 @@
         function showNotification(message, type = 'info') {
             const notification = document.getElementById('notification');
             if (!notification) return;
-            
+
             notification.classList.remove('show');
-            
+
             setTimeout(() => {
                 notification.textContent = message;
                 notification.className = 'notification ' + type;
                 notification.classList.add('show');
-                
+
                 setTimeout(() => {
                     notification.classList.remove('show');
-                    
+
                     setTimeout(() => {
                         notification.className = 'notification';
                         notification.textContent = '';
@@ -5009,7 +5009,7 @@
                     <p>Impossible de charger le widget Live Scores</p>
                     <button class="live-scores-retry-btn" id="live-scores-retry">Réessayer</button>
                 `;
-                
+
                 const newRetryBtn = document.getElementById('live-scores-retry');
                 if (newRetryBtn) {
                     newRetryBtn.addEventListener('click', () => {
@@ -5036,7 +5036,7 @@
                 liveScoresState.loadingTimeout = setTimeout(() => {
                     if (!liveScoresState.loaded) {
                         console.log('Live scores widget loading timeout');
-                        
+
                         // Check if iframe has any content
                         try {
                             const iframeDocument = iframe.contentDocument || iframe.contentWindow?.document;
@@ -5136,7 +5136,7 @@
         function openAvatarViewer() {
             const modal = document.getElementById('avatar-viewer-modal');
             const viewerImage = document.getElementById('avatar-viewer-image');
-            
+
             if (selectedAvatar) {
                 const avatarData = AVATAR_OPTIONS.find(avatar => avatar.id === selectedAvatar);
                 if (avatarData) {
@@ -5147,7 +5147,7 @@
             } else {
                 viewerImage.src = '';
             }
-            
+
             modal.classList.add('active');
         }
 
@@ -5158,7 +5158,7 @@
         function openAvatarSelector() {
             const modal = document.getElementById('avatar-selector-modal');
             const modalGrid = document.getElementById('avatar-modal-grid');
-            
+
             modalGrid.innerHTML = '';
             tempSelectedAvatar = selectedAvatar;
 
@@ -5166,7 +5166,7 @@
                 const avatarElement = document.createElement('div');
                 avatarElement.className = 'avatar-modal-option';
                 avatarElement.dataset.avatarId = avatar.id;
-                
+
                 if (selectedAvatar === avatar.id) {
                     avatarElement.classList.add('active');
                 }
@@ -5189,16 +5189,16 @@
 
         function selectTempAvatar(avatarId) {
             tempSelectedAvatar = avatarId;
-            
+
             document.querySelectorAll('.avatar-modal-option').forEach(option => {
                 option.classList.remove('active');
             });
-            
+
             const selectedOption = document.querySelector(`.avatar-modal-option[data-avatar-id="${avatarId}"]`);
             if (selectedOption) {
                 selectedOption.classList.add('active');
             }
-            
+
             updateSaveButton();
         }
 
@@ -5238,7 +5238,7 @@
 
         function updateProfileAvatar() {
             const profilePic = document.getElementById('profile-pic');
-            
+
             if (selectedAvatar) {
                 const avatarData = AVATAR_OPTIONS.find(avatar => avatar.id === selectedAvatar);
                 if (avatarData) {
@@ -5259,17 +5259,17 @@
         // Setup theme functions
         function setupTheme() {
             const themeClasses = ['theme-green', 'theme-red', 'theme-orange', 'theme-purple', 'theme-teal', 'theme-indigo', 'theme-pink', 'theme-cyan', 'theme-lime', 'theme-amber', 'theme-deep-orange'];
-            
+
             document.documentElement.classList.remove(...themeClasses);
-            
+
             if (selectedTheme !== 'default') {
                 document.documentElement.classList.add(`theme-${selectedTheme}`);
             }
-            
+
             document.querySelectorAll('.theme-option').forEach(option => {
                 option.classList.remove('active');
             });
-            
+
             const activeThemeOption = document.querySelector(`.theme-option[data-theme="${selectedTheme}"]`);
             if (activeThemeOption) {
                 activeThemeOption.classList.add('active');
@@ -5278,7 +5278,7 @@
 
         function setupDarkMode() {
             const savedPreference = localStorage.getItem('kingPronosDarkMode');
-            
+
             if (savedPreference === 'true') {
                 document.documentElement.classList.add('dark');
                 document.getElementById('dark-toggle').checked = true;
@@ -5316,12 +5316,12 @@
         // Function to fetch forecasts from GitHub for a specific date
         async function fetchForecastsFromGitHub(dateString) {
             const fileUrl = getForecastFileUrl(dateString);
-            
+
             try {
                 console.log(`Récupération des pronostics pour ${dateString}: ${fileUrl}`);
-                
+
                 const response = await fetch(fileUrl);
-                
+
                 if (!response.ok) {
                     if (response.status === 404) {
                         console.log(`Fichier de pronostics non trouvé pour ${dateString}`);
@@ -5329,10 +5329,10 @@
                     }
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
-                
+
                 const data = await response.json();
                 console.log(`Pronostics récupérés avec succès pour ${dateString}`);
-                
+
                 return data;
             } catch (error) {
                 console.error(`Erreur lors de la récupération des pronostics pour ${dateString}: ${error.message}`);
@@ -5387,34 +5387,34 @@
         // Function to parse French date format
         function parseFrenchDate(dateStr) {
             if (!dateStr) return null;
-            
+
             try {
                 const frenchMonths = {
                     'janvier': '01', 'février': '02', 'mars': '03', 'avril': '04',
                     'mai': '05', 'juin': '06', 'juillet': '07', 'août': '08',
                     'septembre': '09', 'octobre': '10', 'novembre': '11', 'décembre': '12'
                 };
-                
+
                 const parts = dateStr.split(' à ');
                 const datePart = parts[0];
                 const timePart = parts[1] || '00:00:00';
-                
+
                 const dateComponents = datePart.split(' ');
                 if (dateComponents.length >= 3) {
                     const day = dateComponents[0].padStart(2, '0');
                     const monthName = dateComponents[1].toLowerCase();
                     const year = dateComponents[2];
                     const month = frenchMonths[monthName] || '01';
-                    
+
                     const time = timePart.replace(' UTC', '');
-                    
+
                     const isoString = `${year}-${month}-${day}T${time}Z`;
                     return new Date(isoString);
                 }
             } catch (error) {
                 console.error('Error parsing French date:', dateStr, error);
             }
-            
+
             return new Date(dateStr);
         }
 
@@ -5463,7 +5463,7 @@
                         const today = new Date();
                         const diffTime = matchDate.getTime() - today.getTime();
                         const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
-                        
+
                         if (diffDays === 0) {
                             formattedDate = 'Aujourd\'hui';
                         } else if (diffDays === 1) {
@@ -5510,12 +5510,12 @@
             setTimeout(() => {
                 const homeLogoContainer = card.querySelector('.team-logo-container');
                 const awayLogoContainer = card.querySelector('.team-logo-container-away');
-                
+
                 if (homeLogoContainer) {
                     const homeLogo = createTeamLogoElement(forecastData.logo_home, forecastData.HomeTeam);
                     homeLogoContainer.replaceWith(homeLogo);
                 }
-                
+
                 if (awayLogoContainer) {
                     const awayLogo = createTeamLogoElement(forecastData.logo_away, forecastData.AwayTeam);
                     awayLogoContainer.replaceWith(awayLogo);
@@ -5528,17 +5528,17 @@
         // Function to open forecast detail with new sections - UPDATED for confidence percentage and see analysis link
         function openForecastDetail(forecastData) {
             selectedForecast = forecastData;
-            
+
             document.getElementById('detail-league').textContent = forecastData.league || 'Compétition';
-            
+
             document.getElementById('detail-home-team').textContent = forecastData.HomeTeam || 'Équipe 1';
             document.getElementById('detail-away-team').textContent = forecastData.AwayTeam || 'Équipe 2';
             document.getElementById('detail-prediction').style.display = 'none';
-            
+
             // Update logos
             const detailHomeLogo = document.getElementById('detail-home-logo');
             const detailAwayLogo = document.getElementById('detail-away-logo');
-            
+
             detailHomeLogo.innerHTML = '';
             if (forecastData.logo_home) {
                 const homeImg = document.createElement('img');
@@ -5555,7 +5555,7 @@
             } else {
                 detailHomeLogo.innerHTML = `<i class="${getTeamIcon(forecastData.HomeTeam)}"></i>`;
             }
-            
+
             detailAwayLogo.innerHTML = '';
             if (forecastData.logo_away) {
                 const awayImg = document.createElement('img');
@@ -5572,15 +5572,15 @@
             } else {
                 detailAwayLogo.innerHTML = `<i class="${getTeamIcon(forecastData.AwayTeam)}"></i>`;
             }
-            
+
             // Use confidence percentage
             const confidencePercentage = forecastData.confiance_pourcentage || 50;
             const confidenceColor = getConfidenceColor(confidencePercentage);
-            
+
             document.getElementById('detail-status').textContent = `${confidencePercentage}%`;
             document.getElementById('detail-status').style.backgroundColor = confidenceColor;
             document.getElementById('detail-status').className = 'detail-forecast-status';
-            
+
             let formattedDateTime = 'Aujourd\'hui';
             try {
                 if (forecastData.date) {
@@ -5598,7 +5598,7 @@
             } catch (e) {
                 formattedDateTime = 'Date inconnue';
             }
-            
+
             document.getElementById('detail-time').textContent = formattedDateTime;
 
             // Update prediction analysis - extract prediction from IA analysis or show link
@@ -5657,7 +5657,7 @@
         // Function to update statistics tab with charts
         function updateStatisticsTab(forecastData) {
             const statsContainer = document.querySelector('#statistics-content .stats-container');
-            
+
             if (!forecastData.stats_home || !forecastData.stats_away) {
                 statsContainer.innerHTML = `
                     <div style="text-align: center; padding: 40px 20px; color: var(--inactive-text);">
@@ -5675,13 +5675,13 @@
             // Create form display helper - form le plus récent en premier avec le point d'interrogation pour le match actuel
             const createFormDisplay = (form, isHome) => {
                 if (!form || !Array.isArray(form)) return '';
-                
+
                 // Ajouter un point d'interrogation gris pour le match actuel en premier
                 const currentMatchBadge = '<span class="form-badge pending">?</span>';
-                
+
                 // Inverser l'ordre pour avoir le plus récent en premier, puis ajouter le point d'interrogation
                 const formBadges = form.slice().reverse().map(result => `<span class="form-badge ${result}">${result}</span>`).join('');
-                
+
                 return currentMatchBadge + formBadges;
             };
 
@@ -5976,7 +5976,7 @@
         // Function to update matches tab - UPDATED for new format
         function updateMatchesTab(forecastData) {
             const matchesContainer = document.querySelector('#matches-content .matches-container');
-            
+
             const homeMatches = forecastData.last_matches_home || [];
             const awayMatches = forecastData.last_matches_away || [];
 
@@ -5998,7 +5998,7 @@
                     <div class="matches-section">
                         <div class="matches-section-title">${forecastData.HomeTeam} - Matchs Récents</div>
                 `;
-                
+
                 homeMatches.forEach(match => {
                     // Handle new object format
                     if (match && typeof match === 'object') {
@@ -6031,7 +6031,7 @@
                         `;
                     }
                 });
-                
+
                 content += '</div>';
             }
 
@@ -6040,7 +6040,7 @@
                     <div class="matches-section">
                         <div class="matches-section-title">${forecastData.AwayTeam} - Matchs Récents</div>
                 `;
-                
+
                 awayMatches.forEach(match => {
                     // Handle new object format
                     if (match && typeof match === 'object') {
@@ -6073,7 +6073,7 @@
                         `;
                     }
                 });
-                
+
                 content += '</div>';
             }
 
@@ -6083,7 +6083,7 @@
         // Function to update H2H tab - UPDATED FORMAT
         function updateH2HTab(forecastData) {
             const h2hContainer = document.querySelector('#h2h-content .h2h-container');
-            
+
             const h2hMatches = forecastData.confrontations_saison_derniere || [];
 
             if (h2hMatches.length === 0) {
@@ -6101,7 +6101,7 @@
                 <div class="matches-section">
                     <div class="matches-section-title">Confrontations Directes</div>
             `;
-            
+
             h2hMatches.forEach(match => {
                 if (match && typeof match === 'object') {
                     content += `
@@ -6113,7 +6113,7 @@
                     `;
                 }
             });
-            
+
             content += '</div>';
 
             h2hContainer.innerHTML = content;
@@ -6122,7 +6122,7 @@
         // Function to update ranking tab - RESPONSIVE
         function updateRankingTab(forecastData) {
             const rankingContainer = document.querySelector('#ranking-content .ranking-container');
-            
+
             const classement = forecastData.classement_complet || [];
 
             if (classement.length === 0) {
@@ -6203,9 +6203,9 @@
         // Function to load forecasts data
         async function loadForecastsData() {
             const listElement = document.getElementById('forecasts-container');
-            
+
             if (!listElement) return;
-            
+
             listElement.innerHTML = `
                 <div class="loading-state">
                     <i class="fas fa-futbol loading-spinner"></i>
@@ -6213,10 +6213,10 @@
                     <p>Veuillez patienter</p>
                 </div>
             `;
-            
+
             try {
                 const githubData = await fetchForecastsFromGitHub(getCurrentDateString());
-                
+
                 if (!githubData) {
                     listElement.innerHTML = `
                         <div class="empty-state">
@@ -6227,13 +6227,13 @@
                     `;
                     return;
                 }
-                
+
                 const processedData = processForecastData(githubData);
-                
+
                 forecastsCache['pronostics'] = processedData.pronostics;
-                
+
                 displayForecastsFromCache();
-                
+
             } catch (error) {
                 console.error(`Erreur chargement pronostics: ${error.message}`);
                 listElement.innerHTML = `
@@ -6249,13 +6249,13 @@
         // Function to display forecasts from cache
         function displayForecastsFromCache() {
             const listElement = document.getElementById('forecasts-container');
-            
+
             if (!listElement || !forecastsCache['pronostics']) return;
-            
+
             listElement.innerHTML = '';
-            
+
             const forecasts = forecastsCache['pronostics'];
-            
+
             if (forecasts.length === 0) {
                 listElement.innerHTML = `
                     <div class="empty-state">
@@ -6266,24 +6266,24 @@
                 `;
                 return;
             }
-            
+
             const fragment = document.createDocumentFragment();
-            
+
             forecasts.forEach((forecastData) => {
                 const forecastElement = createForecastCard(forecastData);
                 fragment.appendChild(forecastElement);
             });
-            
+
             listElement.appendChild(fragment);
         }
 
         // Function to load ICEGAME - Show most probable match of the day
         async function loadIcegameData() {
             const icegameContainer = document.getElementById('icegame-container');
-            
+
             try {
                 const githubData = await fetchForecastsFromGitHub(getCurrentDateString());
-                
+
                 if (!githubData) {
                     icegameContainer.innerHTML = `
                         <div class="coming-soon-container">
@@ -6300,9 +6300,9 @@
                     `;
                     return;
                 }
-                
+
                 const processedData = processForecastData(githubData);
-                
+
                 if (processedData.pronostics && processedData.pronostics.length > 0) {
                     // Find the match with highest confidence percentage
                     const mostProbableMatch = processedData.pronostics.reduce((max, current) => {
@@ -6310,7 +6310,7 @@
                         const currentConfidence = current.confiance_pourcentage || 50;
                         return currentConfidence > maxConfidence ? current : max;
                     });
-                    
+
                     icegameContainer.innerHTML = `
                         <div class="icegame-header">
                             <div class="icegame-title">
@@ -6336,12 +6336,12 @@
                             </div>
                         </div>
                     `;
-                    
+
                     // Créer et insérer la carte du match
                     const forecastCard = createForecastCard(mostProbableMatch);
                     const icegameCardContainer = document.getElementById('icegame-forecast-card');
                     icegameCardContainer.appendChild(forecastCard);
-                    
+
                 } else {
                     icegameContainer.innerHTML = `
                         <div class="coming-soon-container">
@@ -6357,7 +6357,7 @@
                         </div>
                     `;
                 }
-                
+
             } catch (error) {
                 console.error(`Erreur chargement ICEGAME: ${error.message}`);
                 icegameContainer.innerHTML = `
@@ -6380,17 +6380,17 @@
         function loadWeekendBoostSection() {
             const couponSection = document.getElementById('weekend-boost-coupon-section');
             const adminSection = document.getElementById('weekend-boost-admin-section');
-            
+
             // Show admin section only to admins
             if (isAdmin) {
                 adminSection.style.display = 'block';
             } else {
                 adminSection.style.display = 'none';
             }
-            
+
             // Load existing coupon
             const existingCoupon = getCouponFromStorage('weekend_boost');
-            
+
             if (existingCoupon) {
                 displayCouponCard(couponSection, existingCoupon.code, 'Weekend Boost', 'weekend-boost');
             } else {
@@ -6408,17 +6408,17 @@
         function loadBonusGameSection() {
             const couponSection = document.getElementById('bonus-game-coupon-section');
             const adminSection = document.getElementById('bonus-game-admin-section');
-            
+
             // Show admin section only to admins
             if (isAdmin) {
                 adminSection.style.display = 'block';
             } else {
                 adminSection.style.display = 'none';
             }
-            
+
             // Load existing coupon
             const existingCoupon = getCouponFromStorage('bonus_game');
-            
+
             if (existingCoupon) {
                 displayCouponCard(couponSection, existingCoupon.code, 'Bonus Game Samedi', 'bonus-game');
             } else {
@@ -6455,7 +6455,7 @@
             }
         // Save to localStorage
             saveCouponToStorage(type, code.trim());
-            
+
             // Update display
             if (type === 'weekend_boost') {
                 loadWeekendBoostSection();
@@ -6464,7 +6464,7 @@
                 loadBonusGameSection();
                 showNotification('Code Bonus Game publié avec succès !', 'success');
             }
-            
+
             // Clear input
             const inputId = type === 'weekend_boost' ? 'weekend-boost-code-input' : 'bonus-game-code-input';
             document.getElementById(inputId).value = '';
@@ -6473,13 +6473,13 @@
         // Navigation functions
         function showSection(sectionId) {
             currentSection = sectionId;
-            
+
             document.querySelectorAll('.section').forEach(section => {
                 section.classList.remove('active');
             });
-            
+
             document.getElementById(sectionId + '-section').classList.add('active');
-            
+
             document.querySelectorAll('.nav-item').forEach(item => {
                 if (item.dataset.section === sectionId) {
                     item.classList.add('active');
@@ -6491,7 +6491,7 @@
             // Hide/show bottom nav based on section type
             const bottomNav = document.getElementById('bottom-nav');
             const isMenuSection = ['events', 'history', 'interface', 'secrets', 'terms', 'about', 'icebet', 'weekend-boost', 'bonus-game'].includes(sectionId);
-            
+
             if (isMenuSection) {
                 bottomNav.style.display = 'none';
                 document.getElementById('main-content').style.bottom = '0';
@@ -6499,9 +6499,9 @@
                 bottomNav.style.display = 'flex';
                 document.getElementById('main-content').style.bottom = '60px';
             }
-            
+
             updateHeaderForSection(sectionId);
-            
+
             if (sectionId === 'forecasts') {
                 loadForecastsData();
             } else if (sectionId === 'live-scores') {
@@ -6533,10 +6533,10 @@
             const menuBtn = document.getElementById('menu-btn');
             const headerTitle = document.getElementById('header-title');
             const headerActions = document.querySelector('.header-actions');
-            
+
             backBtn.style.display = 'none';
             menuBtn.style.display = 'block';
-            
+
             if (sectionId === 'forecasts') {
                 headerTitle.textContent = 'Pronostics';
                 headerActions.innerHTML = `
@@ -6615,9 +6615,9 @@
                 backBtn.style.display = 'block';
                 menuBtn.style.display = 'none';
             }
-            
+
             const eventsBtn = document.getElementById('events-btn');
-            
+
             if (eventsBtn) {
                 eventsBtn.addEventListener('click', () => {
                     showSection('events');
@@ -6625,7 +6625,7 @@
                     hideEventNotificationDot();
                 });
             }
-            
+
             if (hasNewEvents) {
                 const dot = document.getElementById('events-notification-dot');
                 if (dot) dot.classList.add('active');
@@ -6640,7 +6640,7 @@
                 if (dot) dot.classList.add('active');
             });
         }
-        
+
         function hideEventNotificationDot() {
             hasNewEvents = false;
             const dots = document.querySelectorAll('#events-notification-dot');
@@ -6648,7 +6648,7 @@
                 if (dot) dot.classList.remove('active');
             });
         }
-        
+
         function updateLastViewedEventTimestamp() {
             lastViewedEventTimestamp = new Date();
             localStorage.setItem('kingPronosLastViewedEvent', lastViewedEventTimestamp.toISOString());
@@ -6656,18 +6656,18 @@
 
         async function loadEvents() {
             const eventsList = document.getElementById('events-list');
-            
+
             try {
                 const eventsQuery = query(
                     collection(db, "Events"),
                     orderBy("timestamp", "desc"),
                     limit(50)
                 );
-                
+
                 const eventsSnapshot = await getDocs(eventsQuery);
-                
+
                 eventsList.innerHTML = '';
-                
+
                 if (eventsSnapshot.empty) {
                     eventsList.innerHTML = `
                         <div class="empty-state">
@@ -6678,21 +6678,21 @@
                     `;
                     return;
                 }
-                
+
                 const eventElements = [];
-                
+
                 eventsSnapshot.docs.forEach(doc => {
                     const eventData = doc.data();
                     const eventElement = createEventElement(doc.id, eventData);
                     eventElements.push(eventElement);
                 });
-                
+
                 eventElements.forEach(element => {
                     eventsList.appendChild(element);
                 });
-                
+
                 console.log(`${eventsSnapshot.size} événements chargés`);
-                
+
             } catch (error) {
                 console.error('Erreur chargement événements:', error);
                 eventsList.innerHTML = `
@@ -6708,14 +6708,14 @@
         function createEventElement(eventId, eventData) {
             const eventElement = document.createElement('div');
             eventElement.className = 'admin-notification';
-            
+
             let iconClass = 'fas fa-info-circle';
             if (eventData.type === 'alert') {
                 iconClass = 'fas fa-exclamation-triangle';
             } else if (eventData.type === 'update') {
                 iconClass = 'fas fa-sync-alt';
             }
-            
+
             let timestamp = '';
             if (eventData.timestamp) {
                 const eventDate = eventData.timestamp.toDate ? eventData.timestamp.toDate() : new Date(eventData.timestamp);
@@ -6726,7 +6726,7 @@
                     minute: '2-digit'
                 });
             }
-            
+
             eventElement.innerHTML = `
                 <div class="admin-notification-header">
                     <div class="admin-notification-title">
@@ -6740,13 +6740,13 @@
                     ${eventData.senderName ? ' • ' + eventData.senderName : ''}
                 </div>
             `;
-            
+
             return eventElement;
         }
 
         async function loadHistoryData() {
             const historyContent = document.getElementById('history-content');
-            
+
             historyContent.innerHTML = `
                 <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 200px;">
                     <i class="fas fa-spinner fa-spin" style="font-size: 30px; color: var(--primary-color);"></i>
@@ -6757,7 +6757,7 @@
             try {
                 const yesterday = getDateString(1);
                 const dayBeforeYesterday = getDateString(2);
-                
+
                 const [yesterdayData, dayBeforeYesterdayData] = await Promise.all([
                     fetchForecastsFromGitHub(yesterday),
                     fetchForecastsFromGitHub(dayBeforeYesterday)
@@ -6786,7 +6786,7 @@
 
             const yesterday = new Date();
             yesterday.setDate(yesterday.getDate() - 1);
-            
+
             const dayBeforeYesterday = new Date();
             dayBeforeYesterday.setDate(dayBeforeYesterday.getDate() - 2);
 
@@ -6811,7 +6811,7 @@
 
         function createHistoryDateSection(date, data) {
             const section = document.createElement('div');
-            
+
             const dateHeader = document.createElement('div');
             dateHeader.className = 'history-date-header';
             dateHeader.textContent = date.toLocaleDateString('fr-FR', { 
@@ -6879,10 +6879,10 @@
             const registerTab = document.getElementById('register-tab');
             const gotoRegister = document.getElementById('goto-register');
             const gotoLogin = document.getElementById('goto-login');
-            
+
             loginBtn.addEventListener('click', loginUser);
             registerBtn.addEventListener('click', registerUser);
-            
+
             loginTab.addEventListener('click', () => switchAuthTab('login'));
             registerTab.addEventListener('click', () => switchAuthTab('login'));
             gotoRegister.addEventListener('click', (e) => {
@@ -6893,18 +6893,18 @@
                 e.preventDefault();
                 switchAuthTab('login');
             });
-            
+
             onAuthStateChanged(auth, async (user) => {
                 if (user) {
                     currentUser = user;
                     isLoggedIn = true;
-                    
+
                     try {
                         await loadUserData();
                         showMainApp();
-                        
+
                         console.log(`Utilisateur connecté: ${user.email}`);
-                        
+
                     } catch (error) {
                         console.error(`Erreur initialisation: ${error.message}`);
                         showNotification("Erreur lors de l'initialisation", "error");
@@ -6916,7 +6916,7 @@
                     isAdmin = false;
                     showAuthScreen();
                 }
-                
+
                 hideLoading();
             });
         }
@@ -6926,7 +6926,7 @@
             const registerForm = document.getElementById('register-form');
             const loginTab = document.getElementById('login-tab');
             const registerTab = document.getElementById('register-tab');
-            
+
             if (tab === 'register') {
                 loginForm.classList.remove('active');
                 registerForm.classList.add('active');
@@ -6938,7 +6938,7 @@
                 registerTab.classList.remove('active');
                 loginTab.classList.add('active');
             }
-            
+
             clearAuthErrors();
         }
 
@@ -6956,36 +6956,36 @@
             const password = document.getElementById('login-password').value;
             const button = document.getElementById('loginBtn');
             const logElement = document.getElementById('login-log');
-            
+
             clearAuthErrors();
-            
+
             let hasError = false;
-            
+
             if (!email || !email.includes('@')) {
                 document.getElementById('login-email-error').style.display = 'block';
                 hasError = true;
             }
-            
+
             if (!password) {
                 document.getElementById('login-password-error').style.display = 'block';
                 hasError = true;
             }
-            
+
             if (hasError) return;
-            
+
             button.classList.add('loading');
-            
+
             try {
                 await signInWithEmailAndPassword(auth, email, password);
-                
+
                 console.log(`Connexion réussie pour ${email}`);
                 logElement.textContent = 'Connexion réussie !';
                 logElement.className = 'log-message success';
                 logElement.style.display = 'block';
-                
+
             } catch (error) {
                 console.error(`Erreur connexion: ${error.message}`);
-                
+
                 let errorMessage = 'Erreur de connexion';
                 if (error.code === 'auth/user-not-found') {
                     errorMessage = 'Aucun compte trouvé avec cet email';
@@ -6996,12 +6996,12 @@
                 } else if (error.code === 'auth/too-many-requests') {
                     errorMessage = 'Trop de tentatives. Réessayez plus tard';
                 }
-                
+
                 logElement.textContent = errorMessage;
                 logElement.className = 'log-message error';
                 logElement.style.display = 'block';
             }
-            
+
             button.classList.remove('loading');
         }
 
@@ -7011,34 +7011,34 @@
             const confirmPassword = document.getElementById('register-confirm-password').value;
             const button = document.getElementById('registerBtn');
             const logElement = document.getElementById('register-log');
-            
+
             clearAuthErrors();
-            
+
             let hasError = false;
-            
+
             if (!email || !email.includes('@')) {
                 document.getElementById('register-email-error').style.display = 'block';
                 hasError = true;
             }
-            
+
             if (password.length < 6) {
                 document.getElementById('register-password-error').style.display = 'block';
                 hasError = true;
             }
-            
+
             if (password !== confirmPassword) {
                 document.getElementById('register-confirm-password-error').style.display = 'block';
                 hasError = true;
             }
-            
+
             if (hasError) return;
-            
+
             button.classList.add('loading');
-            
+
             try {
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
-                
+
                 const userData = {
                     email: user.email,
                     displayName: user.displayName || 'Utilisateur',
@@ -7047,17 +7047,17 @@
                     updatedAt: serverTimestamp(),
                     uid: user.uid
                 };
-                
+
                 await setDoc(doc(db, "Users", user.uid), userData);
-                
+
                 console.log(`Inscription réussie pour ${email}`);
                 logElement.textContent = 'Compte créé avec succès !';
                 logElement.className = 'log-message success';
                 logElement.style.display = 'block';
-                
+
             } catch (error) {
                 console.error(`Erreur inscription: ${error.message}`);
-                
+
                 let errorMessage = 'Erreur lors de la création du compte';
                 if (error.code === 'auth/email-already-in-use') {
                     errorMessage = 'Un compte existe déjà avec cet email';
@@ -7066,21 +7066,21 @@
                 } else if (error.code === 'auth/weak-password') {
                     errorMessage = 'Le mot de passe est trop faible';
                 }
-                
+
                 logElement.textContent = errorMessage;
                 logElement.className = 'log-message error';
                 logElement.style.display = 'block';
             }
-            
+
             button.classList.remove('loading');
         }
 
         async function loadUserData() {
             if (!currentUser) return;
-            
+
             try {
                 const userDoc = await getDoc(doc(db, "Users", currentUser.uid));
-                
+
                 if (userDoc.exists()) {
                     currentUserData = userDoc.data();
                     selectedAvatar = currentUserData.avatar || 'king1';
@@ -7093,15 +7093,15 @@
                         updatedAt: serverTimestamp(),
                         uid: currentUser.uid
                     };
-                    
+
                     await setDoc(doc(db, "Users", currentUser.uid), userData);
                     currentUserData = userData;
                     selectedAvatar = 'king1';
                 }
-                
+
                 updateProfileDisplay();
                 console.log('Données utilisateur chargées');
-                
+
             } catch (error) {
                 console.error('Erreur chargement données utilisateur:', error);
             }
@@ -7109,14 +7109,14 @@
 
         function updateProfileDisplay() {
             if (!currentUserData) return;
-            
+
             const profileNameText = document.getElementById('profile-name-text');
             const profileEmail = document.getElementById('profile-email');
-            
+
             if (profileNameText) {
                 profileNameText.textContent = currentUserData.displayName || 'Utilisateur';
             }
-            
+
             if (profileEmail) {
                 profileEmail.textContent = currentUser.email;
             }
@@ -7138,11 +7138,11 @@
         function showMainApp() {
             document.getElementById('auth-screen').style.display = 'none';
             document.getElementById('loading').style.display = 'none';
-            
+
             document.querySelector('.header').style.display = 'flex';
             document.querySelector('.main-content').style.display = 'block';
             document.querySelector('.bottom-nav').style.display = 'flex';
-            
+
             showSection('forecasts');
         }
 
@@ -7166,15 +7166,15 @@
                 console.log('Utilisateur déconnecté avec succès');
                 hideConfirmation('logout-confirmation');
                 showNotification("Déconnecté avec succès", "success");
-                
+
                 isLoggedIn = false;
                 currentUser = null;
                 currentUserData = null;
                 isAdmin = false;
                 selectedAvatar = null;
-                
+
                 showAuthScreen();
-                
+
             } catch (error) {
                 console.error(`Erreur déconnexion: ${error.message}`);
                 showNotification("Erreur lors de la déconnexion", "error");
@@ -7198,12 +7198,12 @@
                 document.getElementById('side-menu').classList.add('active');
                 document.getElementById('side-menu-overlay').classList.add('active');
             });
-            
+
             document.getElementById('side-menu-close').addEventListener('click', function() {
                 document.getElementById('side-menu').classList.remove('active');
                 document.getElementById('side-menu-overlay').classList.remove('active');
             });
-            
+
             document.getElementById('side-menu-overlay').addEventListener('click', function() {
                 document.getElementById('side-menu').classList.remove('active');
                 document.getElementById('side-menu-overlay').classList.remove('active');
@@ -7245,7 +7245,7 @@
                 document.getElementById('side-menu-overlay').classList.remove('active');
                 showSection('history');
             });
-            
+
             document.getElementById('menu-interface').addEventListener('click', function() {
                 document.getElementById('side-menu').classList.remove('active');
                 document.getElementById('side-menu-overlay').classList.remove('active');
@@ -7326,21 +7326,21 @@
                 option.addEventListener('click', function() {
                     const theme = this.getAttribute('data-theme');
                     selectedTheme = theme;
-                    
+
                     const themeClasses = ['theme-green', 'theme-red', 'theme-orange', 'theme-purple', 'theme-teal', 'theme-indigo', 'theme-pink', 'theme-cyan', 'theme-lime', 'theme-amber', 'theme-deep-orange'];
                     document.documentElement.classList.remove(...themeClasses);
-                    
+
                     if (theme !== 'default') {
                         document.documentElement.classList.add(`theme-${theme}`);
                     }
-                    
+
                     document.querySelectorAll('.theme-option').forEach(opt => {
                         opt.classList.remove('active');
                     });
                     this.classList.add('active');
-                    
+
                     localStorage.setItem('kingPronosTheme', theme);
-                    
+
                     const themeNames = {
                         'default': 'Bleu',
                         'green': 'Vert',
@@ -7355,7 +7355,7 @@
                         'amber': 'Ambre',
                         'deep-orange': 'Orange Foncé'
                     };
-                    
+
                     showNotification(`Thème ${themeNames[theme]} appliqué`, 'success');
                 });
             });
@@ -7367,7 +7367,7 @@
                 } else {
                     document.documentElement.classList.remove('dark');
                 }
-                
+
                 localStorage.setItem('kingPronosDarkMode', this.checked ? 'true' : 'false');
             });
 
@@ -7391,9 +7391,9 @@
             setupLiveScoresWidget();
             initializePWA();
             clearExpiredCoupons();
-            
+
             console.log('Application KING PRONOS initialisée');
-            
+
             setTimeout(() => {
                 if (!isLoggedIn) {
                     hideLoading();
@@ -7405,14 +7405,10 @@
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/service-worker.js')
-      .then(registration => {
-        console.log('✅ Service Worker enregistré avec succès :', registration.scope);
-      })
-      .catch(error => {
-        console.log('❌ Échec de l’enregistrement du Service Worker :', error);
-      });
+      .then(reg => console.log('✅ Service Worker enregistré :', reg.scope))
+      .catch(err => console.error('❌ Erreur Service Worker :', err));
   });
 }
-   </script>
+</script>
 </body>
 </html>
