@@ -124,6 +124,8 @@
             --secrets-popup-content-bg: var(--bg-color);
             --icegame-bg: linear-gradient(135deg, #2196F3, #1976D2);
             --icegame-text: white;
+            --icebet-bg: linear-gradient(135deg, #00BCD4, #0097A7);
+            --icebet-text: white;
             --coming-soon-bg: linear-gradient(135deg, #9E9E9E, #757575);
             --coming-soon-text: white;
             --home-team-color: #FF0000;
@@ -137,6 +139,12 @@
             --match-result-draw: #FFC107;
             --match-result-loss: #F44336;
             --pending-result: #cccccc;
+            --boost-card-bg: linear-gradient(135deg, #FF6B35, #F7931E);
+            --boost-card-text: white;
+            --bonus-card-bg: linear-gradient(135deg, #9C27B0, #673AB7);
+            --bonus-card-text: white;
+            --admin-section-bg: rgba(93, 92, 222, 0.1);
+            --admin-section-border: var(--primary-color);
         }
         
         /* Thème vert */
@@ -345,6 +353,7 @@
             --stat-card-border: #404040;
             --table-row-even: rgba(255, 255, 255, 0.02);
             --pending-result: #555555;
+            --admin-section-bg: rgba(93, 92, 222, 0.15);
         }
 
         * {
@@ -794,6 +803,316 @@
             background: white;
             color: var(--primary-color);
             transform: translateY(-2px);
+        }
+
+        /* ICEBET Section Styles */
+        .icebet-container {
+            padding: 20px;
+            overflow-y: auto;
+            height: 100%;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .icebet-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 30px 20px;
+            background: var(--icebet-bg);
+            border-radius: 20px;
+            color: var(--icebet-text);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .icebet-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .icebet-subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            line-height: 1.4;
+        }
+
+        .icebet-step {
+            background: var(--card-bg);
+            border: 2px solid var(--primary-color);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .icebet-step-number {
+            background: var(--primary-color);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 16px;
+        }
+
+        .icebet-step-title {
+            display: flex;
+            align-items: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .icebet-step-content {
+            margin-left: 40px;
+            line-height: 1.6;
+        }
+
+        .icebet-step-content ol, .icebet-step-content ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+
+        .icebet-step-content li {
+            margin-bottom: 8px;
+        }
+
+        .icebet-earnings {
+            background: var(--success-color);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .icebet-example {
+            background: var(--secondary-color);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .icebet-example-title {
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .icebet-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+
+        .icebet-table th,
+        .icebet-table td {
+            border: 1px solid var(--border-color);
+            padding: 8px;
+            text-align: center;
+        }
+
+        .icebet-table th {
+            background: var(--primary-color);
+            color: white;
+            font-weight: bold;
+        }
+
+        .icebet-creators {
+            background: linear-gradient(135deg, var(--primary-color), #4a49c0);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .icebet-creators-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .icebet-creators-text {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        /* Weekend Boost & Bonus Game Sections */
+        .boost-container, .bonus-container {
+            padding: 20px;
+            overflow-y: auto;
+            height: 100%;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .boost-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 30px 20px;
+            background: var(--boost-card-bg);
+            border-radius: 20px;
+            color: var(--boost-card-text);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .bonus-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 30px 20px;
+            background: var(--bonus-card-bg);
+            border-radius: 20px;
+            color: var(--bonus-card-text);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .boost-title, .bonus-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .boost-subtitle, .bonus-subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            line-height: 1.4;
+        }
+
+        .admin-section {
+            background: var(--admin-section-bg);
+            border: 2px solid var(--admin-section-border);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .admin-section-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .code-input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .code-input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--input-bg);
+            color: var(--text-color);
+            font-size: 16px;
+        }
+
+        .code-submit-btn {
+            padding: 12px 20px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .code-submit-btn:hover {
+            background: #4a49c0;
+        }
+
+        .coupon-card {
+            background: var(--card-bg);
+            border: 2px solid var(--primary-color);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .coupon-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .coupon-card-icon {
+            font-size: 48px;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .coupon-card-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .coupon-card-code {
+            font-size: 32px;
+            font-weight: bold;
+            background: var(--secondary-color);
+            padding: 15px 25px;
+            border-radius: 10px;
+            margin: 15px 0;
+            letter-spacing: 2px;
+            border: 2px dashed var(--primary-color);
+        }
+
+        .coupon-card-description {
+            color: var(--inactive-text);
+            margin-bottom: 15px;
+        }
+
+        .coupon-card-copy {
+            color: var(--primary-color);
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .no-coupon-message {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--inactive-text);
+        }
+
+        .no-coupon-message i {
+            font-size: 60px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .no-coupon-message h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .no-coupon-message p {
+            font-size: 14px;
+            line-height: 1.5;
         }
 
         /* Icegame Section */
@@ -3075,6 +3394,48 @@
             .live-scores-header {
                 padding: 15px;
             }
+
+            .icebet-title, .boost-title, .bonus-title {
+                font-size: 24px;
+            }
+
+            .icebet-step {
+                padding: 15px;
+                margin-bottom: 15px;
+            }
+
+            .icebet-step-number {
+                width: 25px;
+                height: 25px;
+                font-size: 14px;
+            }
+
+            .icebet-step-title {
+                font-size: 16px;
+                margin-bottom: 10px;
+            }
+
+            .icebet-step-content {
+                margin-left: 35px;
+            }
+
+            .coupon-card {
+                padding: 20px;
+            }
+
+            .coupon-card-code {
+                font-size: 24px;
+                padding: 10px 20px;
+            }
+
+            .code-input-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .code-submit-btn {
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -3180,7 +3541,14 @@
             <div class="side-menu-item" id="menu-icebet">
                 <i class="fas fa-snowflake"></i>
                 <div class="side-menu-text">ICEBET</div>
-                <div class="menu-badge">Bientôt</div>
+            </div>
+            <div class="side-menu-item" id="menu-weekend-boost">
+                <i class="fas fa-rocket"></i>
+                <div class="side-menu-text">Weekend Boost</div>
+            </div>
+            <div class="side-menu-item" id="menu-bonus-game">
+                <i class="fas fa-gift"></i>
+                <div class="side-menu-text">Bonus Game Samedi</div>
             </div>
             <div class="side-menu-item" id="menu-history">
                 <i class="fas fa-history"></i>
@@ -3307,6 +3675,272 @@
         <div id="icegame-section" class="section">
             <div class="icegame-container" id="icegame-container">
                 <!-- ICEGAME content will be loaded here -->
+            </div>
+        </div>
+
+        <!-- ICEBET Section -->
+        <div id="icebet-section" class="section menu-section">
+            <div class="icebet-container">
+                <div class="icebet-header">
+                    <div class="icebet-title">
+                        <i class="fas fa-snowflake"></i>
+                        🧊 Guide ICEBET
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="icebet-subtitle">
+                        Étapes + Rendements annuels
+                    </div>
+                </div>
+
+                <div class="icebet-creators">
+                    <div class="icebet-creators-title">👑 Application créée par</div>
+                    <div class="icebet-creators-text">Jonnhy Billions & KBN</div>
+                </div>
+
+                <div class="icebet-step">
+                    <div class="icebet-step-title">
+                        <div class="icebet-step-number">1</div>
+                        Inscription
+                    </div>
+                    <div class="icebet-step-content">
+                        <ol>
+                            <li>Crée ton compte sur l'application.</li>
+                            <li>Utilise le code promo <strong>ICEGAME</strong> à l'inscription pour activer ton bonus.</li>
+                            <li>Vérifie que ton compte bonus est actif.</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="icebet-step">
+                    <div class="icebet-step-title">
+                        <div class="icebet-step-number">2</div>
+                        Mise quotidienne – SAFE (ICEGAME)
+                    </div>
+                    <div class="icebet-step-content">
+                        <ol>
+                            <li>Tous les jours, identifie le pari SAFE proposé par l'IA.</li>
+                            <li><strong>Mise :</strong> 350 FCFA par jour.</li>
+                            <li><strong>Réussite estimée :</strong> 75 % des paris.</li>
+                            <li><strong>Cote moyenne :</strong> 1.4.</li>
+                            <li><strong>Objectif :</strong> gains stables et protection du capital.</li>
+                        </ol>
+                        <div class="icebet-earnings">
+                            Rendement approximatif : +22 FCFA/jour → +6 160 FCFA/an
+                        </div>
+                    </div>
+                </div>
+
+                <div class="icebet-step">
+                    <div class="icebet-step-title">
+                        <div class="icebet-step-number">3</div>
+                        BOOST week-end
+                    </div>
+                    <div class="icebet-step-content">
+                        <ol>
+                            <li>Chaque samedi et dimanche, l'application te propose automatiquement un BOOST via le coupon Afropari.</li>
+                            <li><strong>Mise :</strong> 250 FCFA par pari, cote ≈ 2+</li>
+                            <li><strong>Réussite estimée :</strong> 75 %.</li>
+                            <li><strong>Objectif :</strong> augmenter fortement tes gains le week-end.</li>
+                        </ol>
+                        <div class="icebet-earnings">
+                            Rendement approximatif : +117 FCFA/par pari → +12 200 FCFA/an
+                        </div>
+                    </div>
+                </div>
+
+                <div class="icebet-step">
+                    <div class="icebet-step-title">
+                        <div class="icebet-step-number">4</div>
+                        BONUS ICEGAME le samedi
+                    </div>
+                    <div class="icebet-step-content">
+                        <ol>
+                            <li>Recharge 650 FCFA ou plus → tu reçois 650 FCFA sur ton compte bonus.</li>
+                            <li><strong>Mise :</strong> 650 FCFA bonus sur un combiné de 3 matchs le samedi.</li>
+                            <li>Si le combiné est validé → 650 FCFA transférés sur ton compte principal.</li>
+                            <li><strong>Réussite estimée :</strong> 75 %.</li>
+                        </ol>
+                        <div class="icebet-earnings">
+                            Rendement approximatif : 52 samedis × 650 × 0.75 ≈ 25 350 FCFA/an
+                        </div>
+                    </div>
+                </div>
+
+                <div class="icebet-step">
+                    <div class="icebet-step-title">
+                        <div class="icebet-step-number">5</div>
+                        Règles à suivre
+                    </div>
+                    <div class="icebet-step-content">
+                        <ol>
+                            <li>Parier le même montant chaque jour pour SAFE et BOOST.</li>
+                            <li>Ne jamais mélanger le capital SAFE et BOOST.</li>
+                            <li>Utiliser le code <strong>ICEGAME</strong> uniquement à l'inscription pour activer le bonus.</li>
+                            <li>Les BOOSTs sont proposés automatiquement par l'application.</li>
+                            <li>Le bonus de samedi ne peut être utilisé que sur le combiné de 3 matchs.</li>
+                            <li>En cas de perte, continuer le jour suivant.</li>
+                            <li>Noter quotidiennement : mise, type de pari, résultat, pour suivre ton rendement.</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="icebet-step">
+                    <div class="icebet-step-title">
+                        <div class="icebet-step-number">6</div>
+                        Exemple de samedi
+                    </div>
+                    <div class="icebet-step-content">
+                        <table class="icebet-table">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Montant</th>
+                                    <th>Source</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>SAFE</td>
+                                    <td>350 FCFA</td>
+                                    <td>ICEGAME quotidien</td>
+                                </tr>
+                                <tr>
+                                    <td>BOOST</td>
+                                    <td>250 FCFA</td>
+                                    <td>Afropari appli</td>
+                                </tr>
+                                <tr>
+                                    <td>BONUS ICEGAME</td>
+                                    <td>650 FCFA</td>
+                                    <td>Code promo + recharge</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="icebet-example">
+                            <div class="icebet-example-title">💡 Astuce</div>
+                            Tu peux gagner trois fois samedi : SAFE, BOOST et bonus de recharge.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="icebet-step">
+                    <div class="icebet-step-title">
+                        <div class="icebet-step-number">7</div>
+                        Gains annuels estimés
+                    </div>
+                    <div class="icebet-step-content">
+                        <table class="icebet-table">
+                            <thead>
+                                <tr>
+                                    <th>Source</th>
+                                    <th>Rendement annuel</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>SAFE quotidien</td>
+                                    <td>+6 160 FCFA</td>
+                                </tr>
+                                <tr>
+                                    <td>BOOST week-end</td>
+                                    <td>+12 200 FCFA</td>
+                                </tr>
+                                <tr>
+                                    <td>BONUS ICEGAME</td>
+                                    <td>+25 350 FCFA</td>
+                                </tr>
+                                <tr style="background: var(--success-color); color: white; font-weight: bold;">
+                                    <td>Total</td>
+                                    <td>≈ 43 710 FCFA ✅</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="icebet-example">
+                            <div class="icebet-example-title">📊 Important</div>
+                            Ces gains sont basés sur 75 % de réussite et respect strict des étapes.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cta-section">
+                    <div class="cta-title">🚀 Prêt à Commencer ?</div>
+                    <div class="cta-description">
+                        Suis ce guide étape par étape pour maximiser tes gains avec ICEBET. 
+                        N'oublie pas d'utiliser le code ICEGAME lors de ton inscription !
+                    </div>
+                    <a href="https://reffpa.com/L?tag=d_4544971m_1599c_&site=4544971&ad=1599" target="_blank" class="cta-button">
+                        🎯 1XBET - S'INSCRIRE
+                    </a>
+                    <a href="https://afropari.com/?reg=af45789" target="_blank" class="cta-button">
+                        ❄️ AFROPARI - S'INSCRIRE
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Weekend Boost Section -->
+        <div id="weekend-boost-section" class="section menu-section">
+            <div class="boost-container">
+                <div class="boost-header">
+                    <div class="boost-title">
+                        <i class="fas fa-rocket"></i>
+                        Weekend Boost
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <div class="boost-subtitle">
+                        Codes de coupons exclusifs pour le weekend
+                    </div>
+                </div>
+
+                <!-- Admin Section (Only visible to admins) -->
+                <div id="weekend-boost-admin-section" class="admin-section" style="display: none;">
+                    <div class="admin-section-title">
+                        <i class="fas fa-crown"></i>
+                        Panneau Admin - Ajouter Code Weekend Boost
+                    </div>
+                    <div class="code-input-group">
+                        <input type="text" id="weekend-boost-code-input" class="code-input" placeholder="Entrer le code du coupon weekend...">
+                        <button id="weekend-boost-submit-btn" class="code-submit-btn">Publier</button>
+                    </div>
+                </div>
+
+                <!-- Coupon Display Section -->
+                <div id="weekend-boost-coupon-section">
+                    <!-- Content will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Bonus Game Samedi Section -->
+        <div id="bonus-game-section" class="section menu-section">
+            <div class="bonus-container">
+                <div class="bonus-header">
+                    <div class="bonus-title">
+                        <i class="fas fa-gift"></i>
+                        Bonus Game Samedi
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="bonus-subtitle">
+                        Codes de coupons spéciaux pour le samedi
+                    </div>
+                </div>
+
+                <!-- Admin Section (Only visible to admins) -->
+                <div id="bonus-game-admin-section" class="admin-section" style="display: none;">
+                    <div class="admin-section-title">
+                        <i class="fas fa-crown"></i>
+                        Panneau Admin - Ajouter Code Bonus Game
+                    </div>
+                    <div class="code-input-group">
+                        <input type="text" id="bonus-game-code-input" class="code-input" placeholder="Entrer le code du coupon bonus game...">
+                        <button id="bonus-game-submit-btn" class="code-submit-btn">Publier</button>
+                    </div>
+                </div>
+
+                <!-- Coupon Display Section -->
+                <div id="bonus-game-coupon-section">
+                    <!-- Content will be loaded here -->
+                </div>
             </div>
         </div>
 
@@ -4073,6 +4707,45 @@
             retryAttempts: 0,
             maxRetries: 3
         };
+
+        // Coupon management functions
+        function saveCouponToStorage(type, code) {
+            const couponData = {
+                code: code,
+                timestamp: Date.now(),
+                expires: Date.now() + (24 * 60 * 60 * 1000) // 24 hours
+            };
+            localStorage.setItem(`kingpronos_${type}_coupon`, JSON.stringify(couponData));
+        }
+
+        function getCouponFromStorage(type) {
+            const storedData = localStorage.getItem(`kingpronos_${type}_coupon`);
+            if (!storedData) return null;
+            
+            try {
+                const couponData = JSON.parse(storedData);
+                
+                // Check if coupon has expired
+                if (Date.now() > couponData.expires) {
+                    localStorage.removeItem(`kingpronos_${type}_coupon`);
+                    return null;
+                }
+                
+                return couponData;
+            } catch (error) {
+                console.error('Error parsing coupon data:', error);
+                localStorage.removeItem(`kingpronos_${type}_coupon`);
+                return null;
+            }
+        }
+
+        function clearExpiredCoupons() {
+            const types = ['weekend_boost', 'bonus_game'];
+            types.forEach(type => {
+                const couponData = getCouponFromStorage(type);
+                // getCouponFromStorage already handles cleanup of expired coupons
+            });
+        }
 
         // Protection contre la copie
         document.addEventListener('contextmenu', function(e) {
@@ -5703,6 +6376,100 @@
             }
         }
 
+        // Function to load Weekend Boost section
+        function loadWeekendBoostSection() {
+            const couponSection = document.getElementById('weekend-boost-coupon-section');
+            const adminSection = document.getElementById('weekend-boost-admin-section');
+            
+            // Show admin section only to admins
+            if (isAdmin) {
+                adminSection.style.display = 'block';
+            } else {
+                adminSection.style.display = 'none';
+            }
+            
+            // Load existing coupon
+            const existingCoupon = getCouponFromStorage('weekend_boost');
+            
+            if (existingCoupon) {
+                displayCouponCard(couponSection, existingCoupon.code, 'Weekend Boost', 'weekend-boost');
+            } else {
+                couponSection.innerHTML = `
+                    <div class="no-coupon-message">
+                        <i class="fas fa-rocket"></i>
+                        <h3>Aucun code disponible</h3>
+                        <p>Le code Weekend Boost sera publié prochainement. Revenez plus tard !</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Function to load Bonus Game section
+        function loadBonusGameSection() {
+            const couponSection = document.getElementById('bonus-game-coupon-section');
+            const adminSection = document.getElementById('bonus-game-admin-section');
+            
+            // Show admin section only to admins
+            if (isAdmin) {
+                adminSection.style.display = 'block';
+            } else {
+                adminSection.style.display = 'none';
+            }
+            
+            // Load existing coupon
+            const existingCoupon = getCouponFromStorage('bonus_game');
+            
+            if (existingCoupon) {
+                displayCouponCard(couponSection, existingCoupon.code, 'Bonus Game Samedi', 'bonus-game');
+            } else {
+                couponSection.innerHTML = `
+                    <div class="no-coupon-message">
+                        <i class="fas fa-gift"></i>
+                        <h3>Aucun code disponible</h3>
+                        <p>Le code Bonus Game sera publié prochainement. Revenez plus tard !</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Function to display coupon card
+        function displayCouponCard(container, code, title, type) {
+            container.innerHTML = `
+                <div class="coupon-card" onclick="copyPromoCode('${code}')">
+                    <div class="coupon-card-icon">
+                        <i class="fas fa-${type === 'weekend-boost' ? 'rocket' : 'gift'}"></i>
+                    </div>
+                    <div class="coupon-card-title">${title}</div>
+                    <div class="coupon-card-code">${code}</div>
+                    <div class="coupon-card-description">Code valable 24h</div>
+                    <div class="coupon-card-copy">👆 Cliquez pour copier le code</div>
+                </div>
+            `;
+        }
+
+        // Function to publish coupon code
+        function publishCouponCode(type, code) {
+            if (!code || !code.trim()) {
+                showNotification('Veuillez entrer un code valide', 'error');
+                return;
+            }
+        // Save to localStorage
+            saveCouponToStorage(type, code.trim());
+            
+            // Update display
+            if (type === 'weekend_boost') {
+                loadWeekendBoostSection();
+                showNotification('Code Weekend Boost publié avec succès !', 'success');
+            } else if (type === 'bonus_game') {
+                loadBonusGameSection();
+                showNotification('Code Bonus Game publié avec succès !', 'success');
+            }
+            
+            // Clear input
+            const inputId = type === 'weekend_boost' ? 'weekend-boost-code-input' : 'bonus-game-code-input';
+            document.getElementById(inputId).value = '';
+        }
+
         // Navigation functions
         function showSection(sectionId) {
             currentSection = sectionId;
@@ -5723,7 +6490,7 @@
 
             // Hide/show bottom nav based on section type
             const bottomNav = document.getElementById('bottom-nav');
-            const isMenuSection = ['events', 'history', 'interface', 'secrets', 'terms', 'about'].includes(sectionId);
+            const isMenuSection = ['events', 'history', 'interface', 'secrets', 'terms', 'about', 'icebet', 'weekend-boost', 'bonus-game'].includes(sectionId);
             
             if (isMenuSection) {
                 bottomNav.style.display = 'none';
@@ -5752,6 +6519,12 @@
             } else if (sectionId === 'interface') {
                 setupTheme();
                 setupDarkMode();
+            } else if (sectionId === 'weekend-boost') {
+                clearExpiredCoupons();
+                loadWeekendBoostSection();
+            } else if (sectionId === 'bonus-game') {
+                clearExpiredCoupons();
+                loadBonusGameSection();
             }
         }
 
@@ -5813,6 +6586,21 @@
                 menuBtn.style.display = 'none';
             } else if (sectionId === 'secrets') {
                 headerTitle.textContent = 'Secrets';
+                headerActions.innerHTML = '';
+                backBtn.style.display = 'block';
+                menuBtn.style.display = 'none';
+            } else if (sectionId === 'icebet') {
+                headerTitle.textContent = 'ICEBET';
+                headerActions.innerHTML = '';
+                backBtn.style.display = 'block';
+                menuBtn.style.display = 'none';
+            } else if (sectionId === 'weekend-boost') {
+                headerTitle.textContent = 'Weekend Boost';
+                headerActions.innerHTML = '';
+                backBtn.style.display = 'block';
+                menuBtn.style.display = 'none';
+            } else if (sectionId === 'bonus-game') {
+                headerTitle.textContent = 'Bonus Game';
                 headerActions.innerHTML = '';
                 backBtn.style.display = 'block';
                 menuBtn.style.display = 'none';
@@ -6437,7 +7225,19 @@
             document.getElementById('menu-icebet').addEventListener('click', function() {
                 document.getElementById('side-menu').classList.remove('active');
                 document.getElementById('side-menu-overlay').classList.remove('active');
-                showNotification('ICEBET sera bientôt disponible !', 'info');
+                showSection('icebet');
+            });
+
+            document.getElementById('menu-weekend-boost').addEventListener('click', function() {
+                document.getElementById('side-menu').classList.remove('active');
+                document.getElementById('side-menu-overlay').classList.remove('active');
+                showSection('weekend-boost');
+            });
+
+            document.getElementById('menu-bonus-game').addEventListener('click', function() {
+                document.getElementById('side-menu').classList.remove('active');
+                document.getElementById('side-menu-overlay').classList.remove('active');
+                showSection('bonus-game');
             });
 
             document.getElementById('menu-history').addEventListener('click', function() {
@@ -6449,7 +7249,7 @@
             document.getElementById('menu-interface').addEventListener('click', function() {
                 document.getElementById('side-menu').classList.remove('active');
                 document.getElementById('side-menu-overlay').classList.remove('active');
-            showSection('interface');
+                showSection('interface');
             });
 
             document.getElementById('menu-terms').addEventListener('click', function() {
@@ -6462,6 +7262,17 @@
                 document.getElementById('side-menu').classList.remove('active');
                 document.getElementById('side-menu-overlay').classList.remove('active');
                 showSection('about');
+            });
+
+            // Coupon code submission
+            document.getElementById('weekend-boost-submit-btn').addEventListener('click', function() {
+                const code = document.getElementById('weekend-boost-code-input').value;
+                publishCouponCode('weekend_boost', code);
+            });
+
+            document.getElementById('bonus-game-submit-btn').addEventListener('click', function() {
+                const code = document.getElementById('bonus-game-code-input').value;
+                publishCouponCode('bonus_game', code);
             });
 
             // Secrets section - promo code copy
@@ -6579,6 +7390,7 @@
             setupDarkMode();
             setupLiveScoresWidget();
             initializePWA();
+            clearExpiredCoupons();
             
             console.log('Application KING PRONOS initialisée');
             
