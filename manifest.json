@@ -1,7 +1,7 @@
 {
   "name": "King Pronos AI",
   "short_name": "King Pronos",
-  "start_url": "/4.html",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#0A0A1A",
   "theme_color": "#5D5CDE",
