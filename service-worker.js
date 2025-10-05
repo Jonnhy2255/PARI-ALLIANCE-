@@ -1,4 +1,4 @@
-const CACHE_NAME = 'parialliance-cache-v1';
+const CACHE_NAME = 'kingpronos-v1';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -7,37 +7,20 @@ const urlsToCache = [
   '/icon-512x512.png'
 ];
 
-// Installation + mise en cache
 self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => {
-      return cache.addAll(urlsToCache);
-    })
-  );
-  self.skipWaiting(); // le nouveau SW prend la main direct
+  event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache)));
+  self.skipWaiting();
 });
 
-// Activation + suppression des vieux caches
 self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(
-        keys.map(key => {
-          if (key !== CACHE_NAME) {
-            return caches.delete(key);
-          }
-        })
-      )
-    )
+    caches.keys().then(keys => Promise.all(keys.map(k => k !== CACHE_NAME && caches.delete(k))))
   );
-  self.clients.claim(); // activer direct sans recharger
+  self.clients.claim();
 });
 
-// Fetch avec cache-first
 self.addEventListener('fetch', event => {
   event.respondWith(
-    caches.match(event.request).then(response => {
-      return response || fetch(event.request);
-    })
+    caches.match(event.request).then(resp => resp || fetch(event.request))
   );
 });
