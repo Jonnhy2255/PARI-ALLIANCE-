@@ -8,7 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="manifest" href="manifest.json">
     <!-- Icône pour iOS -->
-<link rel="apple-touch-icon" href="/iconios-192x192.png">
+<link rel="apple-touch-icon" href="/iconios-192.png">
 
 <!-- Web App installable (Standalone) -->
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -143,8 +143,6 @@
             --boost-card-text: white;
             --bonus-card-bg: linear-gradient(135deg, #9C27B0, #673AB7);
             --bonus-card-text: white;
-            --admin-section-bg: rgba(93, 92, 222, 0.1);
-            --admin-section-border: var(--primary-color);
         }
 
         /* Thème vert */
@@ -353,7 +351,6 @@
             --stat-card-border: #404040;
             --table-row-even: rgba(255, 255, 255, 0.02);
             --pending-result: #555555;
-            --admin-section-bg: rgba(93, 92, 222, 0.15);
         }
 
         * {
@@ -991,55 +988,6 @@
             font-size: 16px;
             opacity: 0.9;
             line-height: 1.4;
-        }
-
-        .admin-section {
-            background: var(--admin-section-bg);
-            border: 2px solid var(--admin-section-border);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-
-        .admin-section-title {
-            font-size: 18px;
-            font-weight: bold;
-            color: var(--primary-color);
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .code-input-group {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .code-input {
-            flex: 1;
-            padding: 12px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            background: var(--input-bg);
-            color: var(--text-color);
-            font-size: 16px;
-        }
-
-        .code-submit-btn {
-            padding: 12px 20px;
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .code-submit-btn:hover {
-            background: #4a49c0;
         }
 
         .coupon-card {
@@ -3427,15 +3375,6 @@
                 font-size: 24px;
                 padding: 10px 20px;
             }
-
-            .code-input-group {
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .code-submit-btn {
-                width: 100%;
-            }
         }
     </style>
 </head>
@@ -3892,18 +3831,6 @@
                     </div>
                 </div>
 
-                <!-- Admin Section (Only visible to admins) -->
-                <div id="weekend-boost-admin-section" class="admin-section" style="display: none;">
-                    <div class="admin-section-title">
-                        <i class="fas fa-crown"></i>
-                        Panneau Admin - Ajouter Code Weekend Boost
-                    </div>
-                    <div class="code-input-group">
-                        <input type="text" id="weekend-boost-code-input" class="code-input" placeholder="Entrer le code du coupon weekend...">
-                        <button id="weekend-boost-submit-btn" class="code-submit-btn">Publier</button>
-                    </div>
-                </div>
-
                 <!-- Coupon Display Section -->
                 <div id="weekend-boost-coupon-section">
                     <!-- Content will be loaded here -->
@@ -3922,18 +3849,6 @@
                     </div>
                     <div class="bonus-subtitle">
                         Codes de coupons spéciaux pour le samedi
-                    </div>
-                </div>
-
-                <!-- Admin Section (Only visible to admins) -->
-                <div id="bonus-game-admin-section" class="admin-section" style="display: none;">
-                    <div class="admin-section-title">
-                        <i class="fas fa-crown"></i>
-                        Panneau Admin - Ajouter Code Bonus Game
-                    </div>
-                    <div class="code-input-group">
-                        <input type="text" id="bonus-game-code-input" class="code-input" placeholder="Entrer le code du coupon bonus game...">
-                        <button id="bonus-game-submit-btn" class="code-submit-btn">Publier</button>
                     </div>
                 </div>
 
@@ -4571,79 +4486,6 @@
 
     <div id="overlay" class="overlay"></div>
     <div class="notification" id="notification"></div>
-
-    <!-- Service Worker Script -->
-    <script>
-        // Service Worker
-        const SW_VERSION = '3.8.0';
-        const CACHE_NAME = `kingpronos-v${SW_VERSION}`;
-        const urlsToCache = [
-            '/',
-            '/manifest.json',
-            'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css',
-            'https://cdn.jsdelivr.net/npm/chart.js',
-            'https://www.gstatic.com/firebasejs/11.7.3/firebase-app.js',
-            'https://www.gstatic.com/firebasejs/11.7.3/firebase-auth.js',
-            'https://www.gstatic.com/firebasejs/11.7.3/firebase-firestore.js'
-        ];
-
-        // Enregistrer le service worker
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                const swCode = `
-                    const CACHE_NAME = '${CACHE_NAME}';
-                    const urlsToCache = ${JSON.stringify(urlsToCache)};
-
-                    self.addEventListener('install', (event) => {
-                        event.waitUntil(
-                            caches.open(CACHE_NAME)
-                                .then((cache) => {
-                                    return cache.addAll(urlsToCache);
-                                })
-                        );
-                    });
-
-                    self.addEventListener('fetch', (event) => {
-                        event.respondWith(
-                            caches.match(event.request)
-                                .then((response) => {
-                                    if (response) {
-                                        return response;
-                                    }
-                                    return fetch(event.request);
-                                }
-                            )
-                        );
-                    });
-
-                    self.addEventListener('activate', (event) => {
-                        event.waitUntil(
-                            caches.keys().then((cacheNames) => {
-                                return Promise.all(
-                                    cacheNames.map((cacheName) => {
-                                        if (cacheName !== CACHE_NAME) {
-                                            return caches.delete(cacheName);
-                                        }
-                                    })
-                                );
-                            })
-                        );
-                    });
-                `;
-
-                const blob = new Blob([swCode], { type: 'application/javascript' });
-                const swUrl = URL.createObjectURL(blob);
-
-                navigator.serviceWorker.register(swUrl)
-                    .then((registration) => {
-                        console.log('Service Worker enregistré avec succès :', registration.scope);
-                    })
-                    .catch((error) => {
-                        console.log('Échec de l\'enregistrement du Service Worker :', error);
-                    });
-            });
-        }
-    </script>
 
     <script type="module">
         // Import Firebase modules
@@ -6379,14 +6221,6 @@
         // Function to load Weekend Boost section
         function loadWeekendBoostSection() {
             const couponSection = document.getElementById('weekend-boost-coupon-section');
-            const adminSection = document.getElementById('weekend-boost-admin-section');
-
-            // Show admin section only to admins
-            if (isAdmin) {
-                adminSection.style.display = 'block';
-            } else {
-                adminSection.style.display = 'none';
-            }
 
             // Load existing coupon
             const existingCoupon = getCouponFromStorage('weekend_boost');
@@ -6407,14 +6241,6 @@
         // Function to load Bonus Game section
         function loadBonusGameSection() {
             const couponSection = document.getElementById('bonus-game-coupon-section');
-            const adminSection = document.getElementById('bonus-game-admin-section');
-
-            // Show admin section only to admins
-            if (isAdmin) {
-                adminSection.style.display = 'block';
-            } else {
-                adminSection.style.display = 'none';
-            }
 
             // Load existing coupon
             const existingCoupon = getCouponFromStorage('bonus_game');
@@ -6445,29 +6271,6 @@
                     <div class="coupon-card-copy">👆 Cliquez pour copier le code</div>
                 </div>
             `;
-        }
-
-        // Function to publish coupon code
-        function publishCouponCode(type, code) {
-            if (!code || !code.trim()) {
-                showNotification('Veuillez entrer un code valide', 'error');
-                return;
-            }
-        // Save to localStorage
-            saveCouponToStorage(type, code.trim());
-
-            // Update display
-            if (type === 'weekend_boost') {
-                loadWeekendBoostSection();
-                showNotification('Code Weekend Boost publié avec succès !', 'success');
-            } else if (type === 'bonus_game') {
-                loadBonusGameSection();
-                showNotification('Code Bonus Game publié avec succès !', 'success');
-            }
-
-            // Clear input
-            const inputId = type === 'weekend_boost' ? 'weekend-boost-code-input' : 'bonus-game-code-input';
-            document.getElementById(inputId).value = '';
         }
 
         // Navigation functions
@@ -6706,452 +6509,180 @@
         }
 
         function createEventElement(eventId, eventData) {
-            const eventElement = document.createElement('div');
-            eventElement.className = 'admin-notification';
+            const eventDiv = document.createElement('div');
+            eventDiv.className = 'admin-notification';
 
-            let iconClass = 'fas fa-info-circle';
-            if (eventData.type === 'alert') {
-                iconClass = 'fas fa-exclamation-triangle';
-            } else if (eventData.type === 'update') {
-                iconClass = 'fas fa-sync-alt';
-            }
+            const timestamp = eventData.timestamp?.toDate ? eventData.timestamp.toDate() : new Date(eventData.timestamp);
+            const timeString = timestamp ? timestamp.toLocaleString('fr-FR', {
+                day: 'numeric',
+                month: 'short',
+                hour: '2-digit',
+                minute: '2-digit'
+            }) : 'Date inconnue';
 
-            let timestamp = '';
-            if (eventData.timestamp) {
-                const eventDate = eventData.timestamp.toDate ? eventData.timestamp.toDate() : new Date(eventData.timestamp);
-                timestamp = eventDate.toLocaleDateString('fr-FR', {
-                    day: 'numeric',
-                    month: 'short',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                });
-            }
-
-            eventElement.innerHTML = `
+            eventDiv.innerHTML = `
                 <div class="admin-notification-header">
                     <div class="admin-notification-title">
-                        <i class="${iconClass}"></i>
-                        ${eventData.title || 'Notification'}
+                        <i class="fas fa-bell"></i>
+                        ${eventData.title || 'Événement'}
                     </div>
                 </div>
-                <div class="admin-notification-content">${eventData.content || ''}</div>
+                <div class="admin-notification-content">
+                    ${eventData.content || 'Contenu non disponible'}
+                </div>
                 <div class="admin-notification-footer">
-                    ${timestamp}
-                    ${eventData.senderName ? ' • ' + eventData.senderName : ''}
+                    ${timeString}
                 </div>
             `;
 
-            return eventElement;
+            return eventDiv;
         }
 
+        function startEventsListener() {
+            if (eventsUnsubscribe) {
+                eventsUnsubscribe();
+            }
+
+            const eventsQuery = query(
+                collection(db, "Events"),
+                orderBy("timestamp", "desc"),
+                limit(1)
+            );
+
+            eventsUnsubscribe = onSnapshot(eventsQuery, (snapshot) => {
+                snapshot.docChanges().forEach((change) => {
+                    if (change.type === "added") {
+                        const eventData = change.doc.data();
+                        const eventTimestamp = eventData.timestamp?.toDate ? eventData.timestamp.toDate() : new Date(eventData.timestamp);
+
+                        const lastViewed = lastViewedEventTimestamp ? new Date(lastViewedEventTimestamp) : new Date(0);
+
+                        if (eventTimestamp > lastViewed && currentSection !== 'events') {
+                            showEventNotificationDot();
+                        }
+                    }
+                });
+            }, (error) => {
+                console.error('Erreur listener événements:', error);
+            });
+        }
+
+        // History functions
         async function loadHistoryData() {
             const historyContent = document.getElementById('history-content');
 
-            historyContent.innerHTML = `
-                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 200px;">
-                    <i class="fas fa-spinner fa-spin" style="font-size: 30px; color: var(--primary-color);"></i>
-                    <div style="margin-top: 10px; font-weight: bold;">Chargement...</div>
-                </div>
-            `;
-
             try {
-                const yesterday = getDateString(1);
-                const dayBeforeYesterday = getDateString(2);
+                // Try to fetch history data from GitHub for the last 7 days
+                const historyData = {};
+                const promises = [];
 
-                const [yesterdayData, dayBeforeYesterdayData] = await Promise.all([
-                    fetchForecastsFromGitHub(yesterday),
-                    fetchForecastsFromGitHub(dayBeforeYesterday)
-                ]);
+                for (let i = 1; i <= 7; i++) {
+                    const dateString = getDateString(i);
+                    promises.push(
+                        fetchForecastsFromGitHub(dateString).then(data => ({
+                            date: dateString,
+                            data: data
+                        }))
+                    );
+                }
 
-                const yesterdayProcessed = processForecastData(yesterdayData);
-                const dayBeforeYesterdayProcessed = processForecastData(dayBeforeYesterdayData);
+                const results = await Promise.all(promises);
 
-                displayHistoryData(yesterdayProcessed, dayBeforeYesterdayProcessed);
+                results.forEach(result => {
+                    if (result.data) {
+                        historyData[result.date] = processForecastData(result.data);
+                    }
+                });
+
+                displayHistoryData(historyData);
 
             } catch (error) {
-                console.error(`Erreur chargement historique: ${error.message}`);
+                console.error('Erreur chargement historique:', error);
                 historyContent.innerHTML = `
                     <div class="empty-state">
                         <i class="fas fa-exclamation-circle"></i>
-                        <div class="empty-state-title">Erreur de chargement</div>
-                        <div class="empty-state-text">Impossible de charger l'historique des pronostics</div>
+                        <h3>Erreur de chargement</h3>
+                        <p>Impossible de charger l'historique</p>
                     </div>
                 `;
             }
         }
 
-        function displayHistoryData(yesterdayData, dayBeforeYesterdayData) {
+        function displayHistoryData(historyData) {
             const historyContent = document.getElementById('history-content');
-            historyContent.innerHTML = '';
 
-            const yesterday = new Date();
-            yesterday.setDate(yesterday.getDate() - 1);
-
-            const dayBeforeYesterday = new Date();
-            dayBeforeYesterday.setDate(dayBeforeYesterday.getDate() - 2);
-
-            if (yesterdayData && yesterdayData.pronostics && yesterdayData.pronostics.length > 0) {
-                historyContent.appendChild(createHistoryDateSection(yesterday, yesterdayData));
-            }
-
-            if (dayBeforeYesterdayData && dayBeforeYesterdayData.pronostics && dayBeforeYesterdayData.pronostics.length > 0) {
-                historyContent.appendChild(createHistoryDateSection(dayBeforeYesterday, dayBeforeYesterdayData));
-            }
-
-            if (historyContent.children.length === 0) {
+            if (!historyData || Object.keys(historyData).length === 0) {
                 historyContent.innerHTML = `
                     <div class="empty-state">
                         <i class="fas fa-history"></i>
-                        <div class="empty-state-title">Aucun historique</div>
-                        <div class="empty-state-text">L'historique des pronostics des 2 derniers jours apparaîtra ici</div>
+                        <h3>Aucun historique</h3>
+                        <p>Aucune donnée historique disponible</p>
                     </div>
                 `;
+                return;
             }
-        }
 
-        function createHistoryDateSection(date, data) {
-            const section = document.createElement('div');
+            let content = '';
 
-            const dateHeader = document.createElement('div');
-            dateHeader.className = 'history-date-header';
-            dateHeader.textContent = date.toLocaleDateString('fr-FR', { 
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
-            });
-            section.appendChild(dateHeader);
+            // Sort dates in descending order
+            const sortedDates = Object.keys(historyData).sort((a, b) => new Date(b) - new Date(a));
 
-            if (data.pronostics && data.pronostics.length > 0) {
-                const categorySection = document.createElement('div');
-                categorySection.className = 'history-category-section';
-
-                const categoryTitle = document.createElement('div');
-                categoryTitle.className = 'history-category-title';
-                categoryTitle.textContent = `Pronostics du jour (${data.pronostics.length})`;
-                categorySection.appendChild(categoryTitle);
-
-                const forecastsList = document.createElement('div');
-                forecastsList.className = 'history-forecasts-list';
-
-                data.pronostics.forEach(forecast => {
-                    const historyItem = createHistoryForecastElement(forecast);
-                    forecastsList.appendChild(historyItem);
+            sortedDates.forEach(dateString => {
+                const data = historyData[dateString];
+                const date = new Date(dateString);
+                const formattedDate = date.toLocaleDateString('fr-FR', {
+                    weekday: 'long',
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
                 });
 
-                categorySection.appendChild(forecastsList);
-                section.appendChild(categorySection);
-            }
+                content += `<div class="history-date-header">${formattedDate}</div>`;
 
-            return section;
-        }
+                if (data.pronostics && data.pronostics.length > 0) {
+                    content += `
+                        <div class="history-category-section">
+                            <div class="history-category-title">Pronostics (${data.pronostics.length})</div>
+                            <div class="history-forecasts-list">
+                    `;
 
-        function createHistoryForecastElement(forecastData) {
-            const element = document.createElement('div');
-            element.className = 'history-forecast-item';
+                    data.pronostics.forEach(forecast => {
+                        const confidencePercentage = forecast.confiance_pourcentage || 50;
+                        const confidenceColor = getConfidenceColor(confidencePercentage);
 
-            element.addEventListener('click', () => {
-                openForecastDetail(forecastData);
-            });
+                        content += `
+                            <div class="history-forecast-item" onclick="openForecastDetail(${JSON.stringify(forecast).replace(/"/g, '&quot;')})">
+                                <div class="forecast-header">
+                                    <div class="league-info">${forecast.league || 'Compétition'}</div>
+                                    <div class="forecast-status" style="background-color: ${confidenceColor};">${confidencePercentage}%</div>
+                                </div>
+                                <div style="font-weight: bold; margin: 10px 0;">
+                                    ${forecast.HomeTeam || 'Équipe 1'} vs ${forecast.AwayTeam || 'Équipe 2'}
+                                </div>
+                                <div style="font-size: 12px; color: var(--inactive-text);">
+                                    ${forecast.date || 'Date inconnue'}
+                                </div>
+                            </div>
+                        `;
+                    });
 
-            const confidencePercentage = forecastData.confiance_pourcentage || 50;
-            const confidenceColor = getConfidenceColor(confidencePercentage);
-
-            const content = `
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                    <div style="font-weight: bold;">${forecastData.HomeTeam || 'Équipe 1'} vs ${forecastData.AwayTeam || 'Équipe 2'}</div>
-                    <div class="forecast-status" style="background-color: ${confidenceColor};">${confidencePercentage}%</div>
-                </div>
-                <div style="font-size: 11px; margin-top: 4px; opacity: 0.6;">
-                    ${forecastData.league || 'Compétition'} • ${forecastData.country_fr || 'Pays'}
-                </div>
-            `;
-
-            element.innerHTML = content;
-            return element;
-        }
-
-        // Auth functions
-        function setupAuth() {
-            const loginBtn = document.getElementById('loginBtn');
-            const registerBtn = document.getElementById('registerBtn');
-            const loginTab = document.getElementById('login-tab');
-            const registerTab = document.getElementById('register-tab');
-            const gotoRegister = document.getElementById('goto-register');
-            const gotoLogin = document.getElementById('goto-login');
-
-            loginBtn.addEventListener('click', loginUser);
-            registerBtn.addEventListener('click', registerUser);
-
-            loginTab.addEventListener('click', () => switchAuthTab('login'));
-            registerTab.addEventListener('click', () => switchAuthTab('login'));
-            gotoRegister.addEventListener('click', (e) => {
-                e.preventDefault();
-                switchAuthTab('register');
-            });
-            gotoLogin.addEventListener('click', (e) => {
-                e.preventDefault();
-                switchAuthTab('login');
-            });
-
-            onAuthStateChanged(auth, async (user) => {
-                if (user) {
-                    currentUser = user;
-                    isLoggedIn = true;
-
-                    try {
-                        await loadUserData();
-                        showMainApp();
-
-                        console.log(`Utilisateur connecté: ${user.email}`);
-
-                    } catch (error) {
-                        console.error(`Erreur initialisation: ${error.message}`);
-                        showNotification("Erreur lors de l'initialisation", "error");
-                    }
+                    content += `
+                            </div>
+                        </div>
+                    `;
                 } else {
-                    isLoggedIn = false;
-                    currentUser = null;
-                    currentUserData = null;
-                    isAdmin = false;
-                    showAuthScreen();
+                    content += `
+                        <div style="text-align: center; padding: 20px; color: var(--inactive-text);">
+                            Aucun pronostic pour cette date
+                        </div>
+                    `;
                 }
-
-                hideLoading();
             });
+
+            historyContent.innerHTML = content;
         }
 
-        function switchAuthTab(tab) {
-            const loginForm = document.getElementById('login-form');
-            const registerForm = document.getElementById('register-form');
-            const loginTab = document.getElementById('login-tab');
-            const registerTab = document.getElementById('register-tab');
-
-            if (tab === 'register') {
-                loginForm.classList.remove('active');
-                registerForm.classList.add('active');
-                loginTab.classList.remove('active');
-                registerTab.classList.add('active');
-            } else {
-                registerForm.classList.remove('active');
-                loginForm.classList.add('active');
-                registerTab.classList.remove('active');
-                loginTab.classList.add('active');
-            }
-
-            clearAuthErrors();
-        }
-
-        function clearAuthErrors() {
-            document.querySelectorAll('.form-error').forEach(error => {
-                error.style.display = 'none';
-            });
-            document.querySelectorAll('.log-message').forEach(log => {
-                log.style.display = 'none';
-            });
-        }
-
-        async function loginUser() {
-            const email = document.getElementById('login-email').value.trim();
-            const password = document.getElementById('login-password').value;
-            const button = document.getElementById('loginBtn');
-            const logElement = document.getElementById('login-log');
-
-            clearAuthErrors();
-
-            let hasError = false;
-
-            if (!email || !email.includes('@')) {
-                document.getElementById('login-email-error').style.display = 'block';
-                hasError = true;
-            }
-
-            if (!password) {
-                document.getElementById('login-password-error').style.display = 'block';
-                hasError = true;
-            }
-
-            if (hasError) return;
-
-            button.classList.add('loading');
-
-            try {
-                await signInWithEmailAndPassword(auth, email, password);
-
-                console.log(`Connexion réussie pour ${email}`);
-                logElement.textContent = 'Connexion réussie !';
-                logElement.className = 'log-message success';
-                logElement.style.display = 'block';
-
-            } catch (error) {
-                console.error(`Erreur connexion: ${error.message}`);
-
-                let errorMessage = 'Erreur de connexion';
-                if (error.code === 'auth/user-not-found') {
-                    errorMessage = 'Aucun compte trouvé avec cet email';
-                } else if (error.code === 'auth/wrong-password') {
-                    errorMessage = 'Mot de passe incorrect';
-                } else if (error.code === 'auth/invalid-email') {
-                    errorMessage = 'Adresse email invalide';
-                } else if (error.code === 'auth/too-many-requests') {
-                    errorMessage = 'Trop de tentatives. Réessayez plus tard';
-                }
-
-                logElement.textContent = errorMessage;
-                logElement.className = 'log-message error';
-                logElement.style.display = 'block';
-            }
-
-            button.classList.remove('loading');
-        }
-
-        async function registerUser() {
-            const email = document.getElementById('register-email').value.trim();
-            const password = document.getElementById('register-password').value;
-            const confirmPassword = document.getElementById('register-confirm-password').value;
-            const button = document.getElementById('registerBtn');
-            const logElement = document.getElementById('register-log');
-
-            clearAuthErrors();
-
-            let hasError = false;
-
-            if (!email || !email.includes('@')) {
-                document.getElementById('register-email-error').style.display = 'block';
-                hasError = true;
-            }
-
-            if (password.length < 6) {
-                document.getElementById('register-password-error').style.display = 'block';
-                hasError = true;
-            }
-
-            if (password !== confirmPassword) {
-                document.getElementById('register-confirm-password-error').style.display = 'block';
-                hasError = true;
-            }
-
-            if (hasError) return;
-
-            button.classList.add('loading');
-
-            try {
-                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                const user = userCredential.user;
-
-                const userData = {
-                    email: user.email,
-                    displayName: user.displayName || 'Utilisateur',
-                    avatar: 'king1',
-                    createdAt: serverTimestamp(),
-                    updatedAt: serverTimestamp(),
-                    uid: user.uid
-                };
-
-                await setDoc(doc(db, "Users", user.uid), userData);
-
-                console.log(`Inscription réussie pour ${email}`);
-                logElement.textContent = 'Compte créé avec succès !';
-                logElement.className = 'log-message success';
-                logElement.style.display = 'block';
-
-            } catch (error) {
-                console.error(`Erreur inscription: ${error.message}`);
-
-                let errorMessage = 'Erreur lors de la création du compte';
-                if (error.code === 'auth/email-already-in-use') {
-                    errorMessage = 'Un compte existe déjà avec cet email';
-                } else if (error.code === 'auth/invalid-email') {
-                    errorMessage = 'Adresse email invalide';
-                } else if (error.code === 'auth/weak-password') {
-                    errorMessage = 'Le mot de passe est trop faible';
-                }
-
-                logElement.textContent = errorMessage;
-                logElement.className = 'log-message error';
-                logElement.style.display = 'block';
-            }
-
-            button.classList.remove('loading');
-        }
-
-        async function loadUserData() {
-            if (!currentUser) return;
-
-            try {
-                const userDoc = await getDoc(doc(db, "Users", currentUser.uid));
-
-                if (userDoc.exists()) {
-                    currentUserData = userDoc.data();
-                    selectedAvatar = currentUserData.avatar || 'king1';
-                } else {
-                    const userData = {
-                        email: currentUser.email,
-                        displayName: currentUser.displayName || 'Utilisateur',
-                        avatar: 'king1',
-                        createdAt: serverTimestamp(),
-                        updatedAt: serverTimestamp(),
-                        uid: currentUser.uid
-                    };
-
-                    await setDoc(doc(db, "Users", currentUser.uid), userData);
-                    currentUserData = userData;
-                    selectedAvatar = 'king1';
-                }
-
-                updateProfileDisplay();
-                console.log('Données utilisateur chargées');
-
-            } catch (error) {
-                console.error('Erreur chargement données utilisateur:', error);
-            }
-        }
-
-        function updateProfileDisplay() {
-            if (!currentUserData) return;
-
-            const profileNameText = document.getElementById('profile-name-text');
-            const profileEmail = document.getElementById('profile-email');
-
-            if (profileNameText) {
-                profileNameText.textContent = currentUserData.displayName || 'Utilisateur';
-            }
-
-            if (profileEmail) {
-                profileEmail.textContent = currentUser.email;
-            }
-
-            if (ADMIN_EMAILS.includes(currentUser.email)) {
-                isAdmin = true;
-                document.getElementById('admin-badge').style.display = 'inline-block';
-            }
-
-            updateProfileAvatar();
-        }
-
-        function showAuthScreen() {
-            document.getElementById('auth-screen').style.display = 'flex';
-            document.getElementById('loading').style.display = 'none';
-            hideMainApp();
-        }
-
-        function showMainApp() {
-            document.getElementById('auth-screen').style.display = 'none';
-            document.getElementById('loading').style.display = 'none';
-
-            document.querySelector('.header').style.display = 'flex';
-            document.querySelector('.main-content').style.display = 'block';
-            document.querySelector('.bottom-nav').style.display = 'flex';
-
-            showSection('forecasts');
-        }
-
-        function hideMainApp() {
-            document.querySelector('.header').style.display = 'none';
-            document.querySelector('.main-content').style.display = 'none';
-            document.querySelector('.bottom-nav').style.display = 'none';
-        }
-
+        // Authentication functions
         function showLoading() {
             document.getElementById('loading').style.display = 'flex';
         }
@@ -7160,246 +6691,637 @@
             document.getElementById('loading').style.display = 'none';
         }
 
-        async function logoutUser() {
+        function showAuthScreen() {
+            document.getElementById('auth-screen').style.display = 'flex';
+            hideLoading();
+        }
+
+        function hideAuthScreen() {
+            document.getElementById('auth-screen').style.display = 'none';
+        }
+
+        function showMainApp() {
+            hideAuthScreen();
+            hideLoading();
+            document.body.style.overflow = 'hidden';
+        }
+
+        function switchAuthTab(tab) {
+            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+
+            document.getElementById(tab + '-tab').classList.add('active');
+            document.getElementById(tab + '-form').classList.add('active');
+
+            // Reset forms
+            clearFormErrors();
+        }
+
+        function clearFormErrors() {
+            document.querySelectorAll('.form-error').forEach(error => {
+                error.style.display = 'none';
+            });
+            document.querySelectorAll('.form-input').forEach(input => {
+                input.classList.remove('error');
+            });
+        }
+
+        function showFormError(inputId, message) {
+            const input = document.getElementById(inputId);
+            const error = document.getElementById(inputId + '-error');
+
+            if (input) input.classList.add('error');
+            if (error) {
+                error.textContent = message;
+                error.style.display = 'block';
+            }
+        }
+
+        function validateEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        function setButtonLoading(buttonId, loading) {
+            const button = document.getElementById(buttonId);
+            const loader = button.querySelector('.btn-loader');
+            const text = button.querySelector('.btn-text');
+
+            if (loading) {
+                button.classList.add('loading');
+                loader.style.display = 'inline-block';
+                text.style.visibility = 'hidden';
+                button.disabled = true;
+            } else {
+                button.classList.remove('loading');
+                loader.style.display = 'none';
+                text.style.visibility = 'visible';
+                button.disabled = false;
+            }
+        }
+
+        function showLogMessage(containerId, message, type) {
+            const container = document.getElementById(containerId);
+            container.textContent = message;
+            container.className = 'log-message ' + type;
+            container.style.display = 'block';
+
+            setTimeout(() => {
+                container.style.display = 'none';
+                container.textContent = '';
+                container.className = 'log-message';
+            }, 5000);
+        }
+
+        async function handleLogin() {
+            clearFormErrors();
+
+            const email = document.getElementById('login-email').value.trim();
+            const password = document.getElementById('login-password').value;
+
+            let hasErrors = false;
+
+            if (!email) {
+                showFormError('login-email', 'L\'email est obligatoire');
+                hasErrors = true;
+            } else if (!validateEmail(email)) {
+                showFormError('login-email', 'Veuillez entrer un email valide');
+                hasErrors = true;
+            }
+
+            if (!password) {
+                showFormError('login-password', 'Le mot de passe est obligatoire');
+                hasErrors = true;
+            }
+
+            if (hasErrors) return;
+
+            setButtonLoading('loginBtn', true);
+
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                showLogMessage('login-log', 'Connexion réussie !', 'success');
+
+                setTimeout(() => {
+                    showMainApp();
+                    loadUserData(userCredential.user);
+                }, 1000);
+
+            } catch (error) {
+                console.error('Erreur de connexion:', error);
+
+                let errorMessage = 'Erreur de connexion';
+                switch (error.code) {
+                    case 'auth/user-not-found':
+                        errorMessage = 'Aucun compte trouvé avec cet email';
+                        break;
+                    case 'auth/wrong-password':
+                        errorMessage = 'Mot de passe incorrect';
+                        break;
+                    case 'auth/invalid-email':
+                        errorMessage = 'Email invalide';
+                        break;
+                    case 'auth/user-disabled':
+                        errorMessage = 'Compte désactivé';
+                        break;
+                    case 'auth/too-many-requests':
+                        errorMessage = 'Trop de tentatives. Réessayez plus tard';
+                        break;
+                    default:
+                        errorMessage = 'Erreur de connexion: ' + error.message;
+                }
+
+                showLogMessage('login-log', errorMessage, 'error');
+            }
+
+            setButtonLoading('loginBtn', false);
+        }
+
+        async function handleRegister() {
+            clearFormErrors();
+
+            const email = document.getElementById('register-email').value.trim();
+            const password = document.getElementById('register-password').value;
+            const confirmPassword = document.getElementById('register-confirm-password').value;
+
+            let hasErrors = false;
+
+            if (!email) {
+                showFormError('register-email', 'L\'email est obligatoire');
+                hasErrors = true;
+            } else if (!validateEmail(email)) {
+                showFormError('register-email', 'Veuillez entrer un email valide');
+                hasErrors = true;
+            }
+
+            if (!password) {
+                showFormError('register-password', 'Le mot de passe est obligatoire');
+                hasErrors = true;
+            } else if (password.length < 6) {
+                showFormError('register-password', 'Le mot de passe doit contenir au moins 6 caractères');
+                hasErrors = true;
+            }
+
+            if (!confirmPassword) {
+                showFormError('register-confirm-password', 'Veuillez confirmer le mot de passe');
+                hasErrors = true;
+            } else if (password !== confirmPassword) {
+                showFormError('register-confirm-password', 'Les mots de passe ne correspondent pas');
+                hasErrors = true;
+            }
+
+            if (hasErrors) return;
+
+            setButtonLoading('registerBtn', true);
+
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                // Create user data in Firestore
+                await setDoc(doc(db, "Users", user.uid), {
+                    email: user.email,
+                    avatar: null,
+                    createdAt: serverTimestamp(),
+                    updatedAt: serverTimestamp()
+                });
+
+                showLogMessage('register-log', 'Inscription réussie !', 'success');
+
+                setTimeout(() => {
+                    showMainApp();
+                    loadUserData(user);
+                }, 1000);
+
+            } catch (error) {
+                console.error('Erreur d\'inscription:', error);
+
+                let errorMessage = 'Erreur d\'inscription';
+                switch (error.code) {
+                    case 'auth/email-already-in-use':
+                        errorMessage = 'Cet email est déjà utilisé';
+                        break;
+                    case 'auth/invalid-email':
+                        errorMessage = 'Email invalide';
+                        break;
+                    case 'auth/weak-password':
+                        errorMessage = 'Mot de passe trop faible';
+                        break;
+                    case 'auth/operation-not-allowed':
+                        errorMessage = 'Inscription non autorisée';
+                        break;
+                    default:
+                        errorMessage = 'Erreur d\'inscription: ' + error.message;
+                }
+
+                showLogMessage('register-log', errorMessage, 'error');
+            }
+
+            setButtonLoading('registerBtn', false);
+        }
+
+        async function handleLogout() {
             try {
                 await signOut(auth);
-                console.log('Utilisateur déconnecté avec succès');
-                hideConfirmation('logout-confirmation');
-                showNotification("Déconnecté avec succès", "success");
-
-                isLoggedIn = false;
+                showNotification('Déconnexion réussie', 'success');
+                showAuthScreen();
+                
+                // Reset user data
                 currentUser = null;
                 currentUserData = null;
                 isAdmin = false;
                 selectedAvatar = null;
-
-                showAuthScreen();
-
+                
+                // Clear caches
+                forecastsCache = {};
+                
+                // Stop events listener
+                if (eventsUnsubscribe) {
+                    eventsUnsubscribe();
+                    eventsUnsubscribe = null;
+                }
+                
             } catch (error) {
-                console.error(`Erreur déconnexion: ${error.message}`);
-                showNotification("Erreur lors de la déconnexion", "error");
+                console.error('Erreur de déconnexion:', error);
+                showNotification('Erreur lors de la déconnexion', 'error');
             }
         }
 
-        function showConfirmation(dialogId) {
-            document.getElementById(dialogId).classList.add('active');
-            document.getElementById('overlay').classList.add('active');
+        async function deleteAccount() {
+            if (!currentUser) return;
+
+            try {
+                // Delete user data from Firestore
+                await deleteDoc(doc(db, "Users", currentUser.uid));
+                
+                // Delete user account
+                await deleteUser(currentUser);
+                
+                showNotification('Compte supprimé avec succès', 'success');
+                showAuthScreen();
+                
+                // Reset user data
+                currentUser = null;
+                currentUserData = null;
+                isAdmin = false;
+                selectedAvatar = null;
+                
+                // Clear caches
+                forecastsCache = {};
+                
+                // Stop events listener
+                if (eventsUnsubscribe) {
+                    eventsUnsubscribe();
+                    eventsUnsubscribe = null;
+                }
+                
+            } catch (error) {
+                console.error('Erreur suppression compte:', error);
+                showNotification('Erreur lors de la suppression du compte', 'error');
+            }
         }
 
-        function hideConfirmation(dialogId) {
-            document.getElementById(dialogId).classList.remove('active');
+        async function loadUserData(user) {
+            currentUser = user;
+            isAdmin = ADMIN_EMAILS.includes(user.email);
+            
+            document.getElementById('profile-email').textContent = user.email;
+            
+            // Extract name from email
+            const emailName = user.email.split('@')[0];
+            const displayName = emailName.charAt(0).toUpperCase() + emailName.slice(1);
+            document.getElementById('profile-name-text').textContent = displayName;
+            
+            // Show/hide admin badge
+            const adminBadge = document.getElementById('admin-badge');
+            if (isAdmin && adminBadge) {
+                adminBadge.style.display = 'inline-block';
+            } else if (adminBadge) {
+                adminBadge.style.display = 'none';
+            }
+
+            try {
+                // Load user data from Firestore
+                const userDoc = await getDoc(doc(db, "Users", user.uid));
+                if (userDoc.exists()) {
+                    currentUserData = userDoc.data();
+                    selectedAvatar = currentUserData.avatar;
+                } else {
+                    // Create user document if it doesn't exist
+                    currentUserData = {
+                        email: user.email,
+                        avatar: null,
+                        createdAt: serverTimestamp(),
+                        updatedAt: serverTimestamp()
+                    };
+                    await setDoc(doc(db, "Users", user.uid), currentUserData);
+                }
+
+                updateProfileAvatar();
+
+            } catch (error) {
+                console.error('Erreur chargement données utilisateur:', error);
+                currentUserData = { email: user.email, avatar: null };
+            }
+
+            // Initialize last viewed event timestamp
+            const storedTimestamp = localStorage.getItem('kingPronosLastViewedEvent');
+            if (storedTimestamp) {
+                lastViewedEventTimestamp = new Date(storedTimestamp);
+            }
+
+            // Start events listener
+            startEventsListener();
+        }
+
+        // Confirmation dialog functions
+        function showConfirmation(titleText, messageText, confirmText, cancelText, onConfirm, confirmClass = 'confirmation-confirm') {
+            const overlay = document.getElementById('overlay');
+            const dialog = document.querySelector('.confirmation-dialog');
+            const title = document.querySelector('.confirmation-title');
+            const text = document.querySelector('.confirmation-text');
+            const confirmBtn = document.querySelector('.confirmation-confirm, .confirmation-delete');
+            const cancelBtn = document.querySelector('.confirmation-cancel');
+
+            title.textContent = titleText;
+            text.textContent = messageText;
+
+            // Update confirm button
+            confirmBtn.textContent = confirmText;
+            confirmBtn.className = 'confirmation-button ' + confirmClass;
+
+            cancelBtn.textContent = cancelText;
+
+            // Remove existing event listeners by cloning elements
+            const newConfirmBtn = confirmBtn.cloneNode(true);
+            const newCancelBtn = cancelBtn.cloneNode(true);
+            confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
+            cancelBtn.parentNode.replaceChild(newCancelBtn, cancelBtn);
+
+            // Add new event listeners
+            newConfirmBtn.addEventListener('click', () => {
+                hideConfirmation();
+                onConfirm();
+            });
+
+            newCancelBtn.addEventListener('click', hideConfirmation);
+
+            overlay.classList.add('active');
+            dialog.classList.add('active');
+        }
+
+        function hideConfirmation() {
             document.getElementById('overlay').classList.remove('active');
+            document.querySelector('.confirmation-dialog').classList.remove('active');
         }
 
-        // Event listeners setup
-        function setupEventListeners() {
-            // Menu
-            document.getElementById('menu-btn').addEventListener('click', function() {
-                document.getElementById('side-menu').classList.add('active');
-                document.getElementById('side-menu-overlay').classList.add('active');
+        // Side menu functions
+        function openSideMenu() {
+            document.getElementById('side-menu').classList.add('active');
+            document.getElementById('side-menu-overlay').classList.add('active');
+        }
+
+        function closeSideMenu() {
+            document.getElementById('side-menu').classList.remove('active');
+            document.getElementById('side-menu-overlay').classList.remove('active');
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize dark mode and theme
+            initializeDarkMode();
+            selectedTheme = localStorage.getItem('kingPronosTheme') || 'default';
+            setupTheme();
+
+            // Initialize PWA
+            initializePWA();
+
+            // Auth state listener
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    isLoggedIn = true;
+                    loadUserData(user);
+                    showMainApp();
+                    showSection('forecasts');
+                } else {
+                    isLoggedIn = false;
+                    showAuthScreen();
+                }
             });
 
-            document.getElementById('side-menu-close').addEventListener('click', function() {
-                document.getElementById('side-menu').classList.remove('active');
-                document.getElementById('side-menu-overlay').classList.remove('active');
+            // Live scores widget setup
+            setupLiveScoresWidget();
+
+            // Auth tab switching
+            document.getElementById('login-tab').addEventListener('click', () => switchAuthTab('login'));
+            document.getElementById('register-tab').addEventListener('click', () => switchAuthTab('register'));
+            document.getElementById('goto-register').addEventListener('click', (e) => {
+                e.preventDefault();
+                switchAuthTab('register');
+            });
+            document.getElementById('goto-login').addEventListener('click', (e) => {
+                e.preventDefault();
+                switchAuthTab('login');
             });
 
-            document.getElementById('side-menu-overlay').addEventListener('click', function() {
-                document.getElementById('side-menu').classList.remove('active');
-                document.getElementById('side-menu-overlay').classList.remove('active');
+            // Auth forms
+            document.getElementById('loginBtn').addEventListener('click', handleLogin);
+            document.getElementById('registerBtn').addEventListener('click', handleRegister);
+
+            // Navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const section = item.dataset.section;
+                    if (section) {
+                        showSection(section);
+                    }
+                });
             });
 
-            // Menu items
-            document.getElementById('menu-install').addEventListener('click', function() {
-                document.getElementById('side-menu').classList.remove('active');
-                document.getElementById('side-menu-overlay').classList.remove('active');
+            // Header buttons
+            document.getElementById('back-btn').addEventListener('click', () => {
+                if (document.getElementById('forecast-detail').classList.contains('active')) {
+                    closeForecastDetail();
+                } else {
+                    showSection('forecasts');
+                }
+            });
+
+            document.getElementById('menu-btn').addEventListener('click', openSideMenu);
+
+            // Side menu
+            document.getElementById('side-menu-close').addEventListener('click', closeSideMenu);
+            document.getElementById('side-menu-overlay').addEventListener('click', closeSideMenu);
+
+            // Side menu items
+            document.getElementById('menu-install').addEventListener('click', () => {
+                closeSideMenu();
                 installApp();
             });
 
-            document.getElementById('menu-secrets').addEventListener('click', function() {
-                document.getElementById('side-menu').classList.remove('active');
-                document.getElementById('side-menu-overlay').classList.remove('active');
+            document.getElementById('menu-secrets').addEventListener('click', () => {
+                closeSideMenu();
                 showSection('secrets');
             });
 
-            document.getElementById('menu-icebet').addEventListener('click', function() {
-                document.getElementById('side-menu').classList.remove('active');
-                document.getElementById('side-menu-overlay').classList.remove('active');
+            document.getElementById('menu-icebet').addEventListener('click', () => {
+                closeSideMenu();
                 showSection('icebet');
             });
 
-            document.getElementById('menu-weekend-boost').addEventListener('click', function() {
-                document.getElementById('side-menu').classList.remove('active');
-                document.getElementById('side-menu-overlay').classList.remove('active');
+            document.getElementById('menu-weekend-boost').addEventListener('click', () => {
+                closeSideMenu();
                 showSection('weekend-boost');
             });
 
-            document.getElementById('menu-bonus-game').addEventListener('click', function() {
-                document.getElementById('side-menu').classList.remove('active');
-                document.getElementById('side-menu-overlay').classList.remove('active');
+            document.getElementById('menu-bonus-game').addEventListener('click', () => {
+                closeSideMenu();
                 showSection('bonus-game');
             });
 
-            document.getElementById('menu-history').addEventListener('click', function() {
-                document.getElementById('side-menu').classList.remove('active');
-                document.getElementById('side-menu-overlay').classList.remove('active');
+            document.getElementById('menu-history').addEventListener('click', () => {
+                closeSideMenu();
                 showSection('history');
             });
 
-            document.getElementById('menu-interface').addEventListener('click', function() {
-                document.getElementById('side-menu').classList.remove('active');
-                document.getElementById('side-menu-overlay').classList.remove('active');
+            document.getElementById('menu-interface').addEventListener('click', () => {
+                closeSideMenu();
                 showSection('interface');
             });
 
-            document.getElementById('menu-terms').addEventListener('click', function() {
-                document.getElementById('side-menu').classList.remove('active');
-                document.getElementById('side-menu-overlay').classList.remove('active');
+            document.getElementById('menu-terms').addEventListener('click', () => {
+                closeSideMenu();
                 showSection('terms');
             });
 
-            document.getElementById('menu-about').addEventListener('click', function() {
-                document.getElementById('side-menu').classList.remove('active');
-                document.getElementById('side-menu-overlay').classList.remove('active');
+            document.getElementById('menu-about').addEventListener('click', () => {
+                closeSideMenu();
                 showSection('about');
             });
 
-            // Coupon code submission
-            document.getElementById('weekend-boost-submit-btn').addEventListener('click', function() {
-                const code = document.getElementById('weekend-boost-code-input').value;
-                publishCouponCode('weekend_boost', code);
+            // Profile actions
+            document.getElementById('logout-btn').addEventListener('click', () => {
+                showConfirmation(
+                    'Se déconnecter ?',
+                    'Voulez-vous vraiment vous déconnecter de KING PRONOS ?',
+                    'Déconnecter',
+                    'Annuler',
+                    handleLogout
+                );
             });
 
-            document.getElementById('bonus-game-submit-btn').addEventListener('click', function() {
-                const code = document.getElementById('bonus-game-code-input').value;
-                publishCouponCode('bonus_game', code);
+            document.getElementById('delete-account-btn').addEventListener('click', () => {
+                showConfirmation(
+                    'Supprimer votre compte ?',
+                    'ATTENTION : Cette action est définitive et irréversible. Toutes vos données seront supprimées.',
+                    'Supprimer',
+                    'Annuler',
+                    deleteAccount,
+                    'confirmation-delete'
+                );
             });
 
-            // Secrets section - promo code copy
-            document.getElementById('promo-code-display').addEventListener('click', function() {
-                copyPromoCode('ICEGAME');
-            });
-
-            // Back button
-            document.getElementById('back-btn').addEventListener('click', function() {
-                showSection('forecasts');
-            });
-
-            // Bottom navigation
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.addEventListener('click', function() {
-                    const section = this.dataset.section;
-                    showSection(section);
-                });
-            });
-
-            // Detail view
-            document.getElementById('detail-back-btn').addEventListener('click', closeForecastDetail);
-
-            // Share button
-            document.getElementById('share-btn').addEventListener('click', shareApp);
-
-            // Detail tabs
-            document.querySelectorAll('.detail-tab').forEach(tab => {
-                tab.addEventListener('click', function() {
-                    const tabId = this.dataset.tab;
-                    switchDetailTab(tabId);
-                });
-            });
-
-            // Profile picture click
+            // Avatar functions
             document.getElementById('profile-pic').addEventListener('click', openAvatarViewer);
-
-            // Avatar viewer buttons
             document.getElementById('avatar-viewer-close').addEventListener('click', closeAvatarViewer);
-            document.getElementById('avatar-edit-btn').addEventListener('click', function() {
+            document.getElementById('avatar-edit-btn').addEventListener('click', () => {
                 closeAvatarViewer();
                 openAvatarSelector();
             });
-
-            // Avatar selector modal
             document.getElementById('avatar-modal-cancel').addEventListener('click', closeAvatarSelector);
             document.getElementById('avatar-modal-save').addEventListener('click', saveSelectedAvatar);
 
+            // Forecast detail tabs
+            document.querySelectorAll('.detail-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    switchDetailTab(tab.dataset.tab);
+                });
+            });
+
+            document.getElementById('detail-back-btn').addEventListener('click', closeForecastDetail);
+
             // Theme selector
             document.querySelectorAll('.theme-option').forEach(option => {
-                option.addEventListener('click', function() {
-                    const theme = this.getAttribute('data-theme');
+                option.addEventListener('click', () => {
+                    const theme = option.dataset.theme;
                     selectedTheme = theme;
-
-                    const themeClasses = ['theme-green', 'theme-red', 'theme-orange', 'theme-purple', 'theme-teal', 'theme-indigo', 'theme-pink', 'theme-cyan', 'theme-lime', 'theme-amber', 'theme-deep-orange'];
-                    document.documentElement.classList.remove(...themeClasses);
-
-                    if (theme !== 'default') {
-                        document.documentElement.classList.add(`theme-${theme}`);
-                    }
-
-                    document.querySelectorAll('.theme-option').forEach(opt => {
-                        opt.classList.remove('active');
-                    });
-                    this.classList.add('active');
-
                     localStorage.setItem('kingPronosTheme', theme);
-
-                    const themeNames = {
-                        'default': 'Bleu',
-                        'green': 'Vert',
-                        'red': 'Rouge',
-                        'orange': 'Orange',
-                        'purple': 'Violet',
-                        'teal': 'Turquoise',
-                        'indigo': 'Indigo',
-                        'pink': 'Rose',
-                        'cyan': 'Cyan',
-                        'lime': 'Lime',
-                        'amber': 'Ambre',
-                        'deep-orange': 'Orange Foncé'
-                    };
-
-                    showNotification(`Thème ${themeNames[theme]} appliqué`, 'success');
+                    setupTheme();
+                    showNotification('Thème mis à jour', 'success');
                 });
             });
 
             // Dark mode toggle
-            document.getElementById('dark-toggle').addEventListener('change', function() {
-                if (this.checked) {
+            document.getElementById('dark-toggle').addEventListener('change', (e) => {
+                const isDark = e.target.checked;
+                localStorage.setItem('kingPronosDarkMode', isDark.toString());
+
+                if (isDark) {
                     document.documentElement.classList.add('dark');
                 } else {
                     document.documentElement.classList.remove('dark');
                 }
 
-                localStorage.setItem('kingPronosDarkMode', this.checked ? 'true' : 'false');
+                showNotification('Mode d\'affichage mis à jour', 'success');
             });
 
-            // Logout
-            document.getElementById('logout-btn').addEventListener('click', () => showConfirmation('logout-confirmation'));
-            document.getElementById('logout-cancel').addEventListener('click', () => hideConfirmation('logout-confirmation'));
-            document.getElementById('logout-confirm').addEventListener('click', logoutUser);
+            // Promo code copy
+            document.getElementById('promo-code-display').addEventListener('click', () => {
+                copyPromoCode('ICEGAME');
+            });
 
-            // Delete account
-            document.getElementById('delete-account-btn').addEventListener('click', () => showConfirmation('delete-account-confirmation'));
-            document.getElementById('delete-account-cancel').addEventListener('click', () => hideConfirmation('delete-account-confirmation'));
-        }
+            // Overlay click to close modals
+            document.getElementById('overlay').addEventListener('click', hideConfirmation);
 
-        // Initialize the app
-        document.addEventListener('DOMContentLoaded', function() {
-            showLoading();
-            setupEventListeners();
-            setupAuth();
-            setupTheme();
-            setupDarkMode();
-            setupLiveScoresWidget();
-            initializePWA();
+            // Prevent default actions on various elements
+            document.addEventListener('click', (e) => {
+                if (e.target.closest('.avatar-viewer-modal') && !e.target.closest('.avatar-viewer-content')) {
+                    closeAvatarViewer();
+                }
+                if (e.target.closest('.avatar-selector-modal') && !e.target.closest('.avatar-modal-content')) {
+                    closeAvatarSelector();
+                }
+            });
+
+            // Clear expired coupons on load
             clearExpiredCoupons();
 
-            console.log('Application KING PRONOS initialisée');
-
-            setTimeout(() => {
-                if (!isLoggedIn) {
-                    hideLoading();
-                }
-            }, 3000);
+            console.log('Application initialisée');
         });
+
+        // Share functionality if available
+        document.addEventListener('DOMContentLoaded', () => {
+            const shareBtn = document.getElementById('share-btn');
+            if (shareBtn) {
+                shareBtn.addEventListener('click', shareApp);
+            }
+        });
+
+        // Make openForecastDetail available globally for history
+        window.openForecastDetail = openForecastDetail;
+
+        // Error handling
+        window.addEventListener('error', (event) => {
+            console.error('Erreur globale:', event.error);
+        });
+
+        window.addEventListener('unhandledrejection', (event) => {
+            console.error('Promise rejetée:', event.reason);
+        });
+
     </script>
+    <script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/service-worker.js')
+      .then(registration => {
+        console.log('✅ Service Worker enregistré avec succès :', registration.scope);
+      })
+      .catch(error => {
+        console.log('❌ Échec de l’enregistrement du Service Worker :', error);
+      });
+  });
+}
+   </script>
 </body>
 </html>
