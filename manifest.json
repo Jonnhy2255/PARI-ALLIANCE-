@@ -1,20 +1,18 @@
 {
   "name": "King Pronos AI",
   "short_name": "King Pronos",
-  "start_url": "/",
-  "scope": "/",
+  "start_url": ".",
   "display": "standalone",
-  "background_color": "#0A0A1A",
-  "theme_color": "#5D5CDE",
-  "description": "Application de pronostics sportifs boostée par l'intelligence artificielle.",
+"background_color": "#121212",
+  "theme_color": "#121212",
   "icons": [
     {
-      "src": "/icon-192x192.png",
+      "src": "icon-192x192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/icon-512x512.png",
+      "src": "icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
